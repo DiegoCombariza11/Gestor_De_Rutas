@@ -15,21 +15,21 @@ public class EdgeProperties {
     private int key;
     @JsonDeserialize(using = OsmidDeserializer.class)
     private List<Long> osmid;
-    @JsonDeserialize(using = HighwayDeserializer.class)
+    //@JsonDeserialize(using = HighwayDeserializer.class)
     private Object highway;
     private boolean oneway;
     //private boolean reversed;
-    @JsonDeserialize(using = ReversedDeserializer.class)
+    //@JsonDeserialize(using = ReversedDeserializer.class)
     private Object reversed;
     private double length;
     private int maxspeed;
     private double weight;
-    @JsonDeserialize(using = LanesDeserializer.class)
+    //@JsonDeserialize(using = LanesDeserializer.class)
     private Object lanes;
     private String ref;
     @JsonDeserialize(using = EdgeNameDeserializer.class)
     private Object name;
-    @JsonDeserialize(using = WidthDeserializer.class)
+    //@JsonDeserialize(using = WidthDeserializer.class)
     private String width;
     private String bridge;
     private String junction;
