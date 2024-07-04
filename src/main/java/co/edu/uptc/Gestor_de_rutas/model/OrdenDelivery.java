@@ -8,13 +8,14 @@ public class OrdenDelivery {
     private Responsible responsible;
     private Shopper shopper;
     private LocalDate deadLine;
-    private String state;
+    private State state;
     private String addressee;
     private String description;
     private String observation;
+    private Package pack;
 
-    public OrdenDelivery(int id, Responsible responsible, Shopper shopper, LocalDate deadLine, String state,
-            String addressee, String description, String observation) {
+    public OrdenDelivery(int id, Responsible responsible, Shopper shopper, LocalDate deadLine, State state,
+                         String addressee, String description, String observation,Package pack) {
         this.id = id;
         this.responsible = responsible;
         this.shopper = shopper;
@@ -23,6 +24,15 @@ public class OrdenDelivery {
         this.addressee = addressee;
         this.description = description;
         this.observation = observation;
+        this.pack = pack;
+    }
+
+    public Package getPack() {
+        return pack;
+    }
+
+    public void setPack(Package pack) {
+        this.pack = pack;
     }
 
     public int getId() {
@@ -57,11 +67,11 @@ public class OrdenDelivery {
         this.deadLine = deadLine;
     }
 
-    public String getState() {
+    public State getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(State state) {
         this.state = state;
     }
 
