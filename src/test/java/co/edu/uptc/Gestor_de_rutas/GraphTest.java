@@ -1,39 +1,59 @@
 package co.edu.uptc.Gestor_de_rutas;
 
-import co.edu.uptc.Gestor_de_rutas.model.Edges.Edge;
-import co.edu.uptc.Gestor_de_rutas.model.Nodes.Node;
-import co.edu.uptc.Gestor_de_rutas.model.graph.Graph;
+import co.edu.uptc.Gestor_de_rutas.controller.GraphController;
+import co.edu.uptc.Gestor_de_rutas.model.Edge;
+import co.edu.uptc.Gestor_de_rutas.model.Node;
+import co.edu.uptc.Gestor_de_rutas.model.Graph;
+import co.edu.uptc.Gestor_de_rutas.model.edgesfeatures.EdgeFeature;
+import co.edu.uptc.Gestor_de_rutas.model.edgesfeatures.EdgeGeometry;
+import co.edu.uptc.Gestor_de_rutas.model.edgesfeatures.EdgeProperties;
+import co.edu.uptc.Gestor_de_rutas.model.nodesfeatures.Feature;
+import co.edu.uptc.Gestor_de_rutas.model.nodesfeatures.FeatureProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GraphTest {
-    private Graph graph;
+    GraphController graphController;
 
     @BeforeEach
     void setUp() {
-        graph = new Graph();
+        graphController = new GraphController();
+        graphController.createGraph();
+    }
+
+    @Test
+    void testGraphIsNotNullAfterCreation() {
+        assertNotNull(graphController.getGraph());
     }
 
     @Test
     void testAddNode() {
-        Node node = new Node(1L, 10.0, 20.0);
-        graph.addNode(node);
-        assertEquals(1, graph.getNodes().size());
-        assertTrue(graph.getNodes().containsKey(1L));
+        FeatureProperties properties = new FeatureProperties(12345L, 1.0, 2.0, 3, "highway");
+        Feature feature = new Feature("FeatureType", 1, properties, null);
+        Node newNode = new Node(feature);
+        graphController.addNode(newNode);
+        assertTrue(graphController.getNodes().contains(newNode));
     }
 
     @Test
     void testAddEdge() {
-        Node node1 = new Node(1L, 10.0, 20.0);
-        Node node2 = new Node(2L, 30.0, 40.0);
-        graph.addNode(node1);
-        graph.addNode(node2);
-        co.edu.uptc.Gestor_de_rutas.model.Edges.Edge edge = new Edge(node1.getOsmid(), node2.getOsmid(), 5.0);
-        graph.addEdge(edge);
-        assertEquals(1, graph.getEdges().size());
-        assertTrue(graph.getEdges().containsKey(edge.getU()));
+        FeatureProperties properties1 = new FeatureProperties(123L, 1.0, 2.0, 3, "highway");
+        Feature feature1 = new Feature("FeatureType", 1, properties1, null);
+        Node node1 = new Node(feature1);
+        FeatureProperties properties2 = new FeatureProperties(456L, 3.0, 4.0, 2, "highway");
+        Feature feature2 = new Feature("FeatureType", 2, properties2, null);
+        Node node2 = new Node(feature2);
+        graphController.addNode(node1);
+        graphController.addNode(node2);
+        EdgeProperties edgeProperties = new EdgeProperties(node1.getOsmid(), node2.getOsmid(), 0, new ArrayList<>(), "highway", false, false, 10.0, 100, 10.0, "2", "EdgeRef", "EdgeName", "5", "bridge", "junction");
+        EdgeGeometry edgeGeometry = new EdgeGeometry("LineString", new ArrayList<>());
+        EdgeFeature edgeFeature = new EdgeFeature("EdgeFeatureType", 1, edgeProperties, edgeGeometry);
+        Edge newEdge = new Edge(edgeFeature);
+        graphController.addEdge(newEdge);
+        assertTrue(graphController.getEdges().contains(newEdge));
     }
 }

@@ -1,7 +1,7 @@
 package co.edu.uptc.Gestor_de_rutas.persistence;
 
-import co.edu.uptc.Gestor_de_rutas.model.Edges.Edge;
-import co.edu.uptc.Gestor_de_rutas.model.Nodes.Node;
+import co.edu.uptc.Gestor_de_rutas.model.Edge;
+import co.edu.uptc.Gestor_de_rutas.model.Node;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -22,9 +22,9 @@ public class FileManagement {
             long osmid = properties.get("osmid").asLong();
             double y = properties.get("y").asDouble();
             double x = properties.get("x").asDouble();
-
-            Node node = new Node(osmid, y, x);
-            nodes.put(osmid, node);
+//
+//            Node node = new Node(osmid, y, x);
+//            nodes.put(osmid, node);
         }
         return nodes;
     }
@@ -40,9 +40,9 @@ public class FileManagement {
             long u = properties.get("u").asLong();
             long v = properties.get("v").asLong();
             double length = properties.get("length").asDouble();
-
-            Edge edge = new Edge(u, v, length);
-            edges.put(u, edge);
+//
+//            Edge edge = new Edge(u, v, length);
+//            edges.put(u, edge);
         }
         return edges;
     }

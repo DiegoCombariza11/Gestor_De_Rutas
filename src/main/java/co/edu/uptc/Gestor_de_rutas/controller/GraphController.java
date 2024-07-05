@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class GraphController {
 
     private GeoJsonReader geoJsonReader;
@@ -62,17 +61,16 @@ public class GraphController {
         }
     }
 
-    public void createGraph(){
+    public void createGraph() {
 
         this.graph = new DefaultDirectedWeightedGraph<>(DefaultEdge.class);
 
         nodeList = createNodeList("src\\main\\java\\co\\edu\\uptc\\Gestor_de_rutas\\util\\nodes.geojson");
         edgeList = createEdgeList("src\\main\\java\\co\\edu\\uptc\\Gestor_de_rutas\\util\\edges.geojson");
-    for (Node node: nodeList) {
-        graph.addVertex(node.getOsmid());
-    }
-
-        for (Edge edge: edgeList) {
+        for (Node node : nodeList) {
+            graph.addVertex(node.getOsmid());
+        }
+        for (Edge edge : edgeList) {
             DefaultEdge graphEdge = graph.addEdge(edge.getU(), edge.getV());
             if (graphEdge != null) {
                 graph.setEdgeWeight(graphEdge, edge.getWeight());
@@ -81,19 +79,30 @@ public class GraphController {
 
     }
 
-    public String getNodes(){
+    public String getNodeString() {
         String nodes = "";
-        for (Node node: nodeList) {
+        for (Node node : nodeList) {
             nodes += node.toString() + "\n";
         }
         return nodes;
     }
+    public List<Node> getNodes() {
+        return nodeList;
+    }
+    public List<Edge> getEdges() {
+        return edgeList;
+    }
 
 
+    public Graph<Long, DefaultEdge> getGraph() {
+        return graph;
+    }
 
+    public void addNode(Node node) {
+        nodeList.add(node);
+    }
 
-
-
-
-
+    public void addEdge(Edge edge) {
+        edgeList.add(edge);
+    }
 }
