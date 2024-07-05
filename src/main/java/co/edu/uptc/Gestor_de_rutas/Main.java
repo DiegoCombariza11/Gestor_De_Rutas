@@ -14,8 +14,8 @@ public class Main {
         Long startNodeId = 1016196839L;
         Long endNodeId = 7787924883L;
         double distance = dijkstraAlgorithm.dijkstra(startNodeId, endNodeId, controller.getGraph());
-        System.out.println("Distancia desde " + startNodeId + " a " + endNodeId + " es " + distance);
-
+        System.out.println("Camino más corto: " + dijkstraAlgorithm.getShortestPath(startNodeId, endNodeId, controller.getGraph()));
+        System.out.println("Distancia total del camino más corto: " + dijkstraAlgorithm.longPath(dijkstraAlgorithm.getShortestPath(startNodeId, endNodeId, controller.getGraph()), controller));
     }
 
 }
