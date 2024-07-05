@@ -1,4 +1,4 @@
-package co.edu.uptc.Gestor_de_rutas.model.Edges;
+package co.edu.uptc.Gestor_de_rutas.model.edgesfeatures;
 
 public class EdgeFeature {
     private String type;

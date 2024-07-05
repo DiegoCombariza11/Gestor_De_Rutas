@@ -1,4 +1,4 @@
-package co.edu.uptc.Gestor_de_rutas.model.Edges;
+package co.edu.uptc.Gestor_de_rutas.model.edgesfeatures;
 
 import java.util.List;
 
@@ -6,11 +6,11 @@ import java.util.List;
 public class EdgeFeatureCollection {
     private String type;
     private String name;
-    private edgeCrs crs;
+    private EdgeCrs crs;
     private List<EdgeFeature> features;
 
     // Constructor
-    public EdgeFeatureCollection(String type, String name, edgeCrs crs, List<EdgeFeature> features) {
+    public EdgeFeatureCollection(String type, String name, EdgeCrs crs, List<EdgeFeature> features) {
         this.type = type;
         this.name = name;
         this.crs = crs;
@@ -26,7 +26,7 @@ public class EdgeFeatureCollection {
     public String getName() {
         return name;
     }
-    public edgeCrs getCrs() {
+    public EdgeCrs getCrs() {
         return crs;
     }
     public List<EdgeFeature> getFeatures() {

@@ -2,18 +2,16 @@ package co.edu.uptc.Gestor_de_rutas.controller;
 
 import co.edu.uptc.Gestor_de_rutas.geojsondeserilizer.edges.EdgeGeoJsonReader;
 import co.edu.uptc.Gestor_de_rutas.geojsondeserilizer.nodes.GeoJsonReader;
-import co.edu.uptc.Gestor_de_rutas.model.Edges.Edge;
-import co.edu.uptc.Gestor_de_rutas.model.Edges.EdgeFeature;
-import co.edu.uptc.Gestor_de_rutas.model.Edges.EdgeFeatureCollection;
-import co.edu.uptc.Gestor_de_rutas.model.Nodes.Feature;
-import co.edu.uptc.Gestor_de_rutas.model.Nodes.FeatureCollection;
-import co.edu.uptc.Gestor_de_rutas.model.Nodes.Node;
-import com.mxgraph.swing.mxGraphComponent;
+import co.edu.uptc.Gestor_de_rutas.model.Edge;
+import co.edu.uptc.Gestor_de_rutas.model.edgesfeatures.EdgeFeature;
+import co.edu.uptc.Gestor_de_rutas.model.edgesfeatures.EdgeFeatureCollection;
+import co.edu.uptc.Gestor_de_rutas.model.nodesfeatures.Feature;
+import co.edu.uptc.Gestor_de_rutas.model.nodesfeatures.FeatureCollection;
+import co.edu.uptc.Gestor_de_rutas.model.Node;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +82,11 @@ public class GraphController {
     }
 
     public String getNodes(){
-
+        String nodes = "";
+        for (Node node: nodeList) {
+            nodes += node.toString() + "\n";
+        }
+        return nodes;
     }
 
 

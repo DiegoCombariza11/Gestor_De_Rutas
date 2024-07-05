@@ -1,7 +1,7 @@
 package co.edu.uptc.Gestor_de_rutas.model.graph;
 
-import co.edu.uptc.Gestor_de_rutas.model.Edges.Edge;
-import co.edu.uptc.Gestor_de_rutas.model.Nodes.Node;
+import co.edu.uptc.Gestor_de_rutas.model.Edge;
+import co.edu.uptc.Gestor_de_rutas.model.Node;
 
 import java.util.HashMap;
 import java.util.Map;

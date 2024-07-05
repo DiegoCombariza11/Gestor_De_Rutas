@@ -1,4 +1,4 @@
-package co.edu.uptc.Gestor_de_rutas.model.Nodes;
+package co.edu.uptc.Gestor_de_rutas.model.nodesfeatures;
 
 
 

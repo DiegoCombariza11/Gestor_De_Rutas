@@ -1,51 +1,35 @@
 package co.edu.uptc.Gestor_de_rutas.model;
 
+import co.edu.uptc.Gestor_de_rutas.model.edgesfeatures.EdgeFeature;
+
 public class Edge {
-    private Node destinationNode;
-    private Node originNodo;
-    private double distance;
-    private boolean isBidirectional;
+    private String name;
+    private long u;
+    private long v;
+    private double length;
+    private double weight;
 
-    public Edge() {
+    public Edge(EdgeFeature feature) {
+        this.name = feature.getProperties().getName();
+        this.u = feature.getProperties().getU();
+        this.v = feature.getProperties().getV();
+        this.length = feature.getProperties().getLength();
+        this.weight = feature.getProperties().getWeight();
     }
 
-    public Edge(Node destinationNode, Node originNodo, double distance, boolean isBidirectional) {
-        this.destinationNode = destinationNode;
-        this.originNodo = originNodo;
-        this.distance = distance;
-        this.isBidirectional = isBidirectional;
+    public long getU() {
+        return u;
     }
 
-    public Node getDestinationNode() {
-        return destinationNode;
+    public long getV() {
+        return v;
     }
 
-    public void setDestinationNode(Node destinationNode) {
-        this.destinationNode = destinationNode;
+    public double getLength() {
+        return length;
     }
 
-    public Node getOriginNodo() {
-        return originNodo;
+    public double getWeight() {
+        return weight;
     }
-
-    public void setOriginNodo(Node originNodo) {
-        this.originNodo = originNodo;
-    }
-
-    public boolean isBidirectional() {
-        return isBidirectional;
-    }
-
-    public void setBidirectional(boolean isBidirectional) {
-        this.isBidirectional = isBidirectional;
-    }
-
-    public double getDistance() {
-        return distance;
-    }
-
-    public void setDistance(double distance) {
-        this.distance = distance;
-    }
-
 }
