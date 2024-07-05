@@ -8,6 +8,7 @@ public class Main {
        GraphController graphController = new GraphController();
 
        graphController.createGraph();
+        System.out.println(graphController.getNodes());
 
 
 

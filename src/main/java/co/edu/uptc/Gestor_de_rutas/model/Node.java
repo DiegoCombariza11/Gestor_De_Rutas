@@ -30,4 +30,14 @@ public class Node {
     public double getX() {
         return x;
     }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "osmid=" + osmid +
+                ", id=" + id +
+                ", y=" + y +
+                ", x=" + x +
+                '}';
+    }
 }

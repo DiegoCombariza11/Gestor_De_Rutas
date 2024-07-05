@@ -32,4 +32,15 @@ public class Edge {
     public double getWeight() {
         return weight;
     }
+
+    @Override
+    public String toString() {
+        return "Edge{" +
+                "name='" + name + '\'' +
+                ", u=" + u +
+                ", v=" + v +
+                ", length=" + length +
+                ", weight=" + weight +
+                '}';
+    }
 }
