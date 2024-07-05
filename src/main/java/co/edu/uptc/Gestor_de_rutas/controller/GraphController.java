@@ -26,6 +26,7 @@ public class GraphController {
     private EdgeGeoJsonReader edgeGeoJsonReader;
     private List<Node> nodeList;
     private List<Edge> edgeList;
+    private Graph<Long, DefaultEdge> graph;
 
     public GraphController() {
         this.geoJsonReader = new GeoJsonReader();
@@ -65,7 +66,7 @@ public class GraphController {
 
     public void createGraph(){
 
-        Graph<Long, DefaultEdge> graph = new DefaultDirectedWeightedGraph<>(DefaultEdge.class);
+        this.graph = new DefaultDirectedWeightedGraph<>(DefaultEdge.class);
 
         nodeList = createNodeList("src\\main\\java\\co\\edu\\uptc\\Gestor_de_rutas\\util\\nodes.geojson");
         edgeList = createEdgeList("src\\main\\java\\co\\edu\\uptc\\Gestor_de_rutas\\util\\edges.geojson");
@@ -81,6 +82,16 @@ public class GraphController {
         }
 
     }
+
+    public String getNodes(){
+
+    }
+
+
+
+
+
+
 
 
 }
