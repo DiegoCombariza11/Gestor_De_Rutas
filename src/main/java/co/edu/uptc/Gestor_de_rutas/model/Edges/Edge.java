@@ -1,14 +1,18 @@
 package co.edu.uptc.Gestor_de_rutas.model.Edges;
 
 public class Edge {
+    private String name;
     private long u;
     private long v;
     private double length;
+    private double weight;
 
-    public Edge(long u, long v, double length) {
-        this.u = u;
-        this.v = v;
-        this.length = length;
+    public Edge(EdgeFeature feature) {
+        this.name = feature.getProperties().getName();
+        this.u = feature.getProperties().getU();
+        this.v = feature.getProperties().getV();
+        this.length = feature.getProperties().getLength();
+        this.weight = feature.getProperties().getWeight();
     }
 
     public long getU() {
@@ -21,5 +25,9 @@ public class Edge {
 
     public double getLength() {
         return length;
+    }
+
+    public double getWeight() {
+        return weight;
     }
 }

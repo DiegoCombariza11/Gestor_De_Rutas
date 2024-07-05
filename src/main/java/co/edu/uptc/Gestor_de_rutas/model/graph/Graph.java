@@ -15,6 +15,8 @@ public class Graph {
         edges = new HashMap<>();
     }
 
+
+
     public void addNode(Node node) {
         nodes.put(node.getOsmid(), node);
     }
