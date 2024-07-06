@@ -1,7 +1,13 @@
 package co.edu.uptc.Gestor_de_rutas.model;
 
-public class Package {
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(value = "Package")
+@Data
+public class Package {
+    @Id
     private int id;
     private String description;
     private double price;
