@@ -1,13 +1,23 @@
 package co.edu.uptc.Gestor_de_rutas.model;
 
-public class Package {
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(value = "Package")
+@Data
+public class Package {
+    @Id
     private int id;
     private String description;
+    private double price;
+    private String weight;
 
-    public Package(int id, String description) {
+    public Package(int id, String description, double price, String weight) {
         this.id = id;
         this.description = description;
+        this.price = price;
+        this.weight = weight;
     }
 
     public int getId() {
@@ -26,4 +36,29 @@ public class Package {
         this.description = description;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    @Override
+    public String toString() {
+        return "Package{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", weight='" + weight + '\'' +
+                '}';
+    }
 }

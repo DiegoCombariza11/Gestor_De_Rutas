@@ -2,17 +2,26 @@ package co.edu.uptc.Gestor_de_rutas.model;
 
 public class Shopper {
     private String direction;
+    private Person person;
 
     // contructores
 
-    public Shopper(String direction) {
+    public Shopper(String direction, Person person) {
         this.direction = direction;
+        this.person = person;
     }
 
     public Shopper() {
     }
 
-    // set get
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
     public String getDirection() {
         return direction;
     }
