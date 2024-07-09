@@ -1,44 +1,43 @@
 package co.edu.uptc.Gestor_de_rutas.model;
 
-import java.util.ArrayList;
+import co.edu.uptc.Gestor_de_rutas.model.nodesfeatures.Feature;
 
 public class Node {
-
+    private long osmid;
     private int id;
-    private Emplecement emplecement;
-    private ArrayList<Edge> edges;
+    private double y;
+    private double x;
 
-    public Node() {
+    public Node(Feature feauture) {
+        this.osmid = feauture.properties.getOsmid();
+        this.id = feauture.id;
+        this.y = feauture.properties.getY();
+        this.x = feauture.properties.getX();
     }
 
-    public Node(int id, Emplecement emplecement, ArrayList<Edge> edges) {
-        this.id = id;
-        this.emplecement = emplecement;
-        this.edges = edges;
+    public long getOsmid() {
+        return osmid;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public double getY() {
+        return y;
     }
 
-    public Emplecement getEmplecement() {
-        return emplecement;
+    public double getX() {
+        return x;
     }
 
-    public void setEmplecement(Emplecement emplecement) {
-        this.emplecement = emplecement;
+    @Override
+    public String toString() {
+        return "Node{" +
+                "osmid=" + osmid +
+                ", id=" + id +
+                ", y=" + y +
+                ", x=" + x +
+                '}';
     }
-
-    public ArrayList<Edge> getEdges() {
-        return edges;
-    }
-
-    public void setEdges(ArrayList<Edge> edges) {
-        this.edges = edges;
-    }
-
 }
