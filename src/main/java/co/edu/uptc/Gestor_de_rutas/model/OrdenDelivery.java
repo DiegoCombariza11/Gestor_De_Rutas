@@ -1,9 +1,14 @@
 package co.edu.uptc.Gestor_de_rutas.model;
 
-import java.time.LocalDate;
-//import javafx.scene.chart.PieChart.Data;
-public class OrdenDelivery {
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
+@Document(value = "OrderDelivery")
+@Data
+public class OrdenDelivery {
+    @Id
     private int id;
     private Responsible responsible;
     private Shopper shopper;
