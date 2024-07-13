@@ -47,6 +47,25 @@ public class MainAStar {
         var path = aStarAlgorithm.findShortestPath(sourceVertexId, targetVertexId);
 
 
+
+        if (path != null) {
+    System.out.println("Camino encontrado: " + path);
+    List<Long> nodeIdList = path.getVertexList().stream()
+            .map(Long::parseLong)
+            .collect(Collectors.toList());
+
+    // Aquí se llama al método para generar el GeoJSON
+    pathToGeoJson.convertPathToGeoJson(nodeIdList, graphController, "path.geojson");
+    System.out.println("Archivo GeoJSON generado correctamente.");
+} else {
+    System.out.println("No se encontró un camino.");
+}
+
+
+
+
+        /*
+
         if (path != null) {
             System.out.println("Camino encontrado: " + path);
             List<Long> nodeIdList = path.getVertexList().stream()
@@ -56,10 +75,14 @@ public class MainAStar {
             double totalDistance = aStarAlgorithm.calculateDistance((List<List<Double>>) path);
             System.out.println("Distancia total: " + totalDistance + " m");
 
-            pathToGeoJson.convertPathToGeoJson(nodeIdList, graphController, "path.geojson");
+            pathToGeoJson.convertPathToGeoJson(nodeIdList, graphController, "path1.geojson");
         } else {
             System.out.println("No se encontró un camino.");
         }
+
+         */
+
+
 
 
     }}

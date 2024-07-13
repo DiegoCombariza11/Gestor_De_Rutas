@@ -42,6 +42,30 @@ public class AStarAlgorithm {
         }
     };
 
+    /*
+    private AStarAdmissibleHeuristic<String> timeBasedHeuristic = new AStarAdmissibleHeuristic<>() {
+    @Override
+    public double getCostEstimate(String sourceVertex, String targetVertex) {
+        Node sourceNode = graphController.getNodeById(Long.parseLong(sourceVertex));
+        Node targetNode = graphController.getNodeById(Long.parseLong(targetVertex));
+        if (sourceNode != null && targetNode != null) {
+            double distance = haversine(sourceNode.getY(), sourceNode.getX(), targetNode.getY(), targetNode.getX());
+            double maxSpeed = getMaxSpeedForEdge(sourceVertex, targetVertex); // Implementa esta función según tu modelo de datos
+            double estimatedTravelTime = distance / maxSpeed;
+            return estimatedTravelTime;
+        }
+        return Double.MAX_VALUE;
+    }
+};
+
+public GraphPath<String, DefaultWeightedEdge> findShortestPath(String sourceVertex, String targetVertex) {
+    AStarShortestPath<String, DefaultWeightedEdge> aStarShortestPath = new AStarShortestPath<>(graph, timeBasedHeuristic);
+    return aStarShortestPath.getPath(sourceVertex, targetVertex);
+}
+     */
+
+
+
 
     private double haversine(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371;
