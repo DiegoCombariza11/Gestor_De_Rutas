@@ -86,6 +86,7 @@ public class GraphController {
         }
         return nodes;
     }
+
     public List<Node> getNodes() {
         return nodeList;
     }
@@ -97,6 +98,13 @@ public class GraphController {
     public Graph<Long, DefaultEdge> getGraph() {
         return graph;
     }
+
+    public Node getNodeById(Long id) {
+    return nodeList.stream()
+            .filter(node -> node.getOsmid()==(id))
+            .findFirst()
+            .orElse(null);
+}
 
     public void addNode(Node node) {
         nodeList.add(node);
