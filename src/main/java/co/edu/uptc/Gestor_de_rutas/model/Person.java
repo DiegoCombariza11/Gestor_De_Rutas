@@ -6,25 +6,17 @@ public class Person {
     private String email;
     private int id;
     private int contact;
-    private String rol;
-
-    // constructor bacio
 
     public Person() {
 
     }
-
-    // contructor lleno
-    public Person(String name, String lastName, String email, int id, int contact, String rol) {
+    public Person(String name, String lastName, String email, int id, int contact) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.id = id;
         this.contact = contact;
-        this.rol = rol;
     }
-
-    // set y get
     public String getName() {
         return name;
     }
@@ -63,14 +55,6 @@ public class Person {
 
     public void setContact(int contact) {
         this.contact = contact;
-    }
-
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
     }
 
 }
