@@ -4,8 +4,6 @@ public class Shopper {
     private String direction;
     private Person person;
 
-    // contructores
-
     public Shopper(String direction, Person person) {
         this.direction = direction;
         this.person = person;
