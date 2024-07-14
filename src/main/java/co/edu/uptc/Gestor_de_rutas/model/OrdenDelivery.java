@@ -1,11 +1,15 @@
 package co.edu.uptc.Gestor_de_rutas.model;
 
-import java.time.LocalDate;
-//import javafx.scene.chart.PieChart.Data;
-public class OrdenDelivery {
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
+@Document(value = "OrderDelivery")
+@Data
+public class OrdenDelivery {
+    @Id
     private int id;
-    private Responsible responsible;
     private Shopper shopper;
     private LocalDate deadLine;
     private State state;
@@ -13,10 +17,9 @@ public class OrdenDelivery {
     private String observation;
     private Package pack;
 
-    public OrdenDelivery(int id, Responsible responsible, Shopper shopper, LocalDate deadLine, State state,
+    public OrdenDelivery(int id, Shopper shopper, LocalDate deadLine, State state,
                          String description, String observation,Package pack) {
         this.id = id;
-        this.responsible = responsible;
         this.shopper = shopper;
         this.deadLine = deadLine;
         this.state = state;
@@ -39,14 +42,6 @@ public class OrdenDelivery {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Responsible getResponsible() {
-        return responsible;
-    }
-
-    public void setResponsible(Responsible responsible) {
-        this.responsible = responsible;
     }
 
     public Shopper getShopper() {

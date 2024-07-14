@@ -2,7 +2,7 @@ package co.edu.uptc.Gestor_de_rutas;
 
 import co.edu.uptc.Gestor_de_rutas.controller.AStarAlgorithm;
 import co.edu.uptc.Gestor_de_rutas.controller.GraphController;
-import co.edu.uptc.Gestor_de_rutas.controller.PathToGeoJson;
+//import co.edu.uptc.Gestor_de_rutas.controller.PathToGeoJson;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -14,7 +14,7 @@ public class MainAStar {
     public static void main(String[] args) {
 
         GraphController graphController = new GraphController();
-        PathToGeoJson pathToGeoJson = new PathToGeoJson();
+        //PathToGeoJson pathToGeoJson = new PathToGeoJson();
 
         graphController.createGraph();
 
@@ -47,25 +47,6 @@ public class MainAStar {
         var path = aStarAlgorithm.findShortestPath(sourceVertexId, targetVertexId);
 
 
-
-        if (path != null) {
-    System.out.println("Camino encontrado: " + path);
-    List<Long> nodeIdList = path.getVertexList().stream()
-            .map(Long::parseLong)
-            .collect(Collectors.toList());
-
-    // Aquí se llama al método para generar el GeoJSON
-    pathToGeoJson.convertPathToGeoJson(nodeIdList, graphController, "path.geojson");
-    System.out.println("Archivo GeoJSON generado correctamente.");
-} else {
-    System.out.println("No se encontró un camino.");
-}
-
-
-
-
-        /*
-
         if (path != null) {
             System.out.println("Camino encontrado: " + path);
             List<Long> nodeIdList = path.getVertexList().stream()
@@ -75,14 +56,10 @@ public class MainAStar {
             double totalDistance = aStarAlgorithm.calculateDistance((List<List<Double>>) path);
             System.out.println("Distancia total: " + totalDistance + " m");
 
-            pathToGeoJson.convertPathToGeoJson(nodeIdList, graphController, "path1.geojson");
+            //pathToGeoJson.convertPathToGeoJson(nodeIdList, graphController, "path.geojson");
         } else {
             System.out.println("No se encontró un camino.");
         }
-
-         */
-
-
 
 
     }}
