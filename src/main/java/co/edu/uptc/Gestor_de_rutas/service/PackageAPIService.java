@@ -19,10 +19,13 @@ public class PackageAPIService {
     private final PackageService packageService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createPackage(@RequestBody Package payload) {
-        System.out.println("Received POST request to /create");
+    public ResponseEntity<String> createPackage(@RequestBody Map<String, String> payload) {
         try {
-            packageService.savePackage(payload);
+            int id = Integer.parseInt(payload.get("id"));
+            String description = payload.get("description");
+            double price = Double.parseDouble(payload.get("price"));
+            String weight = payload.get("weight");
+            packageService.savePackage(new Package(id, description, price, weight));
             return ResponseEntity.ok("Package created successfully");
         } catch (Exception e) {
             e.printStackTrace();

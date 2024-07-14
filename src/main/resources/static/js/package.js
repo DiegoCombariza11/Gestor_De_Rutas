@@ -1,4 +1,4 @@
-fetch('/packages/createPackage', {
+fetch('/packages/create', {
     method: 'POST',
     headers: {
         'Accept': 'application/json',
@@ -15,11 +15,8 @@ fetch('/packages/createPackage', {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        return response.json();
+        return response;
     })
     .then(data => {
         console.log(data);
-    })
-    .catch(error => {
-        console.error('There has been a problem with your fetch operation:', error);
     });
