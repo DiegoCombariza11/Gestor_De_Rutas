@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordenes de envío</title>
+    <link rel="stylesheet" type="text/css" href="../css/OrderDelivery.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+</head>
+<body>
+<div class="container-nav">
+    <nav class="navbar">
+        <a class="navbar-brand">Gestion de Ordenes</a>
+        <b>Bienvenido</b>
+    </nav>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Ordenes de envío</h2>
+            <table class="table table-striped" id="shipment-table-striped">
+                <thead>
+                <tr>
+                    <th>Seleccionar</th>
+                    <th>Id</th>
+                    <th>Dirección</th>
+                    <th>Detalles</th>
+                </tr>
+                </thead>
+                <tbody id="shipment-table">
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 offset-md-1">
+            <h2>Lista en el Carro</h2>
+            <div id="send-box" class="border p-2">
+                <!-- Selected shipments will be displayed here -->
+            </div>
+            <button id="start-route-btn" class="btn btn-primary">Iniciar Ruta</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="../js/Home.js"></script>
+</body>
+</html>

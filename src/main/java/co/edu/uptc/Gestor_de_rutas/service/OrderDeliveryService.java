@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -21,6 +22,10 @@ public class OrderDeliveryService {
     @GetMapping("/show")
     public Optional<OrdenDelivery> getOrderDeliveryById(@RequestBody Map<String,String> payload) {
         return orderDeliveryRepository.findById(Integer.parseInt(payload.get("id")));
+    }
+    @GetMapping("/showAll")
+    public List<OrdenDelivery> getAllOrderDeliveries() {
+        return orderDeliveryRepository.findAll();
     }
     @PostMapping("/save")
     public ResponseEntity<Void> saveOrderDelivery(@RequestBody Map<String,String> payload) {

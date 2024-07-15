@@ -1,0 +1,12 @@
+.navbar{
+    background-color: #81bfff;
+    height: fit-content;
+}
+.container-nav{
+    padding: 0;
+    align-content: center;
+}
+.navbar-brand{
+    color: white;
+
+}
