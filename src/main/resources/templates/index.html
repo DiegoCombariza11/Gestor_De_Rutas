@@ -52,7 +52,7 @@
     }
 
     // Cargar el archivo GeoJSON de la ruta más corta
-    new L.GeoJSON.AJAX("shortest_path.geojson", {
+    new L.GeoJSON.AJAX("path.geojson", {
         style: styleFeature,
         pointToLayer: function (feature, latlng) {
             return L.circleMarker(latlng, styleFeature(feature));
