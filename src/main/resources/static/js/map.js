@@ -4,13 +4,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize the map
     var map = L.map('map').setView([5.7207, -72.9292], 13);
 
-    // Add OpenStreetMap tile layer to the map
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap rawwr'
     }).addTo(map);
-
-
 
 
     function loadGeoJSON() {
@@ -19,9 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
             return response.json();
         })
         .then(function (data) {
-            // Asumiendo que los caminos están en un array en data.features
+
             data.features.forEach(function(feature, index) {
-                // Aplicar estilo azul al primer camino y gris al segundo
                 var style = {
                     color: index === 0 ? 'blue' : 'grey', // Azul para el primer camino, gris para el segundo
                     weight: 5,
@@ -41,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }).addTo(map);
             });
 
-            // Ajustar la vista del mapa para incluir todos los puntos GeoJSON
             map.fitBounds(L.geoJSON(data).getBounds());
         })
         .catch(function (error) {
@@ -62,8 +57,8 @@ function loadOrders() {
         })
         .then(ordenes => {
             const lista = document.getElementById('packages');
-            lista.innerHTML = ''; // Clear the list before adding new orders
-            if (Array.isArray(ordenes)) { // Ensure ordenes is an array
+            lista.innerHTML = '';
+            if (Array.isArray(ordenes)) {
                 ordenes.forEach(orden => {
                     const elemento = document.createElement('li');
                     elemento.classList.add('list-group-item');
@@ -88,7 +83,8 @@ function loadOrders() {
     // Add event listener to the "finish route" button
     document.getElementById('finish-route').addEventListener('click', function () {
         console.log('Finish route button clicked');
-        // Add your logic here to handle the route finishing action
+
+
     });
 });
 
