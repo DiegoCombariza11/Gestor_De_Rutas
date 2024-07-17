@@ -2,6 +2,7 @@ package co.edu.uptc.Gestor_de_rutas.service;
 
 import co.edu.uptc.Gestor_de_rutas.model.*;
 import co.edu.uptc.Gestor_de_rutas.model.Package;
+import co.edu.uptc.Gestor_de_rutas.repository.OrderDeliveryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -18,14 +20,24 @@ import java.util.Optional;
 public class OrderDeliveryService {
     private final OrderDeliveryRepository orderDeliveryRepository;
     private final PackageService packageService;
-    @GetMapping("/show")
-    public Optional<OrdenDelivery> getOrderDeliveryById(@RequestBody Map<String,String> payload) {
-        return orderDeliveryRepository.findById(Integer.parseInt(payload.get("id")));
+    @GetMapping("/allOrders")
+public ResponseEntity<List<OrdenDelivery>> getAllOrders() {
+    List<OrdenDelivery> orders = orderDeliveryRepository.findAll();
+        System.out.println(orders.get(0).toString());
+    if (orders == null || orders.isEmpty()) {
+        return ResponseEntity.noContent().build();
+    }
+    return ResponseEntity.ok(orders);
+}
+
+    @GetMapping("/show/{id}")
+    public Optional<OrdenDelivery> getOrderDeliveryById(@PathVariable("id") int id) {
+        return orderDeliveryRepository.findById(id);
     }
     @PostMapping("/save")
     public ResponseEntity<Void> saveOrderDelivery(@RequestBody Map<String,String> payload) {
         try {
-            int id = Integer.parseInt(payload.get("id"));
+            String id = (payload.get("id"));
             String direction = payload.get("direction");
             String personName = payload.get("personName");
             String personLastName = payload.get("personLastName");
@@ -38,7 +50,7 @@ public class OrderDeliveryService {
             State state = parse(payload.get("state"));
             String description = payload.get("description");
             String observation = payload.get("observation");
-            Package pack = packageService.getPackageById(id).orElse(null);
+            Package pack = packageService.getPackageById(Integer.parseInt(id)).orElse(null);
             OrdenDelivery orderDelivery = new OrdenDelivery(id, shopper, deadLine, state, description, observation, pack);
             orderDeliveryRepository.save(orderDelivery);
             return ResponseEntity.ok().build();
@@ -53,7 +65,7 @@ public class OrderDeliveryService {
     }
     @PostMapping("/update")
     public void updateOrderDelivery(@RequestBody Map<String,String> payload) {
-        int id = Integer.parseInt(payload.get("id"));
+        String id = (payload.get("id"));
         String direction= payload.get("direction");
         String personName = payload.get("personName");
         String personLastName = payload.get("personLastName");
@@ -66,7 +78,7 @@ public class OrderDeliveryService {
         State state = State.valueOf(payload.get("state"));
         String description = payload.get("description");
         String observation = payload.get("observation");
-        Package pack = packageService.getPackageById(id).orElse(null);
+        Package pack = packageService.getPackageById(Integer.parseInt(id)).orElse(null);
         OrdenDelivery orderDelivery = new OrdenDelivery(id,shopper,deadLine,state,description,observation,pack);
         orderDeliveryRepository.save(orderDelivery);
     }
@@ -74,11 +86,11 @@ public class OrderDeliveryService {
         if (state.equals("Entregado")) {
             return State.DELIVERED;
         } else if (state.equals("En camino")) {
-            return State.ONTHEWAY;
+            return State.SHIPPED;
         } else if (state.equals("Devuelto")) {
-            return State.RETURNED;
+            return State.CANCELED;
         } else if (state.equals("Saliendo de bodega")) {
-            return State.LEAVINGTHEWAREHOUSE;
+            return State.PENDING;
         } else {
             return null;
         }

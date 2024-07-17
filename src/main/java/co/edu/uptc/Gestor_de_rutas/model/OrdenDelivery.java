@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 public class OrdenDelivery {
     @Id
-    private int id;
+    private String id;
     private Shopper shopper;
     private LocalDate deadLine;
     private State state;
@@ -17,7 +17,7 @@ public class OrdenDelivery {
     private String observation;
     private Package pack;
 
-    public OrdenDelivery(int id, Shopper shopper, LocalDate deadLine, State state,
+    public OrdenDelivery(String id, Shopper shopper, LocalDate deadLine, State state,
                          String description, String observation,Package pack) {
         this.id = id;
         this.shopper = shopper;
@@ -36,13 +36,21 @@ public class OrdenDelivery {
         this.pack = pack;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
+
+//    public Responsible getResponsible() {
+//        return responsible;
+//    }
+//
+//    public void setResponsible(Responsible responsible) {
+//        this.responsible = responsible;
+//    }
 
     public Shopper getShopper() {
         return shopper;

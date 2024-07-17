@@ -13,6 +13,50 @@ import java.util.stream.Collectors;
 
 public class PathToGeoJson {
 
+    public void convertPathsToGeoJson(List<List<Long>> paths, GraphController graphController, String outputPath) {
+    JSONObject geoJson = new JSONObject();
+    JSONArray features = new JSONArray();
+    geoJson.put("type", "FeatureCollection");
+
+    int pathId = 0;
+    for (List<Long> path : paths) {
+        // puntitos
+        for (int i = 0; i < path.size(); i++) {
+            Long nodeId = path.get(i);
+            Node node = graphController.getNodes().stream()
+                    .filter(n -> n.getOsmid() == nodeId)
+                    .findFirst()
+                    .orElse(null);
+
+            if (node != null) {
+                JSONObject feature = createFeature(node, pathId++);
+                features.put(feature);
+            }
+        }
+
+        // lineas que unen los puntitos
+        List<Node> nodesInPath = path.stream()
+                .map(nodeId -> graphController.getNodes().stream()
+                        .filter(n -> n.getOsmid() == nodeId)
+                        .findFirst()
+                        .orElse(null))
+                .collect(Collectors.toList());
+        JSONObject lineFeature = createLineFeature(nodesInPath);
+        features.put(lineFeature);
+    }
+
+    geoJson.put("features", features);
+    writeGeoJsonToFile(geoJson, outputPath);
+}
+
+
+
+private String createGeoJsonFromNodeIds(List<Long> nodeIdList, GraphController graphController) {
+    // Implementar la lógica para convertir la lista de ID de nodos en una cadena GeoJSON
+    // Esta es una implementación ficticia y debe ser reemplazada por la lógica real
+    return "{ \"type\": \"FeatureCollection\", \"features\": [] }";
+}
+
 
     public void convertPathToGeoJson(List<Long> path, GraphController graphController, String outputPath) {
         JSONObject geoJson = new JSONObject();

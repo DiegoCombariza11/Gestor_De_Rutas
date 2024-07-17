@@ -8,6 +8,7 @@ public class Edge {
     private long v;
     private double length;
     private double weight;
+    private double maxSpeed;
 
     public Edge(EdgeFeature feature) {
         this.name = feature.getProperties().getName();
@@ -15,6 +16,7 @@ public class Edge {
         this.v = feature.getProperties().getV();
         this.length = feature.getProperties().getLength();
         this.weight = feature.getProperties().getWeight();
+        this.maxSpeed = feature.getProperties().getMaxspeed();
     }
 
     public long getU() {
@@ -32,6 +34,8 @@ public class Edge {
     public double getWeight() {
         return weight;
     }
+
+    public double getMaxSpeed(){return maxSpeed;}
 
     @Override
     public String toString() {
