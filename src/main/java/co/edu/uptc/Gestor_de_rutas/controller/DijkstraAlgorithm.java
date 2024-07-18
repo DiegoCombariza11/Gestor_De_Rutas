@@ -15,19 +15,14 @@ public class DijkstraAlgorithm {
         DijkstraShortestPath<Long, DefaultWeightedEdge> dijkstraAlg = new DijkstraShortestPath<>(graph);
         return dijkstraAlg.getPathWeight(startNodeId, endNodeId);
     }
-    public List<Long> getShortestPath(Long startNodeId, Long endNodeId,Graph graph) {
+    public GraphPath<Long, DefaultWeightedEdge> getShortestPath(Long startNodeId, Long endNodeId,Graph graph) {
         DijkstraShortestPath<Long, DefaultWeightedEdge> dijkstraAlg = new DijkstraShortestPath<>(graph);
-        GraphPath<Long, DefaultWeightedEdge> path = dijkstraAlg.getPath(startNodeId, endNodeId);
-        if (path != null) {
-            return path.getVertexList();
-        } else {
-            return null; // No hay camino entre los nodos dados
-        }
+        return dijkstraAlg.getPath(startNodeId, endNodeId);
     }
     public double longPath(List<Long> path, GraphController controller){
         double distance = 0;
         for (int i = 0; i < path.size() - 1; i++) {
-            distance += distanceBetweenNodes(path.get(i), path.get(i + 1), controller);
+            distance += distanceBetweenNodes(path.get(i),path.get(i + 1), controller);
         }
         return distance;
     }
