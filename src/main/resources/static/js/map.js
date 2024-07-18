@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function loadGeoJSON() {
-    fetch('paths.geojson')
+    fetch('./files/paths.geojson')
         .then(function (response) {
             return response.json();
         })

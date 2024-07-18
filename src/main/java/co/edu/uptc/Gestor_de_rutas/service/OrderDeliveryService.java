@@ -1,5 +1,6 @@
 package co.edu.uptc.Gestor_de_rutas.service;
 
+import co.edu.uptc.Gestor_de_rutas.controller.OrderDeliveryController;
 import co.edu.uptc.Gestor_de_rutas.model.*;
 import co.edu.uptc.Gestor_de_rutas.model.Package;
 import co.edu.uptc.Gestor_de_rutas.repository.OrderDeliveryRepository;
@@ -20,10 +21,11 @@ import java.util.Optional;
 public class OrderDeliveryService {
     private final OrderDeliveryRepository orderDeliveryRepository;
     private final PackageService packageService;
+    private OrderDeliveryController orderDeliveryController;
     @GetMapping("/allOrders")
 public ResponseEntity<List<OrdenDelivery>> getAllOrders() {
     List<OrdenDelivery> orders = orderDeliveryRepository.findAll();
-        System.out.println(orders.get(0).toString());
+       // System.out.println(orders.get(0).toString());
     if (orders == null || orders.isEmpty()) {
         return ResponseEntity.noContent().build();
     }
@@ -52,6 +54,7 @@ public ResponseEntity<List<OrdenDelivery>> getAllOrders() {
             String observation = payload.get("observation");
             Package pack = packageService.getPackageById(Integer.parseInt(id)).orElse(null);
             OrdenDelivery orderDelivery = new OrdenDelivery(id, shopper, deadLine, state, description, observation, pack);
+
             orderDeliveryRepository.save(orderDelivery);
             return ResponseEntity.ok().build();
         }catch (Exception e){

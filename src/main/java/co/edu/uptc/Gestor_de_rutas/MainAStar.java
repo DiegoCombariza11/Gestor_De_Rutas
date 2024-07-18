@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.lang.StringTemplate.STR;
+
 public class MainAStar {
     public static void main(String[] args) {
 
