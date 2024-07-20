@@ -1,51 +1,61 @@
-
 document.addEventListener('DOMContentLoaded', function () {
+    var map = initializeMap();
     loadOrders();
-    // Initialize the map
-    var map = L.map('map').setView([5.7207, -72.9292], 13);
+    loadGeoJSON(map);
+    addFinishRouteListener();
+});
 
+function initializeMap() {
+    var map = L.map('map').setView([5.7207, -72.9292], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap rawwr'
     }).addTo(map);
+    return map;
+}
 
+function onEachFeature(feature, layer) {
+    if (feature.properties && feature.properties.nombre) {
+        layer.bindPopup(feature.properties.nombre);
+    }
+}
 
-    function loadGeoJSON() {
-    fetch('./files/paths.geojson')
+function loadGeoJSON(map) {
+    fetch('/pages/paths.geojson')
         .then(function (response) {
             return response.json();
         })
         .then(function (data) {
-
             data.features.forEach(function(feature, index) {
                 var style = {
-                    color: index === 0 ? 'blue' : 'grey', // Azul para el primer camino, gris para el segundo
+                    color: index === 0 ? 'blue' : 'grey',
                     weight: 5,
                     opacity: 0.65
                 };
-
-                L.geoJSON(feature, {
-                    style: style,
-                    onEachFeature: function (feature, layer) {
-                        if (feature.properties && feature.properties.nombre) {
-                            layer.bindPopup(feature.properties.nombre);
-                        }
-                    },
-                    pointToLayer: function (feature, latlng) {
-                        return L.marker(latlng, {});
+                if (feature.geometry.type === "Point") {
+                    var marker = L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]]);
+                    if (feature.properties && feature.properties.osmid) {
+                        marker.bindPopup("OSM ID: " + feature.properties.osmid);
+                        marker.setIcon(L.divIcon({
+                            className: 'custom-icon',
+                            html: `<div>${feature.properties.osmid}</div>`,
+                            iconSize: [30, 30]
+                        }));
                     }
-                }).addTo(map);
+                    marker.addTo(map);
+                } else {
+                    L.geoJSON(feature, {
+                        style: style,
+                        onEachFeature: onEachFeature
+                    }).addTo(map);
+                }
             });
-
             map.fitBounds(L.geoJSON(data).getBounds());
         })
         .catch(function (error) {
             console.error('Error loading the GeoJSON:', error);
         });
 }
-
-
-    loadGeoJSON();
 
 function loadOrders() {
     fetch('/orderDelivery/allOrders')
@@ -79,12 +89,8 @@ function loadOrders() {
         .catch(error => console.error('Error al cargar las órdenes:', error));
 }
 
-
-    // Add event listener to the "finish route" button
+function addFinishRouteListener() {
     document.getElementById('finish-route').addEventListener('click', function () {
         console.log('Finish route button clicked');
-
-
     });
-});
-
+}

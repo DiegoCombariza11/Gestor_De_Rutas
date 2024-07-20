@@ -18,6 +18,7 @@ public class AStarAlgorithm {
 
     private Graph<String, DefaultWeightedEdge> graph;
     private GraphController graphController;
+    public static final String sourceUPTC = "2951857103";
 
     public AStarAlgorithm(Graph<String, DefaultWeightedEdge> graph, GraphController graphController) {
         this.graph = graph;
@@ -100,7 +101,8 @@ public GraphPath<String, DefaultWeightedEdge> findFastestPath(String sourceVerte
         List<GraphPath<String, DefaultWeightedEdge>> paths = new ArrayList<>();
 
         // Encuentra el primer camino más corto
-        AStarShortestPath<String, DefaultWeightedEdge> aStar = new AStarShortestPath<>(graph, heuristic);
+        AStarShortestPath<String, DefaultWeightedEdge> aStar = new AStarShortestPath<>(graph,
+                heuristic);
         GraphPath<String, DefaultWeightedEdge> firstPath = aStar.getPath(sourceVertex, targetVertex);
         if (firstPath != null) {
             paths.add(firstPath);

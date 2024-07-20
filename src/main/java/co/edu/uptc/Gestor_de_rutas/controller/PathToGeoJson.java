@@ -94,22 +94,25 @@ private String createGeoJsonFromNodeIds(List<Long> nodeIdList, GraphController g
     }
 
     private JSONObject createFeature(Node node, int id) {
-        JSONObject feature = new JSONObject();
-        feature.put("type", "Feature");
-        feature.put("id", id);
+    JSONObject feature = new JSONObject();
+    feature.put("type", "Feature");
+    feature.put("id", id);
 
-        JSONObject geometry = new JSONObject();
-        geometry.put("type", "Point");
-        JSONArray coordinates = new JSONArray();
-        coordinates.put(node.getX());
-        coordinates.put(node.getY());
-        geometry.put("coordinates", coordinates);
+    JSONObject geometry = new JSONObject();
+    geometry.put("type", "Point");
+    JSONArray coordinates = new JSONArray();
+    coordinates.put(node.getX());
+    coordinates.put(node.getY());
+    geometry.put("coordinates", coordinates);
 
-        feature.put("geometry", geometry);
-        feature.put("properties", new JSONObject());
+    JSONObject properties = new JSONObject();
+    properties.put("osmid", node.getOsmid());
 
-        return feature;
-    }
+    feature.put("geometry", geometry);
+    feature.put("properties", properties);
+
+    return feature;
+}
 
     private JSONObject createLineFeature(List<Node> nodes) {
         JSONObject lineFeature = new JSONObject();

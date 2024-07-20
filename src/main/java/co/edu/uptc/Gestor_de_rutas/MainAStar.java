@@ -43,8 +43,8 @@ public class MainAStar {
 
 
 
-        Long startNodeId = 1016196839L;
-        Long endNodeId = 7787924883L;
+        Long startNodeId = 1016192858L;
+        Long endNodeId = 1016193261L;
         String sourceVertexId = startNodeId.toString();
         String targetVertexId = endNodeId.toString();
 
@@ -79,6 +79,8 @@ public class MainAStar {
 //            System.out.println("No se encontró un camino.");
 //        }
 
+
+
         if (paths != null) {
             System.out.println(STR."Caminos alternativos encontrados: \{paths}");
             List<List<Long>> allPaths = new ArrayList<>();
@@ -86,7 +88,7 @@ public class MainAStar {
                 List<Long> nodeIdList = path.getVertexList().stream()
                         .map(Long::parseLong)
                         .collect(Collectors.toList());
-                System.out.println(path);
+                //System.out.println(path);
                 allPaths.add(nodeIdList);
              }
             pathToGeoJson.convertPathsToGeoJson(allPaths, graphController, "paths.geojson");
