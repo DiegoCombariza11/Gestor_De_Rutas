@@ -1,4 +1,4 @@
-package co.edu.uptc.Gestor_de_rutas.controller;
+package co.edu.uptc.Gestor_de_rutas.logic;
 
 import co.edu.uptc.Gestor_de_rutas.model.Edge;
 import org.jgrapht.Graph;
@@ -6,17 +6,21 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.alg.shortestpath.YenKShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
+import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+@Component
 public class DijkstraAlgorithm {
     public double dijkstra(Long startNodeId, Long endNodeId, Graph graph) {
         DijkstraShortestPath<Long, DefaultWeightedEdge> dijkstraAlg = new DijkstraShortestPath<>(graph);
         return dijkstraAlg.getPathWeight(startNodeId, endNodeId);
     }
-    public GraphPath<Long, DefaultWeightedEdge> getShortestPath(Long startNodeId, Long endNodeId,Graph graph) {
+
+    public DijkstraAlgorithm() {
+    }
+
+    public GraphPath<Long, DefaultWeightedEdge> getShortestPath(Long startNodeId, Long endNodeId, Graph graph) {
         DijkstraShortestPath<Long, DefaultWeightedEdge> dijkstraAlg = new DijkstraShortestPath<>(graph);
         return dijkstraAlg.getPath(startNodeId, endNodeId);
     }

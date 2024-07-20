@@ -2,7 +2,8 @@ package co.edu.uptc.Gestor_de_rutas.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+//El objetivo de este controlador es redirigir a las distintas páginas de la aplicación, namás
 
 @Controller
 public class MainAppController {
@@ -11,4 +12,7 @@ public class MainAppController {
     public String mainPage(){
         return "redirect:/pages/map.html";
     }
+
+
+
 }

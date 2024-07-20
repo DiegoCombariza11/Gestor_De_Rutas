@@ -1,4 +1,4 @@
-package co.edu.uptc.Gestor_de_rutas.controller;
+package co.edu.uptc.Gestor_de_rutas.logic;
 
 import co.edu.uptc.Gestor_de_rutas.geojsondeserilizer.edges.EdgeGeoJsonReader;
 import co.edu.uptc.Gestor_de_rutas.geojsondeserilizer.nodes.GeoJsonReader;
@@ -11,12 +11,13 @@ import co.edu.uptc.Gestor_de_rutas.model.Node;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultEdge;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Component
 public class GraphController {
 
     private GeoJsonReader geoJsonReader;

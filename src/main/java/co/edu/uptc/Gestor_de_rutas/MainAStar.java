@@ -1,8 +1,8 @@
 package co.edu.uptc.Gestor_de_rutas;
 
-import co.edu.uptc.Gestor_de_rutas.controller.AStarAlgorithm;
-import co.edu.uptc.Gestor_de_rutas.controller.GraphController;
-import co.edu.uptc.Gestor_de_rutas.controller.PathToGeoJson;
+import co.edu.uptc.Gestor_de_rutas.logic.AStarAlgorithm;
+import co.edu.uptc.Gestor_de_rutas.logic.GraphController;
+import co.edu.uptc.Gestor_de_rutas.persistence.PathToGeoJson;
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
@@ -18,7 +18,7 @@ public class MainAStar {
     public static void main(String[] args) {
 
         GraphController graphController = new GraphController();
-        //PathToGeoJson pathToGeoJson = new PathToGeoJson();
+        PathToGeoJson pathToGeoJson = new PathToGeoJson();
 
         graphController.createGraph();
 

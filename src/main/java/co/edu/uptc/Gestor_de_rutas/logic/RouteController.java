@@ -1,4 +1,4 @@
-package co.edu.uptc.Gestor_de_rutas.controller;
+package co.edu.uptc.Gestor_de_rutas.logic;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;

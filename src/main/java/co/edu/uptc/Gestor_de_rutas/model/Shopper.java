@@ -1,5 +1,10 @@
 package co.edu.uptc.Gestor_de_rutas.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class Shopper {
     private String direction;
     private Person person;
@@ -10,22 +15,6 @@ public class Shopper {
     }
 
     public Shopper() {
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-
-    public String getDirection() {
-        return direction;
-    }
-
-    public void setDirection(String direction) {
-        this.direction = direction;
     }
 
 }

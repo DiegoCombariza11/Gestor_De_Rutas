@@ -53,15 +53,16 @@ function loadGeoJSON(map) {
             map.fitBounds(L.geoJSON(data).getBounds());
         })
         .catch(function (error) {
-            console.error('Error loading the GeoJSON:', error);
+            console.error('Error cargando el geojson:', error);
         });
 }
+
 
 function loadOrders() {
     fetch('/orderDelivery/allOrders')
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('la respuesta no estuvo ok');
             }
             return response.json();
         })
@@ -83,7 +84,7 @@ function loadOrders() {
                     lista.appendChild(elemento);
                 });
             } else {
-                console.error('Expected an array of orders, but got:', ordenes);
+                console.error('Se esperaban varias órdenes pero se obtuvo:', ordenes);
             }
         })
         .catch(error => console.error('Error al cargar las órdenes:', error));
@@ -92,5 +93,23 @@ function loadOrders() {
 function addFinishRouteListener() {
     document.getElementById('finish-route').addEventListener('click', function () {
         console.log('Finish route button clicked');
+        fetch('/orderDelivery/finishRoute', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('la respuesta no estuvo ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Se acabó la ruta:', data);
+                window.location.href = '/pages/OrderDelivery.html';
+                loadOrders();
+            })
+            .catch(error => console.error('No se pudo finalizar la ruta:', error));
     });
 }

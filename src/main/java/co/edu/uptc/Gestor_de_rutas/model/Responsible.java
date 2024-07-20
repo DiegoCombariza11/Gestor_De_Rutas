@@ -1,20 +1,17 @@
 package co.edu.uptc.Gestor_de_rutas.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 
+@Setter
+@Getter
 public class Responsible {
-    private ArrayList<OrdenDelivery> ordenDeliveries;
+    private ArrayList<OrderDelivery> orderDeliveries;
 
-    public Responsible(ArrayList<OrdenDelivery> ordenDeliveries) {
-        this.ordenDeliveries = ordenDeliveries;
-    }
-
-    public ArrayList<OrdenDelivery> getOrdenDeliveries() {
-        return ordenDeliveries;
-    }
-
-    public void setOrdenDeliveries(ArrayList<OrdenDelivery> ordenDeliveries) {
-        this.ordenDeliveries = ordenDeliveries;
+    public Responsible(ArrayList<OrderDelivery> ordenDeliveries) {
+        this.orderDeliveries = ordenDeliveries;
     }
 
 }

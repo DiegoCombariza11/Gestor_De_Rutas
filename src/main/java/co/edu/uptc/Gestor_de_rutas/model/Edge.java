@@ -1,14 +1,16 @@
 package co.edu.uptc.Gestor_de_rutas.model;
 
 import co.edu.uptc.Gestor_de_rutas.model.edgesfeatures.EdgeFeature;
+import lombok.Getter;
 
+@Getter
 public class Edge {
-    private String name;
-    private long u;
-    private long v;
-    private double length;
-    private double weight;
-    private double maxSpeed;
+    private final String name;
+    private final long u;
+    private final long v;
+    private final double length;
+    private final double weight;
+    private final double maxSpeed;
 
     public Edge(EdgeFeature feature) {
         this.name = feature.getProperties().getName();
@@ -18,24 +20,6 @@ public class Edge {
         this.weight = feature.getProperties().getWeight();
         this.maxSpeed = feature.getProperties().getMaxspeed();
     }
-
-    public long getU() {
-        return u;
-    }
-
-    public long getV() {
-        return v;
-    }
-
-    public double getLength() {
-        return length;
-    }
-
-    public double getWeight() {
-        return weight;
-    }
-
-    public double getMaxSpeed(){return maxSpeed;}
 
     @Override
     public String toString() {

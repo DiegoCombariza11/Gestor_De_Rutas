@@ -1,4 +1,4 @@
-package co.edu.uptc.Gestor_de_rutas.controller;
+package co.edu.uptc.Gestor_de_rutas.logic;
 
 import co.edu.uptc.Gestor_de_rutas.model.Edge;
 import co.edu.uptc.Gestor_de_rutas.model.Node;
@@ -6,14 +6,13 @@ import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.interfaces.AStarAdmissibleHeuristic;
 import org.jgrapht.alg.shortestpath.AStarShortestPath;
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 
-
+@Component
 public class AStarAlgorithm {
 
     private Graph<String, DefaultWeightedEdge> graph;
@@ -25,6 +24,8 @@ public class AStarAlgorithm {
         this.graphController = graphController;
     }
 
+    public AStarAlgorithm() {
+    }
 
     private AStarAdmissibleHeuristic<String> heuristic = new AStarAdmissibleHeuristic<>() {
         @Override
