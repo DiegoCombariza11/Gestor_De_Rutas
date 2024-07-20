@@ -93,22 +93,19 @@ function loadOrders() {
 function addFinishRouteListener() {
     document.getElementById('finish-route').addEventListener('click', function () {
         console.log('Finish route button clicked');
-        fetch('/orderDelivery/finishRoute', {
+        fetch('/api/endRoute', {
             method: 'POST',
             headers: {
+                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('la respuesta no estuvo ok');
+                if (response.ok) {
+                    window.location.href = '/pages/OrderDelivery.html';
+                }else{
+                    alert('No se pudo finalizar la ruta');
                 }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Se acabó la ruta:', data);
-                window.location.href = '/pages/OrderDelivery.html';
-                loadOrders();
             })
             .catch(error => console.error('No se pudo finalizar la ruta:', error));
     });
