@@ -31,6 +31,7 @@ public class GraphController {
         this.edgeGeoJsonReader = new EdgeGeoJsonReader();
         this.nodeList = new ArrayList<>();
         this.edgeList = new ArrayList<>();
+        createGraph();
     }
 
 

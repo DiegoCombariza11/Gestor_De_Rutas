@@ -27,9 +27,8 @@ $(document).ready(function() {
                 },
                 credentials: 'include'
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message === 'Ruta okay') {
+                .then(response =>{
+                    if (response.ok) {
                         window.location.href = '/pages/map.html';
                     }else{
                         alert('No se ha seleccionado ninguna orden');
@@ -54,7 +53,7 @@ async function loadOrders() {
     let bodyTable = "";
     for (let order of orders) {
         if(order.state==='PENDING') {
-            bodyTable += '<tr><td><input type="checkbox" class="shipment-checkbox"></td><td>' + order.id + '</td><td>' + order.shopper.direction + '</td><td>' + order.description + '</td></tr>';
+            bodyTable += '<tr><td><input type="checkbox" class="shipment-checkbox"></td><td>' + order.id + '</td><td>' + order.destination + '</td><td>' + order.description + '</td></tr>';
         }
     }
     $('#shipment-table').html(bodyTable);
