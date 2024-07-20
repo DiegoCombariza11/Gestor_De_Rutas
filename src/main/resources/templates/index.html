@@ -59,6 +59,27 @@
         },
         onEachFeature: onEachFeature
     }).addTo(map);
+    new L.GeoJSON.AJAX("path1.geojson", {
+        style: styleFeature,
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, styleFeature(feature));
+        },
+        onEachFeature: onEachFeature
+    }).addTo(map);
+    new L.GeoJSON.AJAX("path2.geojson", {
+        style: styleFeature,
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, styleFeature(feature));
+        },
+        onEachFeature: onEachFeature
+    }).addTo(map);
+    new L.GeoJSON.AJAX("path3.geojson", {
+        style: styleFeature,
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, styleFeature(feature));
+        },
+        onEachFeature: onEachFeature
+    }).addTo(map);
 </script>
 </body>
 </html>
