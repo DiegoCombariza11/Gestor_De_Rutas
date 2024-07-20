@@ -1,102 +1,115 @@
-[
-  {
-    "id": "1",
-    "buyer": {
-      "firstName": "John",
-      "lastName": "Doe",
-      "email": "john.doe@example.com",
-      "contact": "+57 300-123-4567"
-    },
-    "deadLine": "2024-12-31",
-    "state": "PENDIENTE",
-    "description": "Pedido de electrónicos",
-    "observation": "Manejar con cuidado",
-    "pack": {
-      "id": "2",
-      "description": "Portátil",
-      "price": 1200.50,
-      "weight": "2kg"
-    },
-    "destination": "1016184511"
+[{
+  "_id": "1",
+  "buyer": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "contact": "+57 300-123-4567"
   },
-  {
-    "id": "2",
-    "buyer": {
-      "firstName": "Jane",
-      "lastName": "Smith",
-      "email": "jane.smith@example.com",
-      "contact": "+57 310-987-6543"
-    },
-    "deadLine": "2024-12-15",
-    "state": "ENVIADO",
-    "description": "Pedido de electrodomésticos",
-    "observation": "Frágil",
-    "pack": {
-      "id": "1",
-      "description": "Impresora",
-      "price": 200.00,
-      "weight": "5kg"
-    },
-    "destination": "1016185508"
+  "deadLine": {
+    "$date": "2024-12-31T05:00:00.000Z"
   },
-  {
-    "id": "3",
-    "buyer": {
-      "firstName": "Alice",
-      "lastName": "Johnson",
-      "email": "alice.johnson@example.com",
-      "contact": "+57 320-555-5555"
-    },
-    "deadLine": "2024-11-30",
-    "state": "ENTREGADO",
-    "description": "Pedido de electrodomésticos de cocina",
-    "observation": "Ninguna",
-    "pack": {
-      "id": "5",
-      "description": "Microondas",
-      "price": 150.00,
-      "weight": "7kg"
-    },
-    "destination": "1016185738"
+  "state": "PENDING",
+  "description": "Pedido de electrónicos",
+  "observation": "Manejar con cuidado",
+  "pack": {
+    "_id": "1",
+    "description": "Portátil",
+    "price": 1200.5,
+    "weight": "2kg"
   },
-  {
-    "id": "4",
-    "buyer": {
-      "firstName": "Bob",
-      "lastName": "Brown",
-      "email": "bob.brown@example.com",
-      "contact": "+57 311-321-9876"
-    },
-    "deadLine": "2024-12-05",
-    "state": "CANCELADO",
-    "description": "Pedido de electrodomésticos de cocina",
-    "observation": "Devolver al remitente",
-    "pack": {
-      "id": "3",
-      "description": "Licuadora",
-      "price": 50.00,
-      "weight": "1kg"
-    },
-    "destination": "1016187413"
+  "destination": "1016184511",
+  "_class": "co.edu.uptc.Gestor_de_rutas.model.OrderDelivery"
+},
+{
+  "_id": "2",
+  "buyer": {
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "email": "jane.smith@example.com",
+    "contact": "+57 310-987-6543"
   },
-  {
-    "id": "5",
-    "buyer": {
-      "firstName": "Charlie",
-      "lastName": "Davis",
-      "email": "charlie.davis@example.com",
-      "contact": "+57 312-654-0987"
-    },
-    "deadLine": "2024-12-20",
-    "state": "PENDIENTE",
-    "description": "Pedido de libros",
-    "observation": "Mantener seco",
-    "pack": {
-      "id": "8",
-      "description": "Libros",
-      "price": 75.00,
-      "weight": "3kg"
-    },
-    "destination": "1016188813"
-  }
-]
+  "deadLine": {
+    "$date": "2024-12-15T05:00:00.000Z"
+  },
+  "state": "SHIPPED",
+  "description": "Pedido de electrodomésticos",
+  "observation": "Frágil",
+  "pack": {
+    "_id": "2",
+    "description": "Impresora",
+    "price": 200,
+    "weight": "5kg"
+  },
+  "destination": "1016185508",
+  "_class": "co.edu.uptc.Gestor_de_rutas.model.OrderDelivery"
+},
+{
+  "_id": "3",
+  "buyer": {
+    "firstName": "Alice",
+    "lastName": "Johnson",
+    "email": "alice.johnson@example.com",
+    "contact": "+57 320-555-5555"
+  },
+  "deadLine": {
+    "$date": "2024-11-30T05:00:00.000Z"
+  },
+  "state": "DELIVERED",
+  "description": "Pedido de electrodomésticos de cocina",
+  "observation": "Ninguna",
+  "pack": {
+    "_id": "3",
+    "description": "Microondas",
+    "price": 150,
+    "weight": "7kg"
+  },
+  "destination": "1016185738",
+  "_class": "co.edu.uptc.Gestor_de_rutas.model.OrderDelivery"
+},
+{
+  "_id": "4",
+  "buyer": {
+    "firstName": "Bob",
+    "lastName": "Brown",
+    "email": "bob.brown@example.com",
+    "contact": "+57 311-321-9876"
+  },
+  "deadLine": {
+    "$date": "2024-12-05T05:00:00.000Z"
+  },
+  "state": "CANCELED",
+  "description": "Pedido de electrodomésticos de cocina",
+  "observation": "Devolver al remitente",
+  "pack": {
+    "_id": "4",
+    "description": "Licuadora",
+    "price": 50,
+    "weight": "1kg"
+  },
+  "destination": "1016187413",
+  "_class": "co.edu.uptc.Gestor_de_rutas.model.OrderDelivery"
+},
+{
+  "_id": "5",
+  "buyer": {
+    "firstName": "Charlie",
+    "lastName": "Davis",
+    "email": "charlie.davis@example.com",
+    "contact": "+57 312-654-0987"
+  },
+  "deadLine": {
+    "$date": "2024-12-20T05:00:00.000Z"
+  },
+  "state": "PENDING",
+  "description": "Pedido de libros",
+  "observation": "Mantener seco",
+  "pack": {
+    "_id": "5",
+    "description": "Libros",
+    "price": 75,
+    "weight": "3kg"
+  },
+  "destination": "1016188813",
+  "_class": "co.edu.uptc.Gestor_de_rutas.model.OrderDelivery"
+}]
