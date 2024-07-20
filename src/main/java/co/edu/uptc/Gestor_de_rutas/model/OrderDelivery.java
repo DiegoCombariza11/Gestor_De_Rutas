@@ -10,40 +10,30 @@ import java.time.LocalDate;
 
 @Document(value = "OrderDelivery")
 @Data
+@Getter
+@Setter
 public class OrderDelivery {
-    @Setter
-    @Getter
+
     @Id
     private String id;
-    @Setter
-    @Getter
-    private Shopper shopper;
-    @Setter
-    @Getter
+    private Buyer buyer;
     private LocalDate deadLine;
-    @Setter
-    @Getter
     private State state;
-    @Getter
-    @Setter
     private String description;
-    @Setter
-    @Getter
     private String observation;
-    @Setter
-    @Getter
     private Package pack;
-    private String Destination;
+    private String destination;
 
-    public OrderDelivery(String id, Shopper shopper, LocalDate deadLine, State state,
-                         String description, String observation, Package pack) {
+    public OrderDelivery(String id, Buyer buyer, LocalDate deadLine, State state,
+                         String description, String observation, Package pack, String destination) {
         this.id = id;
-        this.shopper = shopper;
+        this.buyer = buyer;
         this.deadLine = deadLine;
         this.state = state;
         this.description = description;
         this.observation = observation;
         this.pack = pack;
+        this.destination = destination;
     }
 
 

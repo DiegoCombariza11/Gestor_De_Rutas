@@ -51,16 +51,15 @@ public class OrderDeliveryRestController {
             String personName = payload.get("personName");
             String personLastName = payload.get("personLastName");
             String personEmail = payload.get("personEmail");
-            int personId = Integer.parseInt(payload.get("personId"));
-            int personPhone = Integer.parseInt(payload.get("personPhone"));
-            Person person = new Person(personName, personLastName, personEmail, personId, personPhone);
-            Shopper shopper = new Shopper(direction, person);
+            String personPhone = payload.get("personPhone");
+            String destination = payload.get("destination");
+            Buyer buyer = new Buyer(personName, personLastName, personEmail,  personPhone);
             LocalDate deadLine = LocalDate.parse(payload.get("deadLine"));
             State state = parse(payload.get("state"));
             String description = payload.get("description");
             String observation = payload.get("observation");
             Package pack = packageService.getPackageById(Integer.parseInt(id)).orElse(null);
-            OrderDelivery orderDelivery = new OrderDelivery(id, shopper, deadLine, state, description, observation, pack);
+            OrderDelivery orderDelivery = new OrderDelivery(id, buyer, deadLine, state, description, observation, pack, destination);
             orderDeliveryRepository.save(orderDelivery);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -81,16 +80,15 @@ public class OrderDeliveryRestController {
         String personName = payload.get("personName");
         String personLastName = payload.get("personLastName");
         String personEmail = payload.get("personEmail");
-        int personId = Integer.parseInt(payload.get("personId"));
-        int personPhone = Integer.parseInt(payload.get("personPhone"));
-        Person person = new Person(personName, personLastName, personEmail, personId, personPhone);
-        Shopper shopper = new Shopper(direction, person);
+        String personPhone = payload.get("personPhone");
+        String destination = payload.get("destination");
+        Buyer buyer = new Buyer(personName, personLastName, personEmail,  personPhone);
         LocalDate deadLine = LocalDate.parse(payload.get("deadLine"));
         State state = State.valueOf(payload.get("state"));
         String description = payload.get("description");
         String observation = payload.get("observation");
         Package pack = packageService.getPackageById(Integer.parseInt(id)).orElse(null);
-        OrderDelivery orderDelivery = new OrderDelivery(id, shopper, deadLine, state, description, observation, pack);
+        OrderDelivery orderDelivery = new OrderDelivery(id, buyer, deadLine, state, description, observation, pack, destination);
         orderDeliveryRepository.save(orderDelivery);
     }
 
