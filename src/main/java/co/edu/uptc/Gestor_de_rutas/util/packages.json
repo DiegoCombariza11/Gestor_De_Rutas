@@ -1,32 +1,35 @@
-[
-  {
-    "id": "1",
-    "description": "Laptop",
-    "price": 1200.50,
-    "weight": "2kg"
-  },
-  {
-    "id": "2",
-    "description": "Printer",
-    "price": 200.00,
-    "weight": "5kg"
-  },
-  {
-    "id": "3",
-    "description": "Microwave",
-    "price": 150.00,
-    "weight": "7kg"
-  },
-  {
-    "id": "4",
-    "description": "Blender",
-    "price": 50.00,
-    "weight": "1kg"
-  },
-  {
-    "id": "5",
-    "description": "Books",
-    "price": 75.00,
-    "weight": "3kg"
-  }
-]
+[{
+  "_id": "1",
+  "description": "Portátil",
+  "price": 1200.5,
+  "weight": "2kg",
+  "_class": "co.edu.uptc.Gestor_de_rutas.model.Package"
+},
+{
+  "_id": "2",
+  "description": "Impresora",
+  "price": 200,
+  "weight": "5kg",
+  "_class": "co.edu.uptc.Gestor_de_rutas.model.Package"
+},
+{
+  "_id": "3",
+  "description": "Microondas",
+  "price": 150,
+  "weight": "7kg",
+  "_class": "co.edu.uptc.Gestor_de_rutas.model.Package"
+},
+{
+  "_id": "4",
+  "description": "Licuadora",
+  "price": 50,
+  "weight": "1kg",
+  "_class": "co.edu.uptc.Gestor_de_rutas.model.Package"
+},
+{
+  "_id": "5",
+  "description": "Libros",
+  "price": 75,
+  "weight": "3kg",
+  "_class": "co.edu.uptc.Gestor_de_rutas.model.Package"
+}]
