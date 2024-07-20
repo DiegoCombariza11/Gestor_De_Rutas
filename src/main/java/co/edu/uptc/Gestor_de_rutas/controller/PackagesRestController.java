@@ -32,21 +32,21 @@ public class PackagesRestController {
     pero no se usó, se usó el endpoint "/startRoute" o algo así
     pero por si el otro no sirve o algo xd
      */
-@PostMapping("/setEndNodeId")
-public ResponseEntity<String> setEndNodeId(@CookieValue("orderId") String orderId) {
-    try {
-        Long endNodeId = Long.parseLong(orderId);
-        OrderDelivery order = orderDeliveryService.getOrderDeliveryById(orderId).orElse(null);
-        assert order != null;
-        pathService.setEndNodeID(order.getDestination());
-        return ResponseEntity.ok("End node ID set successfully");
-    } catch (NumberFormatException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid order ID");
+    @PostMapping("/setEndNodeId")
+    public ResponseEntity<String> setEndNodeId(@CookieValue("orderId") String orderId) {
+        try {
+            Long endNodeId = Long.parseLong(orderId);
+            OrderDelivery order = orderDeliveryService.getOrderDeliveryById(orderId).orElse(null);
+            assert order != null;
+            pathService.setEndNodeID(order.getDestination());
+            return ResponseEntity.ok("End node ID set successfully");
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid order ID");
+        }
     }
-}
 
 
-        @PostMapping("/create")
+    @PostMapping("/create")
     public ResponseEntity<String> createPackage(@RequestBody Map<String, String> payload) {
         try {
             String id = (payload.get("id"));

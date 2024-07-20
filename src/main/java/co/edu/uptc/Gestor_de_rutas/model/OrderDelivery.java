@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+
 @Document(value = "OrderDelivery")
 @Data
 public class OrderDelivery {
@@ -35,7 +36,7 @@ public class OrderDelivery {
     private String Destination;
 
     public OrderDelivery(String id, Shopper shopper, LocalDate deadLine, State state,
-                         String description, String observation,Package pack) {
+                         String description, String observation, Package pack) {
         this.id = id;
         this.shopper = shopper;
         this.deadLine = deadLine;

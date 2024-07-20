@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Document(collection = "Package")
 public class Package {
+
     @Id
     private String id;
     private String description;

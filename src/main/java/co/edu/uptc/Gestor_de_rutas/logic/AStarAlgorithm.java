@@ -45,41 +45,38 @@ public class AStarAlgorithm {
         }
     };
 
-   public double getMaxSpeedForEdge(String sourceVertex, String targetVertex) {
-    long sourceVertexLong = Long.parseLong(sourceVertex);
-    long targetVertexLong = Long.parseLong(targetVertex);
-    List<Edge> edgeList = graphController.getEdges();
-    for (Edge edge : edgeList) {
-        if ((edge.getU() == sourceVertexLong && edge.getV() == targetVertexLong)
-                || (edge.getV() == sourceVertexLong && edge.getU() == targetVertexLong)) {
-            return edge.getMaxSpeed();
-        }
-    }
-    return Double.MAX_VALUE;
-}
-
-    private AStarAdmissibleHeuristic<String> timeBasedHeuristic = new AStarAdmissibleHeuristic<>() {
-    @Override
-    public double getCostEstimate(String sourceVertex, String targetVertex) {
-        Node sourceNode = graphController.getNodeById(Long.parseLong(sourceVertex));
-        Node targetNode = graphController.getNodeById(Long.parseLong(targetVertex));
-        if (sourceNode != null && targetNode != null) {
-            double distance = haversine(sourceNode.getY(), sourceNode.getX(), targetNode.getY(), targetNode.getX());
-            double maxSpeed = getMaxSpeedForEdge(sourceVertex, targetVertex);
-            double estimatedTravelTime = distance / maxSpeed;
-            return estimatedTravelTime;
+    public double getMaxSpeedForEdge(String sourceVertex, String targetVertex) {
+        long sourceVertexLong = Long.parseLong(sourceVertex);
+        long targetVertexLong = Long.parseLong(targetVertex);
+        List<Edge> edgeList = graphController.getEdges();
+        for (Edge edge : edgeList) {
+            if ((edge.getU() == sourceVertexLong && edge.getV() == targetVertexLong)
+                    || (edge.getV() == sourceVertexLong && edge.getU() == targetVertexLong)) {
+                return edge.getMaxSpeed();
+            }
         }
         return Double.MAX_VALUE;
     }
-};
 
-public GraphPath<String, DefaultWeightedEdge> findFastestPath(String sourceVertex, String targetVertex) {
-    AStarShortestPath<String, DefaultWeightedEdge> aStarShortestPath = new AStarShortestPath<>(graph, timeBasedHeuristic);
-    return aStarShortestPath.getPath(sourceVertex, targetVertex);
-}
+    private AStarAdmissibleHeuristic<String> timeBasedHeuristic = new AStarAdmissibleHeuristic<>() {
+        @Override
+        public double getCostEstimate(String sourceVertex, String targetVertex) {
+            Node sourceNode = graphController.getNodeById(Long.parseLong(sourceVertex));
+            Node targetNode = graphController.getNodeById(Long.parseLong(targetVertex));
+            if (sourceNode != null && targetNode != null) {
+                double distance = haversine(sourceNode.getY(), sourceNode.getX(), targetNode.getY(), targetNode.getX());
+                double maxSpeed = getMaxSpeedForEdge(sourceVertex, targetVertex);
+                double estimatedTravelTime = distance / maxSpeed;
+                return estimatedTravelTime;
+            }
+            return Double.MAX_VALUE;
+        }
+    };
 
-
-
+    public GraphPath<String, DefaultWeightedEdge> findFastestPath(String sourceVertex, String targetVertex) {
+        AStarShortestPath<String, DefaultWeightedEdge> aStarShortestPath = new AStarShortestPath<>(graph, timeBasedHeuristic);
+        return aStarShortestPath.getPath(sourceVertex, targetVertex);
+    }
 
 
     private double haversine(double lat1, double lon1, double lat2, double lon2) {

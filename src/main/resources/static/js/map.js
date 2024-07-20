@@ -26,7 +26,7 @@ function loadGeoJSON(map) {
             return response.json();
         })
         .then(function (data) {
-            data.features.forEach(function(feature, index) {
+            data.features.forEach(function (feature, index) {
                 var style = {
                     color: index === 0 ? 'blue' : 'grey',
                     weight: 5,

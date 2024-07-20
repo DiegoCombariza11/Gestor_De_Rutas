@@ -91,6 +91,7 @@ public class GraphController {
     public List<Node> getNodes() {
         return nodeList;
     }
+
     public List<Edge> getEdges() {
         return edgeList;
     }
@@ -101,11 +102,11 @@ public class GraphController {
     }
 
     public Node getNodeById(Long id) {
-    return nodeList.stream()
-            .filter(node -> node.getOsmid()==(id))
-            .findFirst()
-            .orElse(null);
-}
+        return nodeList.stream()
+                .filter(node -> node.getOsmid() == (id))
+                .findFirst()
+                .orElse(null);
+    }
 
     public void addNode(Node node) {
         nodeList.add(node);

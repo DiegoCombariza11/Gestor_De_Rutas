@@ -6,6 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Shopper {
+
     private String direction;
     private Person person;
 

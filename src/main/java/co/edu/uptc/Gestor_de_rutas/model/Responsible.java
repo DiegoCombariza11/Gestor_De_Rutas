@@ -8,6 +8,7 @@ import java.util.ArrayList;
 @Setter
 @Getter
 public class Responsible {
+
     private ArrayList<OrderDelivery> orderDeliveries;
 
     public Responsible(ArrayList<OrderDelivery> ordenDeliveries) {

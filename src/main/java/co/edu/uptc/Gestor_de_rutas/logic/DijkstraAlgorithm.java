@@ -24,22 +24,25 @@ public class DijkstraAlgorithm {
         DijkstraShortestPath<Long, DefaultWeightedEdge> dijkstraAlg = new DijkstraShortestPath<>(graph);
         return dijkstraAlg.getPath(startNodeId, endNodeId);
     }
-    public double longPath(List<Long> path, GraphController controller){
+
+    public double longPath(List<Long> path, GraphController controller) {
         double distance = 0;
         for (int i = 0; i < path.size() - 1; i++) {
-            distance += distanceBetweenNodes(path.get(i),path.get(i + 1), controller);
+            distance += distanceBetweenNodes(path.get(i), path.get(i + 1), controller);
         }
         return distance;
     }
+
     public double distanceBetweenNodes(Long startNodeId, Long endNodeId, GraphController controller) {
         List<Edge> edgeList = controller.getEdges();
         for (Edge edge : edgeList) {
-            if(edge.getU()==startNodeId && edge.getV()==endNodeId){
+            if (edge.getU() == startNodeId && edge.getV() == endNodeId) {
                 return edge.getLength();
             }
         }
         return 0;
     }
+
     public List<GraphPath<Long, DefaultWeightedEdge>> getKShortestPaths(Long startNodeId, Long endNodeId, Graph graph, int k) {
         YenKShortestPath<Long, DefaultWeightedEdge> yenAlg = new YenKShortestPath<>(graph);
         return yenAlg.getPaths(startNodeId, endNodeId, k);

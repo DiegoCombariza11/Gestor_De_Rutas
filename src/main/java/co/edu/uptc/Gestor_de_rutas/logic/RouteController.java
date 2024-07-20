@@ -52,8 +52,9 @@ public class RouteController {
 
         return route;
     }
-    public List<Long> getPath(List<Long> endPoints, Graph graph,GraphController controller){
-        List<Long> route= setRoute(endPoints, graph, controller);
+
+    public List<Long> getPath(List<Long> endPoints, Graph graph, GraphController controller) {
+        List<Long> route = setRoute(endPoints, graph, controller);
         List<Long> path = new ArrayList<>();
         for (int i = 0; i < route.size() - 1; i++) {
             List<Long> aux = dijkstraAlgorithm.getShortestPath(route.get(i), route.get(i + 1), graph).getVertexList();
@@ -61,6 +62,7 @@ public class RouteController {
         }
         return path;
     }
+
     public Long getOsmId(String direction) throws UnsupportedEncodingException {
         String encodedAddress = URLEncoder.encode(direction, StandardCharsets.UTF_8.toString());
         String nominatimURL = "https://nominatim.openstreetmap.org/search?q=" + encodedAddress + "&format=geojson&addressdetails=1&limit=10";

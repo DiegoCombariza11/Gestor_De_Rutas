@@ -15,6 +15,7 @@ public class Person {
     public Person() {
 
     }
+
     public Person(String name, String lastName, String email, int id, int contact) {
         this.name = name;
         this.lastName = lastName;

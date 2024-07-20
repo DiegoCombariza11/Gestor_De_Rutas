@@ -21,6 +21,7 @@ public class Edge {
         this.maxSpeed = feature.getProperties().getMaxspeed();
     }
 
+
     @Override
     public String toString() {
         return "Edge{" +

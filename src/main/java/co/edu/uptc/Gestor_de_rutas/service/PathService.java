@@ -23,7 +23,6 @@ public class PathService {
     @Setter
     private String endNodeID;
 
-
     public void shortestPaths() {
         var shortestPaths = dijkstraAlgorithm.getKShortestPaths(Long.valueOf(startNodeId), 0L, graphController.getGraph(), 1);
     }

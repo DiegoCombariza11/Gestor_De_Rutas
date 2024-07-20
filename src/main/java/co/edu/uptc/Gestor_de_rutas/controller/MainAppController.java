@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainAppController {
 
+
     @GetMapping("/")
-    public String mainPage(){
+    public String mainPage() {
         return "redirect:/pages/map.html";
     }
-
 
 
 }

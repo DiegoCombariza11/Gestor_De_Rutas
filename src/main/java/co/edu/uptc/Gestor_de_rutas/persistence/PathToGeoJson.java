@@ -48,9 +48,7 @@ public class PathToGeoJson {
         geoJson.put("features", features);
         writeGeoJsonToFile(geoJson, outputPath);
 
-}
-
-
+    }
 
 
     public void convertPathToGeoJson(List<Long> path, GraphController graphController, String outputPath) {
@@ -73,7 +71,7 @@ public class PathToGeoJson {
             }
         }
 
-      // lineas que unen los puntitos
+        // lineas que unen los puntitos
         List<Node> nodesInPath = path.stream()
                 .map(nodeId -> graphController.getNodes().stream()
                         .filter(n -> n.getOsmid() == (nodeId))
@@ -89,25 +87,25 @@ public class PathToGeoJson {
     }
 
     private JSONObject createFeature(Node node, int id) {
-    JSONObject feature = new JSONObject();
-    feature.put("type", "Feature");
-    feature.put("id", id);
+        JSONObject feature = new JSONObject();
+        feature.put("type", "Feature");
+        feature.put("id", id);
 
-    JSONObject geometry = new JSONObject();
-    geometry.put("type", "Point");
-    JSONArray coordinates = new JSONArray();
-    coordinates.put(node.getX());
-    coordinates.put(node.getY());
-    geometry.put("coordinates", coordinates);
+        JSONObject geometry = new JSONObject();
+        geometry.put("type", "Point");
+        JSONArray coordinates = new JSONArray();
+        coordinates.put(node.getX());
+        coordinates.put(node.getY());
+        geometry.put("coordinates", coordinates);
 
-    JSONObject properties = new JSONObject();
-    properties.put("osmid", node.getOsmid());
+        JSONObject properties = new JSONObject();
+        properties.put("osmid", node.getOsmid());
 
-    feature.put("geometry", geometry);
-    feature.put("properties", properties);
+        feature.put("geometry", geometry);
+        feature.put("properties", properties);
 
-    return feature;
-}
+        return feature;
+    }
 
     private JSONObject createLineFeature(List<Node> nodes) {
         JSONObject lineFeature = new JSONObject();
