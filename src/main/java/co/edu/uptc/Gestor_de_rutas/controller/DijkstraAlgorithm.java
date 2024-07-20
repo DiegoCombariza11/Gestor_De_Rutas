@@ -4,6 +4,7 @@ import co.edu.uptc.Gestor_de_rutas.model.Edge;
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+import org.jgrapht.alg.shortestpath.YenKShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 import java.util.HashMap;
@@ -34,5 +35,9 @@ public class DijkstraAlgorithm {
             }
         }
         return 0;
+    }
+    public List<GraphPath<Long, DefaultWeightedEdge>> getKShortestPaths(Long startNodeId, Long endNodeId, Graph graph, int k) {
+        YenKShortestPath<Long, DefaultWeightedEdge> yenAlg = new YenKShortestPath<>(graph);
+        return yenAlg.getPaths(startNodeId, endNodeId, k);
     }
 }
