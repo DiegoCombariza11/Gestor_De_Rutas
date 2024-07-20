@@ -1,7 +1,7 @@
 package co.edu.uptc.Gestor_de_rutas.service;
 
 import co.edu.uptc.Gestor_de_rutas.model.Package;
-import co.edu.uptc.Gestor_de_rutas.model.PackageRepository;
+import co.edu.uptc.Gestor_de_rutas.repository.PackageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

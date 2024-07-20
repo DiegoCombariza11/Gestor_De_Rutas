@@ -7,23 +7,24 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "Package")
 public class Package {
     @Id
-    private int id;
+    private String id;
     private String description;
     private double price;
     private String weight;
 
-    public Package(int id, String description, double price, String weight) {
+
+    public Package(String id, String description, double price, String weight) {
         this.id = id;
         this.description = description;
         this.price = price;
         this.weight = weight;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

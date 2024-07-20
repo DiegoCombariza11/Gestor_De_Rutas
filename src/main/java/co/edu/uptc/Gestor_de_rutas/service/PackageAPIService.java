@@ -21,7 +21,7 @@ public class PackageAPIService {
     @PostMapping("/create")
     public ResponseEntity<String> createPackage(@RequestBody Map<String, String> payload) {
         try {
-            int id = Integer.parseInt(payload.get("id"));
+            String id = (payload.get("id"));
             String description = payload.get("description");
             double price = Double.parseDouble(payload.get("price"));
             String weight = payload.get("weight");
@@ -54,13 +54,13 @@ public class PackageAPIService {
             ordenDelivery.setState(State.DELIVERED);
             return true;
         } else if (state.equals("En camino")) {
-            ordenDelivery.setState(State.ONTHEWAY);
+            ordenDelivery.setState(State.SHIPPED);
             return true;
         } else if (state.equals("Devuelto")) {
-            ordenDelivery.setState(State.RETURNED);
+            ordenDelivery.setState(State.CANCELED);
             return true;
         } else if (state.equals("Saliendo de bodega")) {
-            ordenDelivery.setState(State.LEAVINGTHEWAREHOUSE);
+            ordenDelivery.setState(State.PENDING);
             return true;
         } else {
             return false;
