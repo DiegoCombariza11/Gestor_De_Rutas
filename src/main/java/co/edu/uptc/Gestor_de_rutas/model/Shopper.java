@@ -14,7 +14,5 @@ public class Shopper {
         this.person = person;
     }
 
-    public Shopper() {
-    }
 
 }
