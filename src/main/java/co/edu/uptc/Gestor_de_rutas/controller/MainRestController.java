@@ -1,6 +1,7 @@
 package co.edu.uptc.Gestor_de_rutas.controller;
 
 import co.edu.uptc.Gestor_de_rutas.model.OrderDelivery;
+import co.edu.uptc.Gestor_de_rutas.model.State;
 import co.edu.uptc.Gestor_de_rutas.service.OrderDeliveryService;
 import co.edu.uptc.Gestor_de_rutas.service.PathService;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +55,7 @@ public class MainRestController {
      */
 
     @PostMapping("/startRoute")
-    public ResponseEntity<String> startRoute(@CookieValue("orderId") String orderId) {
+    public ResponseEntity<String> startRoute(@CookieValue(value = "orderId", defaultValue = "") String orderId) {
         try {
             // el nodo final es el destino de la orden
             OrderDelivery order = orderDeliveryService.getOrderDeliveryById(orderId).orElse(null);
@@ -69,7 +70,7 @@ public class MainRestController {
 
             //ah y esa cosa de cambiar el estado iría
             // por acá, nu?
-
+            orderDeliveryService.updateOrderState(orderId, "SHIPPED");
             return ResponseEntity.ok("Ruta okay");
         } catch (NumberFormatException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe la orden con ese id");

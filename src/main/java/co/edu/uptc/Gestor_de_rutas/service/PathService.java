@@ -24,7 +24,12 @@ public class PathService {
     private String endNodeID;
 
     public void shortestPaths() {
-        var shortestPaths = dijkstraAlgorithm.getKShortestPaths(Long.valueOf(startNodeId), 0L, graphController.getGraph(), 1);
+        var shortestPaths = dijkstraAlgorithm.getKShortestPaths(Long.valueOf(startNodeId), Long.parseLong(endNodeID), graphController.getGraph(), 1);
+        if (shortestPaths != null) {
+            List<Long> fastestPathsNodes = shortestPaths.get(0).getVertexList();
+            pathToGeoJson.convertPathToGeoJson(fastestPathsNodes, graphController, "src/main/resources/static/shortestPath.geojson");
+
+        }
     }
 
     public void fastestPaths() {
