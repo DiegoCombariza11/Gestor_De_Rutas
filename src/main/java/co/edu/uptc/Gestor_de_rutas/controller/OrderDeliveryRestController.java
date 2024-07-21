@@ -68,19 +68,21 @@ public class OrderDeliveryRestController {
     public ResponseEntity<Void> saveOrderDelivery(@RequestBody Map<String, String> payload) {
         try {
             String id = (payload.get("id"));
-            String direction = payload.get("direction");
             String personName = payload.get("personName");
             String personLastName = payload.get("personLastName");
             String personEmail = payload.get("personEmail");
             String personPhone = payload.get("personPhone");
             String destination = payload.get("destination");
             Buyer buyer = new Buyer(personName, personLastName, personEmail, personPhone);
-            LocalDate deadLine = LocalDate.parse(payload.get("deadLine"));
-            State state = parse(payload.get("state"));
+            LocalDate deadLine = LocalDate.now();
+            String nameProduct= payload.get("nameProduct");
             String description = payload.get("description");
             String observation = payload.get("observation");
-            Package pack = packageService.getPackageById(Integer.parseInt(id)).orElse(null);
-            OrderDelivery orderDelivery = new OrderDelivery(id, buyer, deadLine, state, description, observation, pack, destination);
+            String price= payload.get("price");
+            String weight = payload.get("weight");
+            Package pack = new Package(id, nameProduct, Double.parseDouble(price),weight);
+            packageService.savePackage(pack);
+            OrderDelivery orderDelivery = new OrderDelivery(id, buyer, deadLine, State.PENDING, description, observation, pack, destination);
             orderDeliveryRepository.save(orderDelivery);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -95,22 +97,29 @@ public class OrderDeliveryRestController {
     }
 
     @PostMapping("/update")
-    public void updateOrderDelivery(@RequestBody Map<String, String> payload) {
-        String id = (payload.get("id"));
-        String direction = payload.get("direction");
-        String personName = payload.get("personName");
-        String personLastName = payload.get("personLastName");
-        String personEmail = payload.get("personEmail");
-        String personPhone = payload.get("personPhone");
-        String destination = payload.get("destination");
-        Buyer buyer = new Buyer(personName, personLastName, personEmail, personPhone);
-        LocalDate deadLine = LocalDate.parse(payload.get("deadLine"));
-        State state = State.valueOf(payload.get("state"));
-        String description = payload.get("description");
-        String observation = payload.get("observation");
-        Package pack = packageService.getPackageById(Integer.parseInt(id)).orElse(null);
-        OrderDelivery orderDelivery = new OrderDelivery(id, buyer, deadLine, state, description, observation, pack, destination);
-        orderDeliveryRepository.save(orderDelivery);
+    public ResponseEntity<Void> updateOrderDelivery(@RequestBody Map<String, String> payload) {
+        try {
+            String id = (payload.get("id"));
+            String personName = payload.get("personName");
+            String personLastName = payload.get("personLastName");
+            String personEmail = payload.get("personEmail");
+            String personPhone = payload.get("personPhone");
+            String destination = payload.get("destination");
+            Buyer buyer = new Buyer(personName, personLastName, personEmail, personPhone);
+            LocalDate deadLine = LocalDate.parse(payload.get("deadLine"));
+            String description = payload.get("description");
+            String observation = payload.get("observation");
+            String price= payload.get("price");
+            String weight = payload.get("weight");
+            Package pack = new Package(id, description, Double.parseDouble(price),weight);
+            packageService.updatePackage(pack);
+            OrderDelivery orderDelivery = new OrderDelivery(id, buyer, deadLine, State.PENDING, description, observation, pack, destination);
+            orderDeliveryRepository.save(orderDelivery);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     private State parse(String state) {
