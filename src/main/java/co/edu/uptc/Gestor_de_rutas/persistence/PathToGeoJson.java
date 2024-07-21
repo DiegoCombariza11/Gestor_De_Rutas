@@ -1,17 +1,54 @@
-package co.edu.uptc.Gestor_de_rutas.controller;
+package co.edu.uptc.Gestor_de_rutas.persistence;
 
+import co.edu.uptc.Gestor_de_rutas.logic.GraphController;
 import co.edu.uptc.Gestor_de_rutas.model.Node;
-import co.edu.uptc.Gestor_de_rutas.controller.GraphController;
-import org.jgrapht.GraphPath;
-import org.jgrapht.graph.DefaultEdge;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class PathToGeoJson {
+
+    public void convertPathsToGeoJson(List<List<Long>> paths, GraphController graphController, String outputPath) {
+        JSONObject geoJson = new JSONObject();
+        JSONArray features = new JSONArray();
+        geoJson.put("type", "FeatureCollection");
+
+        int pathId = 0;
+        for (List<Long> path : paths) {
+            // puntitos
+            for (Long nodeId : path) {
+                Node node = graphController.getNodes().stream()
+                        .filter(n -> n.getOsmid() == nodeId)
+                        .findFirst()
+                        .orElse(null);
+
+                if (node != null) {
+                    JSONObject feature = createFeature(node, pathId++);
+                    features.put(feature);
+                }
+            }
+
+            // lineas que unen los puntitos
+            List<Node> nodesInPath = path.stream()
+                    .map(nodeId -> graphController.getNodes().stream()
+                            .filter(n -> n.getOsmid() == nodeId)
+                            .findFirst()
+                            .orElse(null))
+                    .collect(Collectors.toList());
+            JSONObject lineFeature = createLineFeature(nodesInPath);
+            features.put(lineFeature);
+        }
+
+        geoJson.put("features", features);
+        writeGeoJsonToFile(geoJson, outputPath);
+
+    }
 
 
     public void convertPathToGeoJson(List<Long> path, GraphController graphController, String outputPath) {
@@ -34,7 +71,7 @@ public class PathToGeoJson {
             }
         }
 
-      // lineas que unen los puntitos
+        // lineas que unen los puntitos
         List<Node> nodesInPath = path.stream()
                 .map(nodeId -> graphController.getNodes().stream()
                         .filter(n -> n.getOsmid() == (nodeId))
@@ -61,8 +98,11 @@ public class PathToGeoJson {
         coordinates.put(node.getY());
         geometry.put("coordinates", coordinates);
 
+        JSONObject properties = new JSONObject();
+        properties.put("osmid", node.getOsmid());
+
         feature.put("geometry", geometry);
-        feature.put("properties", new JSONObject());
+        feature.put("properties", properties);
 
         return feature;
     }

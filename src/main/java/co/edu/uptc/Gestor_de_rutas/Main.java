@@ -1,10 +1,9 @@
 package co.edu.uptc.Gestor_de_rutas;
 
-import co.edu.uptc.Gestor_de_rutas.controller.DijkstraAlgorithm;
-import co.edu.uptc.Gestor_de_rutas.controller.GraphController;
-import co.edu.uptc.Gestor_de_rutas.controller.PathToGeoJson;
-import co.edu.uptc.Gestor_de_rutas.controller.RouteController;
-import org.jgrapht.Graph;
+import co.edu.uptc.Gestor_de_rutas.logic.DijkstraAlgorithm;
+import co.edu.uptc.Gestor_de_rutas.logic.GraphController;
+import co.edu.uptc.Gestor_de_rutas.persistence.PathToGeoJson;
+import co.edu.uptc.Gestor_de_rutas.logic.RouteController;
 import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 

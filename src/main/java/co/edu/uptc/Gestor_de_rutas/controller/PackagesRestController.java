@@ -1,9 +1,12 @@
-package co.edu.uptc.Gestor_de_rutas.service;
+package co.edu.uptc.Gestor_de_rutas.controller;
 
-import co.edu.uptc.Gestor_de_rutas.model.OrdenDelivery;
+
+import co.edu.uptc.Gestor_de_rutas.model.OrderDelivery;
 import co.edu.uptc.Gestor_de_rutas.model.Package;
 import co.edu.uptc.Gestor_de_rutas.model.State;
+import co.edu.uptc.Gestor_de_rutas.service.OrderDeliveryService;
 import co.edu.uptc.Gestor_de_rutas.service.PackageService;
+import co.edu.uptc.Gestor_de_rutas.service.PathService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,16 +15,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+//acá se manejan las solicitudes http, un tris de lógica pa validaciones nada más y se llaman a los servicios/lógica
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/packages")
-public class PackageAPIService {
+public class PackagesRestController {
+
     private final PackageService packageService;
+    private final PathService pathService;
+    private final OrderDeliveryService orderDeliveryService;
+
+
+    /*
+    dont worry, este fue el primer intento para iniciar la ruta
+    pero no se usó, se usó el endpoint "/startRoute" o algo así
+    pero por si el otro no sirve o algo xd
+     */
+    @PostMapping("/setEndNodeId")
+    public ResponseEntity<String> setEndNodeId(@CookieValue("orderId") String orderId) {
+        try {
+            Long endNodeId = Long.parseLong(orderId);
+            OrderDelivery order = orderDeliveryService.getOrderDeliveryById(orderId).orElse(null);
+            assert order != null;
+            pathService.setEndNodeID(order.getDestination());
+            return ResponseEntity.ok("End node ID set successfully");
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid order ID");
+        }
+    }
+
 
     @PostMapping("/create")
     public ResponseEntity<String> createPackage(@RequestBody Map<String, String> payload) {
         try {
-            int id = Integer.parseInt(payload.get("id"));
+            String id = (payload.get("id"));
             String description = payload.get("description");
             double price = Double.parseDouble(payload.get("price"));
             String weight = payload.get("weight");
@@ -48,23 +76,5 @@ public class PackageAPIService {
         return packageService.getAllPackages();
     }
 
-    @PostMapping("/changeState")
-    public boolean changeState(String state, OrdenDelivery ordenDelivery) {
-        if (state.equals("Entregado")) {
-            ordenDelivery.setState(State.DELIVERED);
-            return true;
-        } else if (state.equals("En camino")) {
-            ordenDelivery.setState(State.ONTHEWAY);
-            return true;
-        } else if (state.equals("Devuelto")) {
-            ordenDelivery.setState(State.RETURNED);
-            return true;
-        } else if (state.equals("Saliendo de bodega")) {
-            ordenDelivery.setState(State.LEAVINGTHEWAREHOUSE);
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 }

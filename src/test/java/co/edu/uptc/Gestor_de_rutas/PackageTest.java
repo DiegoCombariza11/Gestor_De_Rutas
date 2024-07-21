@@ -1,31 +1,23 @@
 package co.edu.uptc.Gestor_de_rutas;
 
-import co.edu.uptc.Gestor_de_rutas.service.PackageAPIService;
-import co.edu.uptc.Gestor_de_rutas.model.Person;
-import co.edu.uptc.Gestor_de_rutas.model.Responsible;
-import co.edu.uptc.Gestor_de_rutas.model.Shopper;
-import co.edu.uptc.Gestor_de_rutas.model.State;
+import co.edu.uptc.Gestor_de_rutas.controller.PackagesRestController;
+import co.edu.uptc.Gestor_de_rutas.model.Buyer;
 import co.edu.uptc.Gestor_de_rutas.model.Package;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
 @RequiredArgsConstructor
 public class PackageTest {
-    private final PackageAPIService controller;
-    private Responsible responsible;
-    private Shopper shopper;
+    private final PackagesRestController controller;
+    private Buyer buyer;
     private Package pack;
  
     @BeforeEach
     void setUp() {
-        responsible = new Responsible(new ArrayList<>()); // Assuming Responsible class exists and has a default constructor
-        shopper = new Shopper("123 Main St", new Person()); // Assuming Person class exists and has a default constructor
-        pack = new Package(1,"nose",21.1,"20"); // Assuming Package class exists and has a default constructor
+        buyer = new Buyer("Juan", "Perez", "juan.perez@a.com","12345");// Assuming Person class exists and has a default constructor
+        pack = new Package("1","nose",21.1,"20"); // Assuming Package class exists and has a default constructor
     }
 
 //    @Test
