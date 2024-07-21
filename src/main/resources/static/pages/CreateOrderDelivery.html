@@ -2,10 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Shipment Order</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/CreateOrder.css">
 </head>
 <body>
- Creando una orden
-</body>
+<div class="container">
+    <h2 class="text-center">Crear Orden de Envío</h2>
+    <form id="shipment-form">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="buyer-name">Nombre del Comprador</label>
+                <input type="text" class="form-control" id="buyer-name" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="buyer-lastname">Apellido del Comprador</label>
+                <input type="text" class="form-control" id="buyer-lastname" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="buyer-email">Email del Comprador</label>
+                <input type="email" class="form-control" id="buyer-email" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="buyer-contact">Contacto del Comprador</label>
+                <input type="text" class="form-control" id="buyer-contact" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="product-name">Nombre del Producto</label>
+                <input type="text" class="form-control" id="product-name" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="product-description">Descripción del Producto</label>
+                <textarea class="form-control" id="product-description" rows="2" required></textarea>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="product-observation">Observación del Producto</label>
+                <textarea class="form-control" id="product-observation" rows="2"></textarea>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="product-price">Precio del Producto</label>
+                <input type="number" class="form-control" id="product-price" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="product-weight">Peso del Producto</label>
+                <input type="number" class="form-control" id="product-weight" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="destination">Destino del Producto</label>
+                <input type="text" class="form-control" id="destination" required>
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Crear Orden de Envío</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="../js/OrderDelivery.js"></script>
+</body>
 </html>

@@ -27,3 +27,11 @@ fetch("/orderDelivery/save",{
     .then(data => {
         console.log(data);
 })
+$(document).ready(function() {
+    $('#shipment-form').on('submit', function(event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+        console.log(formData);
+        alert('Orden de envío creada con éxito!');
+    });
+});
