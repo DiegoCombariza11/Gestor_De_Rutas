@@ -63,10 +63,10 @@ public class MainRestController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe la orden con ese id");
             }
             pathService.setEndNodeID(order.getDestination());
-
+            System.out.println(order.getDestination());
             // calcular los recorridos y sha
             pathService.shortestPaths();
-            pathService.fastestPaths();
+            pathService.shortestPathAStar();
 
             //ah y esa cosa de cambiar el estado iría
             // por acá, nu?

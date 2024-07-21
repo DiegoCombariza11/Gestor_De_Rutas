@@ -4,8 +4,10 @@ import co.edu.uptc.Gestor_de_rutas.logic.OrderDeliveryController;
 import co.edu.uptc.Gestor_de_rutas.model.*;
 import co.edu.uptc.Gestor_de_rutas.model.Package;
 import co.edu.uptc.Gestor_de_rutas.repository.OrderDeliveryRepository;
+import co.edu.uptc.Gestor_de_rutas.service.OrderDeliveryService;
 import co.edu.uptc.Gestor_de_rutas.service.PackageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,7 @@ import java.util.Optional;
 public class OrderDeliveryRestController {
     private final OrderDeliveryRepository orderDeliveryRepository;
     private final PackageService packageService;
+    private final OrderDeliveryService orderDeliveryService;
 
     private OrderDeliveryController orderDeliveryController;
 
@@ -33,9 +36,27 @@ public class OrderDeliveryRestController {
         return ResponseEntity.ok(orders);
     }
 
+    @PostMapping("/updateState")
+    public void updateOrderState(@CookieValue("orderId") String id, @RequestBody Map<String, String> body) {
+        String state = body.get("state");
+        parse(state);
+        orderDeliveryService.updateOrderState(id, String.valueOf(parse(state)));
+    }
+
     @GetMapping("/show/{id}")
-    public Optional<OrderDelivery> getOrderDeliveryById(@PathVariable("id") int id) {
-        return orderDeliveryRepository.findById(String.valueOf(id));
+    public Optional<OrderDelivery> getOrderDeliveryById(@PathVariable("id") String id) {
+        return orderDeliveryRepository.findById(id);
+    }
+
+
+    @GetMapping("/showOrder")
+    public ResponseEntity<OrderDelivery> showOrder(@CookieValue("orderId") String id) {
+        Optional<OrderDelivery> order = orderDeliveryRepository.findById(id);
+        if (order.isPresent()) {
+            return ResponseEntity.ok(order.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @GetMapping("/showAll")
@@ -53,7 +74,7 @@ public class OrderDeliveryRestController {
             String personEmail = payload.get("personEmail");
             String personPhone = payload.get("personPhone");
             String destination = payload.get("destination");
-            Buyer buyer = new Buyer(personName, personLastName, personEmail,  personPhone);
+            Buyer buyer = new Buyer(personName, personLastName, personEmail, personPhone);
             LocalDate deadLine = LocalDate.parse(payload.get("deadLine"));
             State state = parse(payload.get("state"));
             String description = payload.get("description");
@@ -82,7 +103,7 @@ public class OrderDeliveryRestController {
         String personEmail = payload.get("personEmail");
         String personPhone = payload.get("personPhone");
         String destination = payload.get("destination");
-        Buyer buyer = new Buyer(personName, personLastName, personEmail,  personPhone);
+        Buyer buyer = new Buyer(personName, personLastName, personEmail, personPhone);
         LocalDate deadLine = LocalDate.parse(payload.get("deadLine"));
         State state = State.valueOf(payload.get("state"));
         String description = payload.get("description");

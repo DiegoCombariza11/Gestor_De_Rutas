@@ -76,29 +76,5 @@ public class PackagesRestController {
         return packageService.getAllPackages();
     }
 
-    @PostMapping("/changeState")
-    public boolean changeState(String state, OrderDelivery ordenDelivery) {
-        switch (state) {
-            case "Entregado" -> {
-                ordenDelivery.setState(State.DELIVERED);
-                return true;
-            }
-            case "En camino" -> {
-                ordenDelivery.setState(State.SHIPPED);
-                return true;
-            }
-            case "Devuelto" -> {
-                ordenDelivery.setState(State.CANCELED);
-                return true;
-            }
-            case "Saliendo de bodega" -> {
-                ordenDelivery.setState(State.PENDING);
-                return true;
-            }
-            default -> {
-                return false;
-            }
-        }
-    }
 
 }

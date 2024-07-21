@@ -47,23 +47,23 @@ public class DataLoader implements CommandLineRunner {
                         "Pedido de electrónicos",
                         "Manejar con cuidado",
                         packages.get(0),
-                        "1016184511"
+                        "316951892"
                 ),
                 new OrderDelivery(
                         "2",
                         new Buyer("Jane", "Smith", "jane.smith@example.com", "+57 310-987-6543"),
                         LocalDate.of(2024, 12, 15),
-                        State.SHIPPED,
+                        State.PENDING,
                         "Pedido de electrodomésticos",
                         "Frágil",
                         packages.get(1),
-                        "1016185508"
+                        "1016182972"
                 ),
                 new OrderDelivery(
                         "3",
                         new Buyer("Alice", "Johnson", "alice.johnson@example.com", "+57 320-555-5555"),
                         LocalDate.of(2024, 11, 30),
-                        State.DELIVERED,
+                        State.PENDING,
                         "Pedido de electrodomésticos de cocina",
                         "Ninguna",
                         packages.get(2),
@@ -73,7 +73,7 @@ public class DataLoader implements CommandLineRunner {
                         "4",
                         new Buyer("Bob", "Brown", "bob.brown@example.com", "+57 311-321-9876"),
                         LocalDate.of(2024, 12, 05),
-                        State.CANCELED,
+                        State.PENDING,
                         "Pedido de electrodomésticos de cocina",
                         "Devolver al remitente",
                         packages.get(3),

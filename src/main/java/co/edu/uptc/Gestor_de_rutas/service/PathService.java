@@ -7,10 +7,13 @@ import co.edu.uptc.Gestor_de_rutas.persistence.PathToGeoJson;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
+import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,13 +25,13 @@ public class PathService {
     private GraphController graphController;
     private final DijkstraAlgorithm dijkstraAlgorithm;
     private AStarAlgorithm aStarAlgorithm;
-    private final String startNodeId = "2951857103";
+    private final Long startNodeId = 2951857103L;
     @Setter
     private String endNodeID;
 
     public void shortestPaths() {
         this.graphController = new GraphController();
-        var shortestPaths = dijkstraAlgorithm.getKShortestPaths(Long.valueOf(startNodeId), Long.parseLong(endNodeID), graphController.getGraph(), 1);
+        var shortestPaths = dijkstraAlgorithm.getKShortestPaths(startNodeId, Long.parseLong(endNodeID), graphController.getGraph(), 1);
         if (shortestPaths != null) {
             List<Long> fastestPathsNodes = shortestPaths.get(0).getVertexList();
             pathToGeoJson.convertPathToGeoJson(fastestPathsNodes, graphController, "src/main/resources/static/shortestPath.geojson");
@@ -36,31 +39,52 @@ public class PathService {
         }
     }
 
-    public void fastestPaths() {
+
+//
+
+    public void shortestPathAStar() {
         this.graphController = new GraphController();
-        Graph<String, DefaultWeightedEdge> convertedGraph = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
-        graphController.getGraph().vertexSet().forEach(vertex -> convertedGraph.addVertex(vertex.toString()));
+        this.aStarAlgorithm = new AStarAlgorithm(graphController);
+        GraphPath<Long, DefaultEdge> shortestPaths = aStarAlgorithm.findShortestPath(startNodeId, Long.valueOf(endNodeID));
+        if (shortestPaths != null) {
+            List<Long> shortestPathsNodes = new ArrayList<>(shortestPaths.getVertexList());
+            System.out.println("ShortestPathAStar");
+            pathToGeoJson.convertPathToGeoJson(shortestPathsNodes, graphController, "src/main/resources/static/shortestPathAStar.geojson");
+        }
+    }
+
+
+    /*
+
+    public void fastestPath() {
+        this.graphController = new GraphController();
+        Graph<Long, DefaultWeightedEdge> convertedGraph = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+        graphController.getGraph().vertexSet().forEach(vertex -> convertedGraph.addVertex(vertex));
         graphController.getGraph().edgeSet().forEach(edge -> {
-            String source = graphController.getGraph().getEdgeSource(edge).toString();
-            String target = graphController.getGraph().getEdgeTarget(edge).toString();
+            Long source = graphController.getGraph().getEdgeSource(edge);
+            Long target = graphController.getGraph().getEdgeTarget(edge);
             DefaultWeightedEdge convertedEdge = convertedGraph.addEdge(source, target);
             if (convertedEdge != null) {
-                convertedGraph.setEdgeWeight(convertedEdge, graphController.getGraph().getEdgeWeight(edge));
+                double distance = graphController.getGraph().getEdgeWeight(edge);
+                double maxSpeed = graphController.getMaxSpeedForEdge(source.toString(), target.toString());
+                double travelTime = distance / maxSpeed;
+                convertedGraph.setEdgeWeight(convertedEdge, travelTime);
             }
         });
 
-        aStarAlgorithm = new AStarAlgorithm(convertedGraph, graphController);
-        var fastestPaths = aStarAlgorithm.findFastestPath(startNodeId, endNodeID);
-
+        AStarAlgorithm aStarAlgorithm = new AStarAlgorithm(convertedGraph, graphController);
+        System.out.println(endNodeID + "Destino de A*");
+        GraphPath<Long, DefaultWeightedEdge> fastestPaths = aStarAlgorithm.findFastestPath(startNodeId, Long.valueOf(endNodeID));
+        System.out.println("Path con A* generado");
         if (fastestPaths != null) {
 
-            List<Long> fastestPathsNodes = fastestPaths.getVertexList().stream()
-                    .map(Long::parseLong)
-                    .toList();
-
+           List<Long> fastestPathsNodes = new ArrayList<>(fastestPaths.getVertexList());
+            System.out.println("Convirtiendo a geojsonn A*");
             pathToGeoJson.convertPathToGeoJson(fastestPathsNodes, graphController, "src/main/resources/static/fastestPath.geojson");
-
+            System.out.println("Archivo convertido a Geojson");
         }
-
     }
+
+     */
+
 }

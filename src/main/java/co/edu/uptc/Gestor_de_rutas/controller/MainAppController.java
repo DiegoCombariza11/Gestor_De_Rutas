@@ -11,7 +11,7 @@ public class MainAppController {
 
     @GetMapping("/")
     public String mainPage() {
-        return "redirect:/pages/map.html";
+        return "redirect:/pages/OrderDelivery.html";
     }
 
 

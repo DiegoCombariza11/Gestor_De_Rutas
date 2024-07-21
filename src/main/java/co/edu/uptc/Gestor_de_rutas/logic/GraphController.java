@@ -25,6 +25,7 @@ public class GraphController {
     private List<Node> nodeList;
     private List<Edge> edgeList;
     private Graph<Long, DefaultEdge> graph;
+    private Graph<Long, DefaultEdge> graphS;
 
     public GraphController() {
         this.geoJsonReader = new GeoJsonReader();
@@ -32,6 +33,7 @@ public class GraphController {
         this.nodeList = new ArrayList<>();
         this.edgeList = new ArrayList<>();
         createGraph();
+        createShortestPathGraph();
     }
 
 
@@ -79,6 +81,38 @@ public class GraphController {
             }
         }
 
+    }
+
+    public void createShortestPathGraph() {
+        this.graphS = new DefaultDirectedWeightedGraph<>(DefaultEdge.class);
+
+        nodeList = createNodeList("src\\main\\java\\co\\edu\\uptc\\Gestor_de_rutas\\util\\nodes.geojson");
+        edgeList = createEdgeList("src\\main\\java\\co\\edu\\uptc\\Gestor_de_rutas\\util\\edges.geojson");
+        for (Node node : nodeList) {
+            graphS.addVertex(node.getOsmid());
+        }
+        for (Edge edge : edgeList) {
+            DefaultEdge graphEdge = graphS.addEdge(edge.getU(), edge.getV());
+            if (graphEdge != null) {
+                double distance = edge.getLength();  // Use the length of the edge as the weight
+                graphS.setEdgeWeight(graphEdge, distance);
+            }
+        }
+    }
+    public Graph<Long, DefaultEdge> getShortesGraph(){
+        return graphS;
+    }
+
+    public double getMaxSpeedForEdge(String sourceVertex, String targetVertex) {
+        long sourceVertexLong = Long.parseLong(sourceVertex);
+        long targetVertexLong = Long.parseLong(targetVertex);
+        for (Edge edge : edgeList) {
+            if ((edge.getU() == sourceVertexLong && edge.getV() == targetVertexLong)
+                    || (edge.getV() == sourceVertexLong && edge.getU() == targetVertexLong)) {
+                return edge.getMaxSpeed();
+            }
+        }
+        return 50.0;
     }
 
     public String getNodeString() {

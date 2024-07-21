@@ -1,3 +1,4 @@
+/*
 package co.edu.uptc.Gestor_de_rutas;
 
 import co.edu.uptc.Gestor_de_rutas.logic.AStarAlgorithm;
@@ -43,7 +44,7 @@ public class MainAStar {
 
 
 
-        Long startNodeId = 1016192858L;
+        Long startNodeId = 2951857103L;
         Long endNodeId = 1016193261L;
         String sourceVertexId = startNodeId.toString();
         String targetVertexId = endNodeId.toString();
@@ -67,36 +68,36 @@ public class MainAStar {
 //    System.out.println("No se encontró un camino.");
 //}
 //
-//        if (pathF != null) {
-//            System.out.println("Camino más rápido encontrado" + pathF);
-//            List<Long> nodeidList2 = pathF.getVertexList().stream()
-//                    .map(Long::parseLong)
-//                    .collect(Collectors.toList());
-//
-//            pathToGeoJson.convertPathToGeoJson(nodeidList2, graphController, "pathF.geojson");
-//            System.out.println("Archivo GeoJSON generado correctamente.");
-//        }else{
-//            System.out.println("No se encontró un camino.");
-//        }
+        if (pathF != null) {
+            System.out.println("Camino más rápido encontrado" + pathF);
+            List<Long> nodeidList2 = pathF.getVertexList().stream()
+                    .map(Long::parseLong)
+                    .collect(Collectors.toList());
 
-
-
-        if (paths != null) {
-            System.out.println(STR."Caminos alternativos encontrados: \{paths}");
-            List<List<Long>> allPaths = new ArrayList<>();
-            for (GraphPath<String, DefaultWeightedEdge> path : paths) {
-                List<Long> nodeIdList = path.getVertexList().stream()
-                        .map(Long::parseLong)
-                        .collect(Collectors.toList());
-                //System.out.println(path);
-                allPaths.add(nodeIdList);
-             }
-            pathToGeoJson.convertPathsToGeoJson(allPaths, graphController, "paths.geojson");
-
-            System.out.println("Archivo GeoJSON generados correctamente.");
-        } else {
-            System.out.println("No se encontraron caminos alternativos.");
+            pathToGeoJson.convertPathToGeoJson(nodeidList2, graphController, "pathF.geojson");
+            System.out.println("Archivo GeoJSON generado correctamente.");
+        }else{
+            System.out.println("No se encontró un camino.");
         }
+
+
+//
+//        if (paths != null) {
+//            System.out.println(STR."Caminos alternativos encontrados: \{paths}");
+//            List<List<Long>> allPaths = new ArrayList<>();
+//            for (GraphPath<String, DefaultWeightedEdge> path : paths) {
+//                List<Long> nodeIdList = path.getVertexList().stream()
+//                        .map(Long::parseLong)
+//                        .collect(Collectors.toList());
+//                //System.out.println(path);
+//                allPaths.add(nodeIdList);
+//             }
+//            pathToGeoJson.convertPathsToGeoJson(allPaths, graphController, "paths.geojson");
+//
+//            System.out.println("Archivo GeoJSON generados correctamente.");
+//        } else {
+//            System.out.println("No se encontraron caminos alternativos.");
+//        }
 
 
 
@@ -116,7 +117,7 @@ public class MainAStar {
             System.out.println("No se encontró un camino.");
         }
 
-         */
+
 
 
 
@@ -124,3 +125,4 @@ public class MainAStar {
 
 
     }}
+ */
