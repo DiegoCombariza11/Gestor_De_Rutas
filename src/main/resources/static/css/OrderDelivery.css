@@ -8,5 +8,19 @@
 }
 .navbar-brand{
     color: white;
-
+}
+.Header-window{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+#create-shipment-btn{
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 15px;
 }

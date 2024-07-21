@@ -13,7 +13,9 @@ $(document).ready(function() {
                 $('#shipment-' + shipmentId).remove();
             }
         });
-
+        $('#create-shipment-btn').on('click', function() {
+            window.location.href = '/pages/CreateOrderDelivery.html';
+        });
         $('#start-route-btn').on('click', function() {
             // let shipmentIds = $('#send-box').children().map(function() {
             //     return $(this).text();
