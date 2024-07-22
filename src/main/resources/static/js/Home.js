@@ -49,6 +49,7 @@ $(document).ready(function() {
         });
     });
 });
+
 async function loadOrders() {
     const Orders = await fetch('/orderDelivery/showAll', {
         method: 'GET',

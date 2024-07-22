@@ -18,7 +18,10 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <h2>Ordenes de envío</h2>
+            <div class="Header-window">
+                <h2>Ordenes de envío</h2>
+                <button id="create-shipment-btn" class="btn btn-primary">Crear Orden de Envío</button>
+            </div>
             <table class="table table-striped" id="shipment-table-striped">
                 <thead>
                 <tr>
@@ -33,7 +36,7 @@
             </table>
         </div>
         <div class="col-md-4 offset-md-1">
-            <h2>Lista en el Carro</h2>
+            <h2>Paquetes en el Camion</h2>
             <div id="send-box" class="border p-2">
                 <!-- Selected shipments will be displayed here -->
             </div>
