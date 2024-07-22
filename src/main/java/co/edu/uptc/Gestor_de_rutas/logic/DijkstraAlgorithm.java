@@ -22,6 +22,7 @@ public class DijkstraAlgorithm {
 
     public GraphPath<Long, DefaultWeightedEdge> getShortestPath(Long startNodeId, Long endNodeId, Graph graph) {
         DijkstraShortestPath<Long, DefaultWeightedEdge> dijkstraAlg = new DijkstraShortestPath<>(graph);
+        longPath(dijkstraAlg.getPath(startNodeId, endNodeId).getVertexList(), new GraphController());
         return dijkstraAlg.getPath(startNodeId, endNodeId);
     }
 
@@ -30,6 +31,7 @@ public class DijkstraAlgorithm {
         for (int i = 0; i < path.size() - 1; i++) {
             distance += distanceBetweenNodes(path.get(i), path.get(i + 1), controller);
         }
+        System.out.println("Distancia dijkstra: "+ distance);
         return distance;
     }
 
@@ -42,6 +44,17 @@ public class DijkstraAlgorithm {
         }
         return 0;
     }
+
+    public double getDijkstraTime(Long startNodeId, Long endNodeId, GraphController controller) {
+       List<Edge> edgeList = controller.getEdges();
+       double time = 0;
+       for (Edge edge: edgeList){
+           if (edge.getU() == startNodeId && edge.getV() == endNodeId){
+               time += (edge.getLength()*60)/(edge.getMaxSpeed()*1000);
+           }
+       }
+        return time;
+     }
 
     public List<GraphPath<Long, DefaultWeightedEdge>> getKShortestPaths(Long startNodeId, Long endNodeId, Graph graph, int k) {
         YenKShortestPath<Long, DefaultWeightedEdge> yenAlg = new YenKShortestPath<>(graph);

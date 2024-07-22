@@ -2,6 +2,7 @@ package co.edu.uptc.Gestor_de_rutas.logic;
 
 import co.edu.uptc.Gestor_de_rutas.geojsondeserilizer.edges.EdgeGeoJsonReader;
 import co.edu.uptc.Gestor_de_rutas.geojsondeserilizer.nodes.GeoJsonReader;
+import co.edu.uptc.Gestor_de_rutas.model.CustomEdge;
 import co.edu.uptc.Gestor_de_rutas.model.Edge;
 import co.edu.uptc.Gestor_de_rutas.model.edgesfeatures.EdgeFeature;
 import co.edu.uptc.Gestor_de_rutas.model.edgesfeatures.EdgeFeatureCollection;
@@ -25,7 +26,7 @@ public class GraphController {
     private List<Node> nodeList;
     private List<Edge> edgeList;
     private Graph<Long, DefaultEdge> graph;
-    private Graph<Long, DefaultEdge> graphS;
+    private Graph<Long, CustomEdge> graphS;
 
     public GraphController() {
         this.geoJsonReader = new GeoJsonReader();
@@ -84,7 +85,7 @@ public class GraphController {
     }
 
     public void createShortestPathGraph() {
-        this.graphS = new DefaultDirectedWeightedGraph<>(DefaultEdge.class);
+        this.graphS = new DefaultDirectedWeightedGraph<>(CustomEdge.class);
 
         nodeList = createNodeList("src\\main\\java\\co\\edu\\uptc\\Gestor_de_rutas\\util\\nodes.geojson");
         edgeList = createEdgeList("src\\main\\java\\co\\edu\\uptc\\Gestor_de_rutas\\util\\edges.geojson");
@@ -92,14 +93,20 @@ public class GraphController {
             graphS.addVertex(node.getOsmid());
         }
         for (Edge edge : edgeList) {
-            DefaultEdge graphEdge = graphS.addEdge(edge.getU(), edge.getV());
+            CustomEdge graphEdge = new CustomEdge(edge.getU(), edge.getV(),  edge.getLength(), edge.getMaxSpeed());
+            //System.out.println("Arista: " + graphEdge.toString());
             if (graphEdge != null) {
-                double distance = edge.getLength();  // Use the length of the edge as the weight
-                graphS.setEdgeWeight(graphEdge, distance);
+                boolean isEdgeAdded = graphS.addEdge(edge.getU(), edge.getV(), graphEdge);
+                if(isEdgeAdded) {
+                    double distance = edge.getLength();
+                    graphS.setEdgeWeight(graphEdge, distance);
+                }else {
+                  //  System.out.println("No se pudo agregar la arista");
+                }
             }
         }
     }
-    public Graph<Long, DefaultEdge> getShortesGraph(){
+    public Graph<Long, CustomEdge> getShortesGraph(){
         return graphS;
     }
 

@@ -52,7 +52,7 @@ async function loadOrders() {
     const orders = await Orders.json();
     let bodyTable = "";
     for (let order of orders) {
-        if(order.state==='PENDING') {
+        if(order.state!=='DELIVERED'){
             bodyTable += '<tr><td><input type="checkbox" class="shipment-checkbox"></td><td>' + order.id + '</td><td>' + order.destination + '</td><td>' + order.description + '</td></tr>';
         }
     }

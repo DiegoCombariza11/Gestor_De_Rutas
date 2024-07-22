@@ -3,6 +3,7 @@ package co.edu.uptc.Gestor_de_rutas.service;
 import co.edu.uptc.Gestor_de_rutas.logic.AStarAlgorithm;
 import co.edu.uptc.Gestor_de_rutas.logic.DijkstraAlgorithm;
 import co.edu.uptc.Gestor_de_rutas.logic.GraphController;
+import co.edu.uptc.Gestor_de_rutas.model.CustomEdge;
 import co.edu.uptc.Gestor_de_rutas.persistence.PathToGeoJson;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -44,11 +45,11 @@ public class PathService {
 
     public void shortestPathAStar() {
         this.graphController = new GraphController();
-        this.aStarAlgorithm = new AStarAlgorithm(graphController);
-        GraphPath<Long, DefaultEdge> shortestPaths = aStarAlgorithm.findShortestPath(startNodeId, Long.valueOf(endNodeID));
+        this.aStarAlgorithm =  AStarAlgorithm.getInstance(graphController);
+        GraphPath<Long, CustomEdge> shortestPaths = aStarAlgorithm.findShortestPath(startNodeId, Long.valueOf(endNodeID));
         if (shortestPaths != null) {
             List<Long> shortestPathsNodes = new ArrayList<>(shortestPaths.getVertexList());
-            System.out.println("ShortestPathAStar");
+            System.out.println("ShortestPathAStar hecho");
             pathToGeoJson.convertPathToGeoJson(shortestPathsNodes, graphController, "src/main/resources/static/shortestPathAStar.geojson");
         }
     }
