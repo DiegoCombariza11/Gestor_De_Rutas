@@ -1,6 +1,6 @@
 package co.edu.uptc.Gestor_de_rutas;
 
-import co.edu.uptc.Gestor_de_rutas.controller.GraphController;
+import co.edu.uptc.Gestor_de_rutas.logic.GraphController;
 import co.edu.uptc.Gestor_de_rutas.model.Edge;
 import co.edu.uptc.Gestor_de_rutas.model.Node;
 import co.edu.uptc.Gestor_de_rutas.model.edgesfeatures.EdgeFeature;

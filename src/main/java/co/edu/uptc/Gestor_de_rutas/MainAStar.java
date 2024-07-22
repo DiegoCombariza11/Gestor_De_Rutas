@@ -1,14 +1,19 @@
+/*
 package co.edu.uptc.Gestor_de_rutas;
 
-import co.edu.uptc.Gestor_de_rutas.controller.AStarAlgorithm;
-import co.edu.uptc.Gestor_de_rutas.controller.GraphController;
-import co.edu.uptc.Gestor_de_rutas.controller.PathToGeoJson;
+import co.edu.uptc.Gestor_de_rutas.logic.AStarAlgorithm;
+import co.edu.uptc.Gestor_de_rutas.logic.GraphController;
+import co.edu.uptc.Gestor_de_rutas.persistence.PathToGeoJson;
 import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.lang.StringTemplate.STR;
 
 public class MainAStar {
     public static void main(String[] args) {
@@ -39,14 +44,65 @@ public class MainAStar {
 
 
 
-        Long startNodeId = 1016196839L;
-        Long endNodeId = 7787924883L;
+        Long startNodeId = 2951857103L;
+        Long endNodeId = 1016193261L;
         String sourceVertexId = startNodeId.toString();
         String targetVertexId = endNodeId.toString();
 
-        var path = aStarAlgorithm.findShortestPath(sourceVertexId, targetVertexId);
+        var pathS = aStarAlgorithm.findShortestPath(sourceVertexId, targetVertexId);
+        var pathF = aStarAlgorithm.findFastestPath(sourceVertexId, targetVertexId);
+        var paths = aStarAlgorithm.findTwoShortestPaths(sourceVertexId, targetVertexId);
+
+//        if (pathS != null) {
+//    System.out.println("Camino más corto encontrado: " + pathS);
+//    List<Long> nodeIdList = pathS.getVertexList().stream()
+//            .map(Long::parseLong)
+//            .collect(Collectors.toList());
+//
+//
+//
+//    // Aquí se llama al método para generar el GeoJSON
+//    pathToGeoJson.convertPathToGeoJson(nodeIdList, graphController, "paths.geojson");
+//    System.out.println("Archivo GeoJSON generado correctamente.");
+//} else {
+//    System.out.println("No se encontró un camino.");
+//}
+//
+        if (pathF != null) {
+            System.out.println("Camino más rápido encontrado" + pathF);
+            List<Long> nodeidList2 = pathF.getVertexList().stream()
+                    .map(Long::parseLong)
+                    .collect(Collectors.toList());
+
+            pathToGeoJson.convertPathToGeoJson(nodeidList2, graphController, "pathF.geojson");
+            System.out.println("Archivo GeoJSON generado correctamente.");
+        }else{
+            System.out.println("No se encontró un camino.");
+        }
 
 
+//
+//        if (paths != null) {
+//            System.out.println(STR."Caminos alternativos encontrados: \{paths}");
+//            List<List<Long>> allPaths = new ArrayList<>();
+//            for (GraphPath<String, DefaultWeightedEdge> path : paths) {
+//                List<Long> nodeIdList = path.getVertexList().stream()
+//                        .map(Long::parseLong)
+//                        .collect(Collectors.toList());
+//                //System.out.println(path);
+//                allPaths.add(nodeIdList);
+//             }
+//            pathToGeoJson.convertPathsToGeoJson(allPaths, graphController, "paths.geojson");
+//
+//            System.out.println("Archivo GeoJSON generados correctamente.");
+//        } else {
+//            System.out.println("No se encontraron caminos alternativos.");
+//        }
+
+
+
+
+        /*
         if (path != null) {
             System.out.println("Camino encontrado: " + path);
             List<Long> nodeIdList = path.getVertexList().stream()
@@ -62,4 +118,11 @@ public class MainAStar {
         }
 
 
+
+
+
+
+
+
     }}
+ */
