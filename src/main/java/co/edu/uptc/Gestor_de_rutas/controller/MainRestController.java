@@ -4,6 +4,8 @@ import co.edu.uptc.Gestor_de_rutas.model.OrderDelivery;
 import co.edu.uptc.Gestor_de_rutas.model.State;
 import co.edu.uptc.Gestor_de_rutas.service.OrderDeliveryService;
 import co.edu.uptc.Gestor_de_rutas.service.PathService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,10 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -55,27 +61,32 @@ public class MainRestController {
      */
 
     @PostMapping("/startRoute")
-    public ResponseEntity<String> startRoute(@CookieValue(value = "orderId", defaultValue = "") String orderId) {
+    public ResponseEntity<String> startRoute(@CookieValue(value = "orderIds", defaultValue = "") String orderIds) {
         try {
-            // el nodo final es el destino de la orden
-            OrderDelivery order = orderDeliveryService.getOrderDeliveryById(orderId).orElse(null);
-            if (order == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe la orden con ese id");
+            // Parse the JSON string from the cookie
+            List<String> orderIdList = new ObjectMapper().readValue(URLDecoder.decode(orderIds, StandardCharsets.UTF_8), new TypeReference<List<String>>() {});
+            System.out.println(orderIdList);
+            for (String orderId : orderIdList) {
+                // el nodo final es el destino de la orden
+                OrderDelivery order = orderDeliveryService.getOrderDeliveryById(orderId).orElse(null);
+                if (order == null) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe la orden con id: " + orderId);
+                }
+                pathService.setEndNodeID(order.getDestination());
+                System.out.println(order.getDestination());
+                // calcular los recorridos y sha
+                pathService.shortestPaths();
+                pathService.shortestPathAStar();
+                // cambiar el estado de la orden
+                orderDeliveryService.updateOrderState(orderId, "SHIPPED");
             }
-            pathService.setEndNodeID(order.getDestination());
-            System.out.println(order.getDestination());
-            // calcular los recorridos y sha
-            pathService.shortestPaths();
-            pathService.shortestPathAStar();
 
-            //ah y esa cosa de cambiar el estado iría
-            // por acá, nu?
-            orderDeliveryService.updateOrderState(orderId, "SHIPPED");
-            return ResponseEntity.ok("Ruta okay");
-        } catch (NumberFormatException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe la orden con ese id");
+            return ResponseEntity.ok("Ruta iniciada correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al procesar las órdenes: " + e.getMessage());
         }
     }
+
 
 
 /*

@@ -43,7 +43,6 @@ public class RouteController {
                     nextEndpoint = endpoint;
                 }
             }
-
             if (nextEndpoint != null) {
                 route.add(nextEndpoint);
                 remainingEndpoints.remove(nextEndpoint);

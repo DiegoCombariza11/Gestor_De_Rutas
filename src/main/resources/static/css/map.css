@@ -1,3 +1,7 @@
+#navbar {
+    background-color: #81bfff;
+    height: fit-content;
+}
 #content {
     padding-top: 50px;
 }
@@ -33,6 +37,15 @@
 #finish-route {
     justify-content: center;
 }
+#rapto-name, #trico-name, #trico-speed, #rapto-speed, #rapto-distance, #trico-distance, #trico-distance {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    text-align: left;
+    margin-top: 5px;
+
+}
+
 
 .button-container {
     display: flex;

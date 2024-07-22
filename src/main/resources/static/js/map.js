@@ -5,16 +5,18 @@ var states = ['En Camino', 'Entregado', 'Devuelto'];
 // Funciones de inicialización
 document.addEventListener('DOMContentLoaded', initialize);
 
+
 function initialize() {
     map = initializeMap();
     loadOrder();
+    loadTricoInfo();
     addFinishRouteListener();
     setTimeout(loadGeoJSON.bind(null, map), 1000);
 }
 
 // Funciones de mapa
 function initializeMap() {
-    var map = L.map('map').setView([5.704144, -72.9425035], 13);
+    let map = L.map('map').setView([5.704144, -72.9425035], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap rawwr'
@@ -23,7 +25,7 @@ function initializeMap() {
 }
 
 function loadGeoJSON(map) {
-    var uniqueVersion = new Date().getTime();
+    let uniqueVersion = new Date().getTime();
     Promise.all([
         fetch('/shortestPathAStar.geojson?version=' + uniqueVersion).then(response => response.json()),
         fetch('/shortestPath.geojson?version=' + uniqueVersion).then(response => response.json()),
@@ -42,7 +44,7 @@ function processGeoJSON(geojson, geojsonIndex) {
 }
 
 function processFeature(geojsonIndex, feature) {
-    var style = {
+    let style = {
         color: geojsonIndex === 0 ? 'blue' : 'green',
         weight: 5,
         opacity: 0.65
@@ -58,7 +60,7 @@ function processFeature(geojsonIndex, feature) {
 }
 
 function addMarkerToMap(feature) {
-    var marker = L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]]);
+    let marker = L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]]);
     if (feature.properties && feature.properties.osmid) {
         marker.bindPopup("OSM ID: " + feature.properties.osmid);
         marker.setIcon(L.divIcon({
@@ -70,11 +72,13 @@ function addMarkerToMap(feature) {
     marker.addTo(map);
 }
 
+
 function onEachFeature(feature, layer) {
     if (feature.properties && feature.properties.nombre) {
         layer.bindPopup(feature.properties.nombre);
     }
 }
+
 
 // Funciones de orden
 function loadOrder() {
@@ -83,6 +87,22 @@ function loadOrder() {
     .then(displayOrder)
     .catch(console.log.bind(null, 'Error:'));
 }
+
+
+
+function loadTricoInfo(){
+    console.log('Loading trico info')
+    fetch('/api/tricoInfo')
+        .then(handleOrderResponse)
+        .then(data => {
+           // document.getElementById('trico-speed').innerText = "Tiempo: "+ data.time+"min";
+            document.getElementById('trico-distance').innerText = "Distancia: "+ data.distance+"m";
+            console.log(data.distance+ data);
+        });
+}
+
+
+
 
 function handleOrderResponse(response) {
     if (!response.ok) {
@@ -93,25 +113,25 @@ function handleOrderResponse(response) {
 
 function displayOrder(order) {
     let buyer = order.buyer;
-    var orderInfoElement = document.querySelector('#order-info .data-container');
+    let orderInfoElement = document.querySelector('#order-info .data-container');
 
     appendElementToParent(orderInfoElement, 'p', 'ID: ' + order.id);
     appendElementToParent(orderInfoElement, 'p', 'Nombre: ' + buyer.firstName);
     appendElementToParent(orderInfoElement, 'p', 'Contacto: ' + buyer.contact);
     appendElementToParent(orderInfoElement, 'p', 'Observaciones: ' + order.observation);
 
-    var stateElement = createStateElement(order);
+    let stateElement = createStateElement(order);
     orderInfoElement.appendChild(stateElement);
 }
 
 function appendElementToParent(parent, elementType, text) {
-    var element = document.createElement(elementType);
+    let element = document.createElement(elementType);
     element.innerText = text;
     parent.appendChild(element);
 }
 
 function createStateElement(order) {
-    var stateElement = document.createElement('select');
+    let stateElement = document.createElement('select');
     states.forEach(function (state) {
         var optionElement = document.createElement('option');
         optionElement.value = state;
@@ -127,7 +147,7 @@ function createStateElement(order) {
 }
 
 function updateOrderState() {
-    var newstate = this.value;
+    let newstate = this.value;
     fetch('/orderDelivery/updateState', {
         method: 'POST',
         headers: {
@@ -154,6 +174,15 @@ function addFinishRouteListener() {
 
 function finishRoute() {
     console.log('Finish route button clicked');
+    let orderState = document.querySelector('#order-info select').value;
+    if(orderState == 'En Camino'){
+        let confirmResult =window.confirm('La orden no ha sido entregada, ¿desea marcar como cancelado y finalizar la ruta?');
+        if (confirmResult){
+            updateOrderState('Cacelado')
+        }else {
+            return;
+        }
+    }
     fetch('/api/endRoute', {
         method: 'POST',
         headers: {
