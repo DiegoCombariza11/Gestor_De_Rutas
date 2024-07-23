@@ -11,7 +11,7 @@ function initialize() {
     loadOrder();
     loadTricoInfo();
     addFinishRouteListener();
-    setTimeout(loadGeoJSON.bind(null, map), 1000);
+    setTimeout(loadGeoJSON.bind(null, map), 100);
 }
 
 // Funciones de mapa
@@ -82,7 +82,7 @@ function onEachFeature(feature, layer) {
 
 // Funciones de orden
 function loadOrder() {
-    fetch('/orderDelivery/showOrder')
+    fetch('/orderDelivery/showOrders')
     .then(handleOrderResponse)
     .then(displayOrder)
     .catch(console.log.bind(null, 'Error:'));
@@ -95,9 +95,9 @@ function loadTricoInfo(){
     fetch('/api/tricoInfo')
         .then(handleOrderResponse)
         .then(data => {
-           // document.getElementById('trico-speed').innerText = "Tiempo: "+ data.time+"min";
+            document.getElementById('trico-speed').innerText = "Tiempo: "+ data.time+"min";
             document.getElementById('trico-distance').innerText = "Distancia: "+ data.distance+"m";
-            console.log(data.distance+ data);
+            console.log(data.distance+ data.time);
         });
 }
 
@@ -111,17 +111,22 @@ function handleOrderResponse(response) {
     return response.json();
 }
 
-function displayOrder(order) {
-    let buyer = order.buyer;
+function displayOrder(orders) {
+
     let orderInfoElement = document.querySelector('#order-info .data-container');
+    orders.forEach(order =>{
+        let buyer = order.buyer;
+        appendElementToParent(orderInfoElement, 'p', 'ID: ' + order.id);
+        appendElementToParent(orderInfoElement, 'p', 'Nombre: ' + buyer.firstName);
+        appendElementToParent(orderInfoElement, 'p', 'Contacto: ' + buyer.contact);
+        appendElementToParent(orderInfoElement, 'p', 'Observaciones: ' + order.observation);
+        appendElementToParent(orderInfoElement, 'p', 'Dirección: ' + order.destination);
+        let stateElement = createStateElement(order);
+        orderInfoElement.appendChild(stateElement);
 
-    appendElementToParent(orderInfoElement, 'p', 'ID: ' + order.id);
-    appendElementToParent(orderInfoElement, 'p', 'Nombre: ' + buyer.firstName);
-    appendElementToParent(orderInfoElement, 'p', 'Contacto: ' + buyer.contact);
-    appendElementToParent(orderInfoElement, 'p', 'Observaciones: ' + order.observation);
+    })
 
-    let stateElement = createStateElement(order);
-    orderInfoElement.appendChild(stateElement);
+
 }
 
 function appendElementToParent(parent, elementType, text) {

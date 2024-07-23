@@ -6,12 +6,17 @@ import co.edu.uptc.Gestor_de_rutas.model.Package;
 import co.edu.uptc.Gestor_de_rutas.repository.OrderDeliveryRepository;
 import co.edu.uptc.Gestor_de_rutas.service.OrderDeliveryService;
 import co.edu.uptc.Gestor_de_rutas.service.PackageService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -58,6 +63,29 @@ public class OrderDeliveryRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @GetMapping("/showOrders")
+public ResponseEntity<List<OrderDelivery>> showOrders(@CookieValue(value = "orderIds", defaultValue = "") String orderIds) {
+    try {
+        List<String> orderIdList = new ObjectMapper().readValue(URLDecoder.decode(orderIds, StandardCharsets.UTF_8), new TypeReference<List<String>>() {});
+        List<OrderDelivery> orders = new ArrayList<>();
+
+        for (String orderId : orderIdList) {
+            Optional<OrderDelivery> order = orderDeliveryRepository.findById(orderId);
+            if (order.isPresent()) {
+                orders.add(order.get());
+            }
+        }
+
+        if (orders.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.ok(orders);
+        }
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+}
 
     @GetMapping("/showAll")
     public List<OrderDelivery> getAllOrderDeliveries() {

@@ -45,6 +45,7 @@ public class MainRestController {
     document.getElementById('myButton').addEventListener('click', function() {
     fetch('/api/startRoute', {
         method: 'POST',
+
         // ...otros parámetros de la solicitud
     })
     .then(response => response.json())

@@ -57,7 +57,7 @@ public class DataLoader implements CommandLineRunner {
                         "Pedido de electrodomésticos",
                         "Frágil",
                         packages.get(1),
-                        "1016182972"
+                        "iwoka"
                 ),
                 new OrderDelivery(
                         "3",
@@ -67,7 +67,7 @@ public class DataLoader implements CommandLineRunner {
                         "Pedido de electrodomésticos de cocina",
                         "Ninguna",
                         packages.get(2),
-                        "1016185738"
+                        "parque de la villa"
                 ),
                 new OrderDelivery(
                         "4",
