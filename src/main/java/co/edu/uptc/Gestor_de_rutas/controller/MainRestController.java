@@ -1,5 +1,6 @@
 package co.edu.uptc.Gestor_de_rutas.controller;
 
+import co.edu.uptc.Gestor_de_rutas.logic.RouteController;
 import co.edu.uptc.Gestor_de_rutas.model.OrderDelivery;
 import co.edu.uptc.Gestor_de_rutas.model.State;
 import co.edu.uptc.Gestor_de_rutas.service.OrderDeliveryService;
@@ -26,7 +27,7 @@ public class MainRestController {
 
     private final OrderDeliveryService orderDeliveryService;
     private final PathService pathService;
-
+    private RouteController routeController;
 
 
 
@@ -62,6 +63,7 @@ public class MainRestController {
 
     @PostMapping("/startRoute")
     public ResponseEntity<String> startRoute(@CookieValue(value = "orderIds", defaultValue = "") String orderIds) {
+        routeController= new RouteController();
         try {
             // Parse the JSON string from the cookie
             List<String> orderIdList = new ObjectMapper().readValue(URLDecoder.decode(orderIds, StandardCharsets.UTF_8), new TypeReference<List<String>>() {});
@@ -72,7 +74,7 @@ public class MainRestController {
                 if (order == null) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe la orden con id: " + orderId);
                 }
-                pathService.setEndNodeID(order.getDestination());
+                pathService.setEndNodeID(routeController.getOsmId(order.getDestination()));
                 System.out.println(order.getDestination());
                 // calcular los recorridos y sha
                 pathService.shortestPaths();

@@ -20,12 +20,12 @@ public class Main {
         RouteController routeController = new RouteController();
         Long startNodeId = 1016196839L;
         Long endNodeId = 7787924883L;
-        List<Long> endNodes = new ArrayList<>();
-        List<GraphPath<Long, DefaultWeightedEdge>> c=dijkstraAlgorithm.getKShortestPaths(startNodeId, endNodeId, controller.getGraph(), 3);
-        for (int i = 0; i < c.size(); i++) {
-            geoJsonMapper.convertPathToGeoJson(routeController.getPath(c.get(i).getVertexList(), controller.getGraph(), controller), controller, "src/main/resources/templates/path"+(i+1)+".geojson");
-//           endNodes.addAll(c.get(i).getVertexList());
-        }
+//        List<Long> endNodes = new ArrayList<>();
+//        List<GraphPath<Long, DefaultWeightedEdge>> c=dijkstraAlgorithm.getKShortestPaths(startNodeId, endNodeId, controller.getGraph(), 3);
+//        for (int i = 0; i < c.size(); i++) {
+//            geoJsonMapper.convertPathToGeoJson(routeController.getPath(c.get(i).getVertexList(), controller.getGraph(), controller), controller, "src/main/resources/templates/path"+(i+1)+".geojson");
+////           endNodes.addAll(c.get(i).getVertexList());
+//        }
         //List<Long> endNodes = List.of(1016183269L,startNodeId, endNodeId,1016185698L);
 //        List<Long> route= routeController.setRoute(endNodes, controller.getGraph(), controller);
 //        //double distance = dijkstraAlgorithm.dijkstra(startNodeId, endNodeId, controller.getGraph());
@@ -39,6 +39,6 @@ public class Main {
 //        }
 //        System.out.println("Ruta: " + path);
 //        geoJsonMapper.convertPathToGeoJson(routeController.getPath(endNodes, controller.getGraph(), controller), controller, "src/main/resources/templates/path.geojson");
-        //System.out.println(routeController.getOsmId("UPTC, Sogamoso, Colombia"));
+       //System.out.println(routeController.getOsmId("iwoka, Sogamoso, Boyacá", controller));
     }
 }

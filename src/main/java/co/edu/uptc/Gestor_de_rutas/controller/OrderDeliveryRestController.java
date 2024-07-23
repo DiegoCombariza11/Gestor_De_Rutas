@@ -82,7 +82,7 @@ public class OrderDeliveryRestController {
             String weight = payload.get("weight");
             Package pack = new Package(id, nameProduct, Double.parseDouble(price),weight);
             packageService.savePackage(pack);
-            OrderDelivery orderDelivery = new OrderDelivery(id, buyer, deadLine, State.PENDING, description, observation, pack, destination);
+            OrderDelivery orderDelivery = new OrderDelivery(id, buyer, deadLine, State.PENDING, description, observation, pack, destination+",Sogamoso, Colombia");
             orderDeliveryRepository.save(orderDelivery);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
