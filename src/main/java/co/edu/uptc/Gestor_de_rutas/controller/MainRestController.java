@@ -75,7 +75,7 @@ public class MainRestController {
                 if (order == null) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe la orden con id: " + orderId);
                 }
-                pathService.setEndNodeID(routeController.getOsmId(order.getDestination()));
+                pathService.setEndNodeID(String.valueOf(order.getOsmId()));
                 System.out.println(order.getDestination());
                 // calcular los recorridos y sha
                 pathService.shortestPaths();
