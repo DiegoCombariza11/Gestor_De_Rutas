@@ -153,7 +153,7 @@ function createStateElement(order) {
 
 function updateOrderState() {
     let newstate = this.value;
-    fetch('/orderDelivery/updateState', {
+    fetch('/orderDelivery/updateStates', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
