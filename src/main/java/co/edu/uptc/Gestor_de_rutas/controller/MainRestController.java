@@ -80,6 +80,7 @@ public class MainRestController {
                 // calcular los recorridos y sha
                 pathService.shortestPaths();
                 pathService.shortestPathAStar();
+                pathService.shortestPathsAStar();
                 // cambiar el estado de la orden
                 orderDeliveryService.updateOrderState(orderId, "SHIPPED");
             }

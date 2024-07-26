@@ -54,6 +54,19 @@ public class PathService {
         }
     }
 
+    public void shortestPathsAStar() {
+        this.graphController = new GraphController();
+        this.aStarAlgorithm = AStarAlgorithm.getInstance(graphController);
+        List<GraphPath<Long, CustomEdge>> shortestPaths = aStarAlgorithm.findTwoShortestPaths(startNodeId, Long.valueOf(endNodeID));
+        if (shortestPaths != null) {
+            List<Long> shortestPathsNodes = new ArrayList<>(shortestPaths.get(0).getVertexList());
+            List<Long> shortestPathsNodes2 = new ArrayList<>(shortestPaths.get(1).getVertexList());
+            pathToGeoJson.convertPathToGeoJson(shortestPathsNodes, graphController, "src/main/resources/static/shortestPathAStar1.geojson");
+            pathToGeoJson.convertPathToGeoJson(shortestPathsNodes2, graphController, "src/main/resources/static/shortestPathAStar2.geojson");
+        }
+    }
+
+
 
     /*
 

@@ -14,7 +14,10 @@ import org.jgrapht.alg.shortestpath.AStarShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class AStarAlgorithm {
@@ -80,6 +83,38 @@ public static AStarAlgorithm getInstance(GraphController graphController) {
           return shortestPathAStar;
     }
 
+
+    public List<GraphPath<Long, CustomEdge>> findTwoShortestPaths(Long sourceVertex, Long targetVertex) {
+
+    AStarShortestPath<Long, CustomEdge> aStarShortestPath = new AStarShortestPath<>(graph, distanceBasedHeuristic);
+    GraphPath<Long, CustomEdge> shortestPathAStar = aStarShortestPath.getPath(sourceVertex, targetVertex);
+    setShortestPath(shortestPathAStar);
+    shortestPathInfo.setDistance(getDistanceOfpathG(shortestPathAStar));
+    shortestPathInfo.setTime(getTimeOfPath(shortestPathAStar));
+
+    Set<Long> shortestPathNodes = new HashSet<>(shortestPathAStar.getVertexList());
+
+    AStarAdmissibleHeuristic<Long> secondPathHeuristic = new AStarAdmissibleHeuristic<>() {
+        @Override
+        public double getCostEstimate(Long sourceVertex, Long targetVertex) {
+            if (shortestPathNodes.contains(sourceVertex) || shortestPathNodes.contains(targetVertex)) {
+                return Double.MAX_VALUE;
+            }
+            Node sourceNode = graphController.getNodeById(sourceVertex);
+            Node targetNode = graphController.getNodeById(targetVertex);
+            if (sourceNode != null && targetNode != null) {
+                return haversine(sourceNode.getY(), sourceNode.getX(), targetNode.getY(), targetNode.getX());
+            }
+            return Double.MAX_VALUE;
+        }
+    };
+
+    AStarShortestPath<Long, CustomEdge> aStarSecondPath = new AStarShortestPath<>(graph, secondPathHeuristic);
+    GraphPath<Long, CustomEdge> secondShortestPathAStar = aStarSecondPath.getPath(sourceVertex, targetVertex);
+
+    // Return the two paths
+    return Arrays.asList(shortestPathAStar, secondShortestPathAStar);
+}
 
 
     public double getDistanceOfpathG(GraphPath<Long, CustomEdge> path){
