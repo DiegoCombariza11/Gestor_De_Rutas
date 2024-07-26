@@ -50,6 +50,15 @@ public class OrderDeliveryRestController {
         orderDeliveryService.updateOrderState(id, String.valueOf(parse(state)));
     }
 
+    @PostMapping("/updateStates")
+    public void updateOrderStates(@RequestBody Map<String, Object> body) {
+        List<String> ids = (List<String>) body.get("ids");
+        String state = (String) body.get("state");
+        for (String id : ids) {
+            orderDeliveryService.updateOrderState(id, String.valueOf(parse(state)));
+        }
+    }
+
     @GetMapping("/show/{id}")
     public Optional<OrderDelivery> getOrderDeliveryById(@PathVariable("id") String id) {
         return orderDeliveryRepository.findById(id);
