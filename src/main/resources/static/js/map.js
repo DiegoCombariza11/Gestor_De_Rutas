@@ -27,7 +27,8 @@ function initializeMap() {
 function loadGeoJSON(map) {
     let uniqueVersion = new Date().getTime();
     Promise.all([
-        fetch('/shortestPathAStar.geojson?version=' + uniqueVersion).then(response => response.json()),
+        fetch('/shortestPathAStar1.geojson?version=' + uniqueVersion).then(response => response.json()),
+        fetch('/shortestPathAStar2.geojson?version=' + uniqueVersion).then(response => response.json()),
         fetch('/shortestPath.geojson?version=' + uniqueVersion).then(response => response.json()),
     ])
     .then(handleGeoJSONData)
@@ -45,7 +46,7 @@ function processGeoJSON(geojson, geojsonIndex) {
 
 function processFeature(geojsonIndex, feature) {
     let style = {
-        color: geojsonIndex === 0 ? 'blue' : 'green',
+        color: geojsonIndex === 0 ? 'blue' : (geojsonIndex === 1) ? 'orange': 'green',
         weight: 5,
         opacity: 0.65
     };
@@ -95,9 +96,9 @@ function loadTricoInfo(){
     fetch('/api/tricoInfo')
         .then(handleOrderResponse)
         .then(data => {
-           // document.getElementById('trico-speed').innerText = "Tiempo: "+ data.time+"min";
+            document.getElementById('trico-speed').innerText = "Tiempo: "+ data.time+"min";
             document.getElementById('trico-distance').innerText = "Distancia: "+ data.distance+"m";
-            console.log(data.distance+ data);
+            console.log(data.distance+ data.time);
         });
 }
 
