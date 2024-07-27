@@ -11,7 +11,7 @@ function initialize() {
     loadOrder();
     loadPathsInfo();
     addFinishRouteListener();
-    setTimeout(loadGeoJSON.bind(null, map), 1000);
+    setTimeout(loadGeoJSON.bind(null, map), 100);
 }
 
 // Funciones de mapa

@@ -1,5 +1,6 @@
 package co.edu.uptc.Gestor_de_rutas.logic;
 
+import co.edu.uptc.Gestor_de_rutas.model.Node;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.json.JSONArray;
@@ -17,9 +18,11 @@ import java.util.List;
 
 public class RouteController {
     private DijkstraAlgorithm dijkstraAlgorithm;
+    private GraphController controller;
 
     public RouteController() {
         this.dijkstraAlgorithm = new DijkstraAlgorithm();
+        this.controller = new GraphController();
     }
 
     public List<Long> setRoute(List<Long> endpoints, Graph<Long, DefaultEdge> graph, GraphController controller) {
@@ -62,64 +65,91 @@ public class RouteController {
         return path;
     }
 
-    public Long getOsmId(String direction) throws UnsupportedEncodingException {
+    public String getOsmId(String direction) throws UnsupportedEncodingException {
         String encodedAddress = URLEncoder.encode(direction, StandardCharsets.UTF_8.toString());
-        String nominatimURL = "https://nominatim.openstreetmap.org/search?q=" + encodedAddress + "&format=geojson&addressdetails=1&limit=10";
+        String nominatimURL = "https://nominatim.openstreetmap.org/search?q=" + encodedAddress + "&format=geojson&addressdetails=1&limit=1";
         System.out.println(nominatimURL);
+
+        HttpURLConnection conn = null;
+        BufferedReader in = null;
+
         try {
-            // Send GET request
-            HttpURLConnection conn = (HttpURLConnection) new URL(nominatimURL).openConnection();
-            conn.setInstanceFollowRedirects(true); // Handle redirections
+            conn = (HttpURLConnection) new URL(nominatimURL).openConnection();
+            conn.setInstanceFollowRedirects(true);
             conn.setRequestMethod("GET");
             conn.setRequestProperty("User-Agent", "Mozilla/5.0");
-
-            // Read response
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String inputLine;
+            in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder content = new StringBuilder();
+            String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 content.append(inputLine);
             }
 
-            // Close connections
-            in.close();
-            conn.disconnect();
-
-            // Print the response for debugging purposes
             System.out.println("Response from Nominatim: " + content.toString());
-
-            // Parse JSON response
             String response = content.toString();
             JSONObject jsonObject = new JSONObject(response);
             if (jsonObject.has("features")) {
                 JSONArray features = jsonObject.getJSONArray("features");
-                boolean foundStreet = false;
                 for (int i = 0; i < features.length(); i++) {
                     JSONObject feature = features.getJSONObject(i);
-                    JSONObject properties = feature.getJSONObject("properties");
-                    String osmType = properties.getString("osm_type");
-                    String featureType = properties.optString("class", "");
+                    JSONObject geometry = feature.getJSONObject("geometry");
+                    JSONArray coordinates = geometry.getJSONArray("coordinates");
 
-                    // Check if the feature is a street (highway)
-                    if ("way".equals(osmType) && ("highway".equals(featureType))) {
-                        long osmId = properties.getLong("osm_id");
-                        System.out.println("Found Street:");
-                        System.out.println("OSM ID: " + osmId);
-                        System.out.println("OSM Type: " + osmType);
-                        System.out.println("Feature Type: " + featureType);
-                        return osmId;
+                    double lon = coordinates.getDouble(0);
+                    double lat = coordinates.getDouble(1);
+
+                    long osmId = findStreet(lat, lon);
+                    if (osmId != -1L) {
+                        return osmId+""; // Devuelve el ID de OSM si se encuentra una calle
                     }
                 }
-                if (!foundStreet) {
-                    System.out.println("No street found for the given address.");
-                }
+                System.out.println("No street found for the given address.");
             } else {
                 System.out.println("Unexpected response format: " + response);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                conn.disconnect();
+            }
         }
-        return 0L;
+        return 0+"";
+    }
+
+    public long findStreet(double lat, double lon) {
+        long closestVertex = -1L;
+        double closestDistance = Double.MAX_VALUE;
+
+        for (Node vertex : this.controller.getNodes()) {
+            if (vertex != null) {
+                double[] geometry = vertex.getGeometry().getCoordinates();
+                double distance = haversine(lat, lon, geometry[1], geometry[0]);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestVertex = vertex.getOsmid();
+                }
+            }
+        }
+        return closestVertex;
+    }
+
+    private double haversine(double lat1, double lon1, double lat2, double lon2) {
+        final int R = 6371; // Radio de la Tierra en kilómetros
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
     }
 }

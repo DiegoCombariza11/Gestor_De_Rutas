@@ -1,5 +1,6 @@
 package co.edu.uptc.Gestor_de_rutas.controller;
 
+import co.edu.uptc.Gestor_de_rutas.logic.RouteController;
 import co.edu.uptc.Gestor_de_rutas.model.OrderDelivery;
 import co.edu.uptc.Gestor_de_rutas.model.State;
 import co.edu.uptc.Gestor_de_rutas.persistence.InfoToJson;
@@ -29,6 +30,7 @@ public class MainRestController {
     private final OrderDeliveryService orderDeliveryService;
     private final PathService pathService;
     private InfoToJson infoToJson;
+    private RouteController routeController;
 
 
 
@@ -46,6 +48,7 @@ public class MainRestController {
     document.getElementById('myButton').addEventListener('click', function() {
     fetch('/api/startRoute', {
         method: 'POST',
+
         // ...otros parámetros de la solicitud
     })
     .then(response => response.json())
@@ -64,13 +67,13 @@ public class MainRestController {
 
     @PostMapping("/startRoute")
 public ResponseEntity<String> startRoute(@CookieValue(value = "orderId", defaultValue = "") String orderId, HttpSession session) {
-    try {
+    routeController= new RouteController();try {
         // el nodo final es el destino de la orden
         OrderDelivery order = orderDeliveryService.getOrderDeliveryById(orderId).orElse(null);
         if (order == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe la orden con id: " + orderId);
         }
-        pathService.setEndNodeID(order.getDestination());
+        pathService.setEndNodeID(routeController.getOsmId(order.getDestination()));
         infoToJson=new InfoToJson();
         infoToJson.deleteFile("src/main/resources/static/shortestPathInfo.json");
         System.out.println(order.getDestination());

@@ -39,7 +39,7 @@ public class Main {
 //        }
 //        System.out.println("Ruta: " + path);
        geoJsonMapper.convertPathToGeoJson(routeController.getPath(endNodes, controller.getGraph(), controller), controller, "src/main/resources/templates/path.geojson");
-        //System.out.println(routeController.getOsmId("UPTC, Sogamoso, Colombia"));
+       //System.out.println(routeController.getOsmId("iwoka, Sogamoso, Boyacá", controller));
         System.out.println(dijkstraAlgorithm.longPath(dijkstraAlgorithm.getShortestPath(startNodeId, endNodeId, controller.getGraph()).getVertexList(), controller));
         System.out.println(dijkstraAlgorithm.getDijkstraTime(dijkstraAlgorithm.getShortestPath(startNodeId, endNodeId, controller.getGraph()).getVertexList(), controller));
     }

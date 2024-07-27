@@ -6,12 +6,17 @@ import co.edu.uptc.Gestor_de_rutas.model.Package;
 import co.edu.uptc.Gestor_de_rutas.repository.OrderDeliveryRepository;
 import co.edu.uptc.Gestor_de_rutas.service.OrderDeliveryService;
 import co.edu.uptc.Gestor_de_rutas.service.PackageService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -43,6 +48,15 @@ public class OrderDeliveryRestController {
         orderDeliveryService.updateOrderState(id, String.valueOf(parse(state)));
     }
 
+    @PostMapping("/updateStates")
+    public void updateOrderStates(@RequestBody Map<String, Object> body) {
+        List<String> ids = (List<String>) body.get("ids");
+        String state = (String) body.get("state");
+        for (String id : ids) {
+            orderDeliveryService.updateOrderState(id, String.valueOf(parse(state)));
+        }
+    }
+
     @GetMapping("/show/{id}")
     public Optional<OrderDelivery> getOrderDeliveryById(@PathVariable("id") String id) {
         return orderDeliveryRepository.findById(id);
@@ -58,6 +72,29 @@ public class OrderDeliveryRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @GetMapping("/showOrders")
+public ResponseEntity<List<OrderDelivery>> showOrders(@CookieValue(value = "orderIds", defaultValue = "") String orderIds) {
+    try {
+        List<String> orderIdList = new ObjectMapper().readValue(URLDecoder.decode(orderIds, StandardCharsets.UTF_8), new TypeReference<List<String>>() {});
+        List<OrderDelivery> orders = new ArrayList<>();
+
+        for (String orderId : orderIdList) {
+            Optional<OrderDelivery> order = orderDeliveryRepository.findById(orderId);
+            if (order.isPresent()) {
+                orders.add(order.get());
+            }
+        }
+
+        if (orders.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.ok(orders);
+        }
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+}
 
     @GetMapping("/showAll")
     public List<OrderDelivery> getAllOrderDeliveries() {
@@ -82,7 +119,7 @@ public class OrderDeliveryRestController {
             String weight = payload.get("weight");
             Package pack = new Package(id, nameProduct, Double.parseDouble(price),weight);
             packageService.savePackage(pack);
-            OrderDelivery orderDelivery = new OrderDelivery(id, buyer, deadLine, State.PENDING, description, observation, pack, destination);
+            OrderDelivery orderDelivery = new OrderDelivery(id, buyer, deadLine, State.PENDING, description, observation, pack, destination+",Sogamoso, Colombia");
             orderDeliveryRepository.save(orderDelivery);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
