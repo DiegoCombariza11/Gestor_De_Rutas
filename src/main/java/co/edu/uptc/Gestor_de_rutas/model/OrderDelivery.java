@@ -23,10 +23,9 @@ public class OrderDelivery {
     private String observation;
     private Package pack;
     private String destination;
-    private Long osmId;
 
     public OrderDelivery(String id, Buyer buyer, LocalDate deadLine, State state,
-                         String description, String observation, Package pack, String destination, Long osmId) {
+                         String description, String observation, Package pack, String destination) {
         this.id = id;
         this.buyer = buyer;
         this.deadLine = deadLine;
@@ -35,7 +34,6 @@ public class OrderDelivery {
         this.observation = observation;
         this.pack = pack;
         this.destination = destination;
-        this.osmId = osmId;
 
     }
 }

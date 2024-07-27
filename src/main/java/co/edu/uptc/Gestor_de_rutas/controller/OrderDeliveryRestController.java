@@ -1,7 +1,6 @@
 package co.edu.uptc.Gestor_de_rutas.controller;
 
 import co.edu.uptc.Gestor_de_rutas.logic.OrderDeliveryController;
-import co.edu.uptc.Gestor_de_rutas.logic.RouteController;
 import co.edu.uptc.Gestor_de_rutas.model.*;
 import co.edu.uptc.Gestor_de_rutas.model.Package;
 import co.edu.uptc.Gestor_de_rutas.repository.OrderDeliveryRepository;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -30,7 +28,7 @@ public class OrderDeliveryRestController {
     private final OrderDeliveryRepository orderDeliveryRepository;
     private final PackageService packageService;
     private final OrderDeliveryService orderDeliveryService;
-    private RouteController routeController;
+
     private OrderDeliveryController orderDeliveryController;
 
     @GetMapping("/allOrders")
@@ -107,16 +105,11 @@ public ResponseEntity<List<OrderDelivery>> showOrders(@CookieValue(value = "orde
     public ResponseEntity<Void> saveOrderDelivery(@RequestBody Map<String, String> payload) {
         try {
             String id = (payload.get("id"));
-            String destination = payload.get("destination");
-            Long osmId = getOsmId(destination+", Sogamoso, Colombia");
-            if (osmId == 0L) {
-                return ResponseEntity.badRequest().build();
-            }
-            System.out.println(osmId);
             String personName = payload.get("personName");
             String personLastName = payload.get("personLastName");
             String personEmail = payload.get("personEmail");
             String personPhone = payload.get("personPhone");
+            String destination = payload.get("destination");
             Buyer buyer = new Buyer(personName, personLastName, personEmail, personPhone);
             LocalDate deadLine = LocalDate.now();
             String nameProduct= payload.get("nameProduct");
@@ -126,7 +119,7 @@ public ResponseEntity<List<OrderDelivery>> showOrders(@CookieValue(value = "orde
             String weight = payload.get("weight");
             Package pack = new Package(id, nameProduct, Double.parseDouble(price),weight);
             packageService.savePackage(pack);
-            OrderDelivery orderDelivery = new OrderDelivery(id, buyer, deadLine, State.PENDING, description, observation, pack, destination+", Sogamoso, Colombia", osmId);
+            OrderDelivery orderDelivery = new OrderDelivery(id, buyer, deadLine, State.PENDING, description, observation, pack, destination+",Sogamoso, Colombia");
             orderDeliveryRepository.save(orderDelivery);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -134,10 +127,7 @@ public ResponseEntity<List<OrderDelivery>> showOrders(@CookieValue(value = "orde
             return ResponseEntity.badRequest().build();
         }
     }
-    public Long getOsmId(String direction) throws UnsupportedEncodingException {
-        routeController=new RouteController();
-        return routeController.getOsmId(direction);
-    }
+
     @DeleteMapping("/delete")
     public void deleteOrderDeliveryById(@RequestBody Map<String, String> payload) {
         orderDeliveryRepository.deleteById(payload.get("id"));
@@ -147,25 +137,20 @@ public ResponseEntity<List<OrderDelivery>> showOrders(@CookieValue(value = "orde
     public ResponseEntity<Void> updateOrderDelivery(@RequestBody Map<String, String> payload) {
         try {
             String id = (payload.get("id"));
-            String destination = payload.get("destination");
-            Long osmId = getOsmId(destination+", Sogamoso, Colombia");
-            if (osmId == 0L) {
-                return ResponseEntity.badRequest().build();
-            }
             String personName = payload.get("personName");
             String personLastName = payload.get("personLastName");
             String personEmail = payload.get("personEmail");
             String personPhone = payload.get("personPhone");
+            String destination = payload.get("destination");
             Buyer buyer = new Buyer(personName, personLastName, personEmail, personPhone);
-            LocalDate deadLine = LocalDate.now();
-            String nameProduct= payload.get("nameProduct");
+            LocalDate deadLine = LocalDate.parse(payload.get("deadLine"));
             String description = payload.get("description");
             String observation = payload.get("observation");
             String price= payload.get("price");
             String weight = payload.get("weight");
-            Package pack = new Package(id, nameProduct, Double.parseDouble(price),weight);
-            packageService.savePackage(pack);
-            OrderDelivery orderDelivery = new OrderDelivery(id, buyer, deadLine, State.PENDING, description, observation, pack, destination+", Sogamoso, Colombia", osmId);
+            Package pack = new Package(id, description, Double.parseDouble(price),weight);
+            packageService.updatePackage(pack);
+            OrderDelivery orderDelivery = new OrderDelivery(id, buyer, deadLine, State.PENDING, description, observation, pack, destination);
             orderDeliveryRepository.save(orderDelivery);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
