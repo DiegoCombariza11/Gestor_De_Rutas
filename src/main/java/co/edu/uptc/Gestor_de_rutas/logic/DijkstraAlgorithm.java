@@ -56,8 +56,10 @@ public class DijkstraAlgorithm {
             Long endNodeId = path.get(i + 1);
             double distance = distanceBetweenNodes(startNodeId, endNodeId, controller);
             double speed = speedBetweenNodes(startNodeId, endNodeId, controller);
+            System.out.println("Distancia entre nodos: " + distance + " Velocidad entre nodos: " + speed);
             if (distance > 0 && speed > 0) {
-                totalTime += (distance*1000 / speed)/60;
+                totalTime += (distance*60) / (speed*1000);
+                System.out.println("Tiempo entre nodos: " + totalTime);
             }
         }
         totalTime= Math.round(totalTime * 100.0) / 100.0;
