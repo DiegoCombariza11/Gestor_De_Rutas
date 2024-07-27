@@ -124,6 +124,9 @@ function loadPathsInfo() {
 //Segunda ruta
             document.getElementById('ptera-speed').innerText = "Tiempo: " + data[1].time + "min";
             document.getElementById('ptera-distance').innerText = "Distancia: " + data[1].distance + "m";
+//Tercera ruta
+            document.getElementById('rapto-speed').innerText = "Tiempo: " + data[2].time + "min";
+            document.getElementById('rapto-distance').innerText = "Distancia: " + data[2].distance + "m";
             console.log(data);
         })
         .catch(error => console.error('Error:', error));
