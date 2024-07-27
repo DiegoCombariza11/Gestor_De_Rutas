@@ -1,20 +1,23 @@
 $(document).ready(function() {
-    let shipmentIds = [];
+    let shipmentId = null;
 
     loadOrders().then(() => {
         $('#shipment-table-striped').DataTable();
 
         $('#shipment-table').on('change', '.shipment-checkbox', function() {
             var row = $(this).closest('tr');
-            var shipmentId = row.find('td:eq(1)').text();
+            var newShipmentId = row.find('td:eq(1)').text();
             var shipmentAddress = row.find('td:eq(2)').text();
 
             if ($(this).is(':checked')) {
-                shipmentIds.push(shipmentId);
-                $('#send-box').append('<p id="shipment-' + shipmentId + '">ID: ' + shipmentId + ' - Dirección: ' + shipmentAddress + '</p>');
-            } else {
-                shipmentIds = shipmentIds.filter(id => id !== shipmentId);
-                $('#shipment-' + shipmentId).remove();
+                if (shipmentId !== null) {
+                    $('#shipment-' + shipmentId).remove();
+                }
+                shipmentId = newShipmentId;
+                $('#send-box').html('<p id="shipment-' + shipmentId + '">ID: ' + shipmentId + ' - Dirección: ' + shipmentAddress + '</p>');
+            } else if (newShipmentId === shipmentId) {
+                shipmentId = null;
+                $('#shipment-' + newShipmentId).remove();
             }
         });
 
@@ -23,11 +26,11 @@ $(document).ready(function() {
         });
 
         $('#start-route-btn').on('click', function() {
-            if (shipmentIds.length === 0) {
+            if (shipmentId === null) {
                 alert('No se ha seleccionado ninguna orden');
                 return;
             }
-            document.cookie = 'orderIds=' + encodeURIComponent(JSON.stringify(shipmentIds)) + '; path=/';
+            document.cookie = 'orderId=' + encodeURIComponent(shipmentId) + '; path=/';
             fetch('/api/startRoute', {
                 method: 'POST',
                 headers: {
