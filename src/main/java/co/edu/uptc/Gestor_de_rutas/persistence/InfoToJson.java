@@ -18,4 +18,17 @@ public class InfoToJson {
             e.printStackTrace();
         }
     }
+    public void deleteFile(String filePath){
+        File file = new File(filePath);
+        file.delete();
+    }
+    public List<ShortestPathInfo> readInfoFromJson(String filePath) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.readValue(new File(filePath), List.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
