@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', initialize);
 function initialize() {
     map = initializeMap();
     loadOrder();
-    loadTricoInfo();
+    loadPathsInfo();
     addFinishRouteListener();
     setTimeout(loadGeoJSON.bind(null, map), 100);
 }
@@ -19,7 +19,7 @@ function initializeMap() {
     let map = L.map('map').setView([5.704144, -72.9425035], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '© OpenStreetMap rawwr'
+        attribution: '© OpenStreetMap'
     }).addTo(map);
     return map;
 }
@@ -31,27 +31,33 @@ function loadGeoJSON(map) {
         fetch('/shortestPathAStar2.geojson?version=' + uniqueVersion).then(response => response.json()),
         fetch('/shortestPath.geojson?version=' + uniqueVersion).then(response => response.json()),
     ])
-    .then(handleGeoJSONData)
-    .catch(console.error.bind(null, 'Error loading the geojson:'));
+        .then(handleGeoJSONData)
+        .catch(console.error.bind(null, 'Error loading the geojson:'));
 }
 
 function handleGeoJSONData(data) {
     data.forEach(processGeoJSON);
-   map.fitBounds(L.geoJSON(data[0]).getBounds());
+    map.fitBounds(L.geoJSON(data[0]).getBounds());
 }
 
 function processGeoJSON(geojson, geojsonIndex) {
-    geojson.features.forEach(processFeature.bind(null, geojsonIndex));
+    let features = geojson.features;
+    let isFirstPoint, isLastPoint;
+    features.forEach((feature, index) => {
+        isFirstPoint = index === 0;
+        isLastPoint = index === features.length - 1;
+        processFeature(geojsonIndex, feature, isFirstPoint, isLastPoint);
+    });
 }
 
-function processFeature(geojsonIndex, feature) {
+function processFeature(geojsonIndex, feature, isFirstPoint, isLastPoint) {
     let style = {
-        color: geojsonIndex === 0 ? 'blue' : (geojsonIndex === 1) ? 'orange': 'green',
+        color: geojsonIndex === 0 ? 'blue' : (geojsonIndex === 1) ? 'orange' : 'green',
         weight: 5,
         opacity: 0.65
     };
     if (feature.geometry.type === "Point") {
-        addMarkerToMap(feature);
+        addMarkerToMap(feature, isFirstPoint, isLastPoint);
     } else {
         L.geoJSON(feature, {
             style: style,
@@ -60,19 +66,24 @@ function processFeature(geojsonIndex, feature) {
     }
 }
 
-function addMarkerToMap(feature) {
+function addMarkerToMap(feature, isFirstPoint, isLastPoint) {
     let marker = L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]]);
-    if (feature.properties && feature.properties.osmid) {
-        marker.bindPopup("OSM ID: " + feature.properties.osmid);
-        marker.setIcon(L.divIcon({
-            className: 'custom-icon',
-            html: `<div>${feature.properties.osmid}</div>`,
+    if (isFirstPoint) {
+        let startIcon = L.icon({
+            iconUrl: '../files/endMark.png',
             iconSize: [30, 30]
-        }));
+        });
+        marker.setIcon(startIcon);
+        marker.addTo(map);
+    } else if (isLastPoint) {
+        let endIcon = L.icon({
+            iconUrl: '../files/startMark.png',
+            iconSize: [30, 30]
+        });
+        marker.setIcon(endIcon);
+        marker.addTo(map);
     }
-    marker.addTo(map);
 }
-
 
 function onEachFeature(feature, layer) {
     if (feature.properties && feature.properties.nombre) {
@@ -83,10 +94,10 @@ function onEachFeature(feature, layer) {
 
 // Funciones de orden
 function loadOrder() {
-    fetch('/orderDelivery/showOrders')
-    .then(handleOrderResponse)
-    .then(displayOrder)
-    .catch(console.log.bind(null, 'Error:'));
+    fetch('/orderDelivery/showOrder')
+        .then(handleOrderResponse)
+        .then(displayOrder)
+        .catch(console.log.bind(null, 'Error:'));
 }
 
 
@@ -103,7 +114,20 @@ function loadTricoInfo(){
 }
 
 
-
+function loadPathsInfo() {
+    console.log('Loading paths info')
+    fetch('/shortestPathInfo.json')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('trico-speed').innerText = "Tiempo: " + data[0].time + "min";
+            document.getElementById('trico-distance').innerText = "Distancia: " + data[0].distance + "m";
+//Segunda ruta
+            document.getElementById('ptera-speed').innerText = "Tiempo: " + data[1].time + "min";
+            document.getElementById('ptera-distance').innerText = "Distancia: " + data[1].distance + "m";
+            console.log(data);
+        })
+        .catch(error => console.error('Error:', error));
+}
 
 function handleOrderResponse(response) {
     if (!response.ok) {
@@ -112,22 +136,17 @@ function handleOrderResponse(response) {
     return response.json();
 }
 
-function displayOrder(orders) {
-
+function displayOrder(order) {
+    let buyer = order.buyer;
     let orderInfoElement = document.querySelector('#order-info .data-container');
-    orders.forEach(order =>{
-        let buyer = order.buyer;
-        appendElementToParent(orderInfoElement, 'p', 'ID: ' + order.id);
-        appendElementToParent(orderInfoElement, 'p', 'Nombre: ' + buyer.firstName);
-        appendElementToParent(orderInfoElement, 'p', 'Contacto: ' + buyer.contact);
-        appendElementToParent(orderInfoElement, 'p', 'Observaciones: ' + order.observation);
-        appendElementToParent(orderInfoElement, 'p', 'Dirección: ' + order.destination);
-        let stateElement = createStateElement(order);
-        orderInfoElement.appendChild(stateElement);
 
-    })
+    appendElementToParent(orderInfoElement, 'p', 'ID: ' + order.id);
+    appendElementToParent(orderInfoElement, 'p', 'Nombre: ' + buyer.firstName);
+    appendElementToParent(orderInfoElement, 'p', 'Contacto: ' + buyer.contact);
+    appendElementToParent(orderInfoElement, 'p', 'Observaciones: ' + order.observation);
 
-
+    let stateElement = createStateElement(order);
+    orderInfoElement.appendChild(stateElement);
 }
 
 function appendElementToParent(parent, elementType, text) {
@@ -161,8 +180,8 @@ function updateOrderState() {
         },
         body: JSON.stringify({state: newstate})
     })
-    .then(handleStateUpdateResponse)
-    .catch(console.log.bind(null, 'Error:'));
+        .then(handleStateUpdateResponse)
+        .catch(console.log.bind(null, 'Error:'));
 }
 
 function handleStateUpdateResponse(response) {
@@ -181,11 +200,11 @@ function addFinishRouteListener() {
 function finishRoute() {
     console.log('Finish route button clicked');
     let orderState = document.querySelector('#order-info select').value;
-    if(orderState == 'En Camino'){
-        let confirmResult =window.confirm('La orden no ha sido entregada, ¿desea marcar como cancelado y finalizar la ruta?');
-        if (confirmResult){
+    if (orderState == 'En Camino') {
+        let confirmResult = window.confirm('La orden no ha sido entregada, ¿desea marcar como cancelado y finalizar la ruta?');
+        if (confirmResult) {
             updateOrderState('Cacelado')
-        }else {
+        } else {
             return;
         }
     }
@@ -196,8 +215,8 @@ function finishRoute() {
             'Content-Type': 'application/json'
         }
     })
-    .then(handleFinishRouteResponse)
-    .catch(console.error.bind(null, 'No se pudo finalizar la ruta:'));
+        .then(handleFinishRouteResponse)
+        .catch(console.error.bind(null, 'No se pudo finalizar la ruta:'));
 }
 
 function handleFinishRouteResponse(response) {
