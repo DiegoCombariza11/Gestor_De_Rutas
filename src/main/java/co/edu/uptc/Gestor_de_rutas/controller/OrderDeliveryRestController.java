@@ -59,6 +59,7 @@ public class OrderDeliveryRestController {
 
     @GetMapping("/showOrder")
     public ResponseEntity<OrderDelivery> showOrder(@CookieValue("orderId") String id) {
+        System.out.println("Entro con id"+id);
         Optional<OrderDelivery> order = orderDeliveryRepository.findById(id);
         if (order.isPresent()) {
             return ResponseEntity.ok(order.get());
@@ -131,8 +132,8 @@ public class OrderDeliveryRestController {
         return routeController.getOsmId(direction);
     }
     @DeleteMapping("/delete")
-    public void deleteOrderDeliveryById(@RequestBody Map<String, String> payload) {
-        orderDeliveryRepository.deleteById(payload.get("id"));
+    public void deleteOrderDeliveryById(@CookieValue("orderId") String orderId) {
+        orderDeliveryRepository.deleteById(orderId);
     }
 
     @PostMapping("/update")
