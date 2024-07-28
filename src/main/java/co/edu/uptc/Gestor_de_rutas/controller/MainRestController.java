@@ -73,7 +73,7 @@ public ResponseEntity<String> startRoute(@CookieValue(value = "orderId", default
         if (order == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe la orden con id: " + orderId);
         }
-        pathService.setEndNodeID(order.getDestination());
+        pathService.setEndNodeID(String.valueOf(order.getOsmId()));
         infoToJson=new InfoToJson();
         infoToJson.deleteFile("src/main/resources/static/shortestPathInfo.json");
         System.out.println(order.getDestination());

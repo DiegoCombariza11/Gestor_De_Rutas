@@ -94,7 +94,7 @@ public class GraphController {
         }
         for (Edge edge : edgeList) {
             CustomEdge graphEdge = new CustomEdge(edge.getU(), edge.getV(),  edge.getLength(), edge.getMaxSpeed());
-            System.out.println("Arista: " + graphEdge.toString());
+            //System.out.println("Arista: " + graphEdge.toString());
             if (graphEdge != null) {
                 boolean isEdgeAdded = graphS.addEdge(edge.getU(), edge.getV(), graphEdge);
                 if(isEdgeAdded) {

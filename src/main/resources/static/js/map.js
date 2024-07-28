@@ -151,6 +151,7 @@ function displayOrder(order) {
     appendElementToParent(orderInfoElement, 'p', 'Nombre: ' + buyer.firstName);
     appendElementToParent(orderInfoElement, 'p', 'Contacto: ' + buyer.contact);
     appendElementToParent(orderInfoElement, 'p', 'Observaciones: ' + order.observation);
+    appendElementToParent(orderInfoElement, 'p', 'Direccion: ' + order.destination);
 
     let stateElement = createStateElement(order);
     orderInfoElement.appendChild(stateElement);
