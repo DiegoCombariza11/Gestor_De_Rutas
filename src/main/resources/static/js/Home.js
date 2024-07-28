@@ -27,34 +27,40 @@ $(document).ready(function() {
         window.location.href = '/pages/CreateOrderDelivery.html';
     });
 
-        $('#start-route-btn').on('click', function() {
-            if (shipmentId === null) {
-                alert('No se ha seleccionado ninguna orden');
-                return;
-            }
-            document.cookie = 'orderId=' + encodeURIComponent(shipmentId) + '; path=/';
-            fetch('/api/startRoute', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include'
+    $('#start-route-btn').on('click', function() {
+        if (shipmentId === null) {
+            alert('No se ha seleccionado ninguna orden');
+            return;
+        }
+        document.cookie = 'orderId=' + encodeURIComponent(shipmentId) + '; path=/';
+        fetch('/api/startRoute', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/pages/map.html';
+                } else {
+                    alert('Error al iniciar la ruta');
+                }
             })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = '/pages/map.html';
-                    } else {
-                        alert('Error al iniciar la ruta');
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+
+    $('#bodega-btn').on('click', function() {
+        $('#shipment-table-striped').DataTable().destroy();
+        loadOrders().then(() => {
+            $('#shipment-table-striped').DataTable();
         });
         $('#bodega-btn').addClass('btn-primary').removeClass('btn-secondary');
         $('#entregados-btn').addClass('btn-secondary').removeClass('btn-primary');
-
+    });
 
     $('#entregados-btn').on('click', function() {
         $('#shipment-table-striped').DataTable().destroy();

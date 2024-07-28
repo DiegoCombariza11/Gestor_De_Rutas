@@ -101,6 +101,9 @@ function loadOrder() {
 }
 
 
+/*
+
+solo una ruta
 
 function loadTricoInfo(){
     console.log('Loading trico info')
@@ -113,6 +116,7 @@ function loadTricoInfo(){
         });
 }
 
+ */
 
 function loadPathsInfo() {
     console.log('Loading paths info')
