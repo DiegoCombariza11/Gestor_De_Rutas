@@ -1,29 +1,25 @@
 package co.edu.uptc.Gestor_de_rutas.logic;
 
-import co.edu.uptc.Gestor_de_rutas.controller.PathController;
-import co.edu.uptc.Gestor_de_rutas.model.CustomEdge;
-import co.edu.uptc.Gestor_de_rutas.model.Edge;
-import co.edu.uptc.Gestor_de_rutas.model.Node;
-import co.edu.uptc.Gestor_de_rutas.model.ShortestPathInfo;
+import co.edu.uptc.Gestor_de_rutas.model.*;
+import co.edu.uptc.Gestor_de_rutas.persistence.InfoToJson;
 import lombok.Getter;
 import lombok.Setter;
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.interfaces.AStarAdmissibleHeuristic;
 import org.jgrapht.alg.shortestpath.AStarShortestPath;
-import org.jgrapht.graph.DefaultEdge;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.*;
 
 @Component
 public class AStarAlgorithm {
 
     private static AStarAlgorithm instance = null;
+    InfoToJson infoToJson = new InfoToJson();
 
     @Getter
     private ShortestPathInfo shortestPathInfo = new ShortestPathInfo();
-
     private Graph<Long, CustomEdge> graph;
     @Setter
     private GraphPath<Long, CustomEdge> shortestPath;
@@ -35,24 +31,24 @@ public class AStarAlgorithm {
     @Getter
     @Setter
     private double time;
-    private PathController pathController;
 
 
     public AStarAlgorithm(GraphController graphController) {
-    this.graphController = graphController;
-    this.graph = graphController.getShortesGraph();
-    this.distanceBasedHeuristic = createHeuristic();
-}
-public static AStarAlgorithm getInstance(GraphController graphController) {
-    if (instance == null) {
-        instance = new AStarAlgorithm(graphController);
+        this.graphController = graphController;
+        this.graph = graphController.getShortesGraph();
+        this.distanceBasedHeuristic = createHeuristic();
     }
-    return instance;
-}
+
+    public static AStarAlgorithm getInstance(GraphController graphController) {
+        if (instance == null) {
+            instance = new AStarAlgorithm(graphController);
+        }
+        return instance;
+    }
 
     public void setShortestPath(GraphPath<Long, CustomEdge> shortestPath) {
         this.shortestPath = shortestPath;
-}
+    }
 
     private AStarAdmissibleHeuristic<Long> createHeuristic() {
         return new AStarAdmissibleHeuristic<>() {
@@ -68,28 +64,87 @@ public static AStarAlgorithm getInstance(GraphController graphController) {
         };
     }
 
-    public GraphPath<Long, CustomEdge> findShortestPath(Long sourceVertex, Long targetVertex) {
-        AStarShortestPath<Long, CustomEdge> aStarShortestPath = new AStarShortestPath<>(graph, distanceBasedHeuristic);
-        GraphPath<Long, CustomEdge> shortestPathAStar = aStarShortestPath.getPath(sourceVertex, targetVertex);
-        setShortestPath(shortestPathAStar);
-        //getDistanceOfPath(shortestPathAStar);
-        shortestPathInfo.setDistance(getDistanceOfpathG(shortestPathAStar));
-        shortestPathInfo.setTime(getTimeOfPath(shortestPathAStar));
-//        System.out.println(shortestPathInfo.getDistance()+ " distancia con el get");
-//        System.out.println(shortestPathInfo.getTime()+ " Tiempo con el get");
-          return shortestPathAStar;
-    }
+//    public GraphPath<Long, CustomEdge> findShortestPath(Long sourceVertex, Long targetVertex) {
+//        AStarShortestPath<Long, CustomEdge> aStarShortestPath = new AStarShortestPath<>(graph, distanceBasedHeuristic);
+//        GraphPath<Long, CustomEdge> shortestPathAStar = aStarShortestPath.getPath(sourceVertex, targetVertex);
+//        setShortestPath(shortestPathAStar);
+//        //getDistanceOfPath(shortestPathAStar);
+//        shortestPathInfo.setDistance(getDistanceOfpathG(shortestPathAStar));
+//        shortestPathInfo.setTime(getTimeOfPath(shortestPathAStar));
+////        System.out.println(shortestPathInfo.getDistance()+ " distancia con el get");
+////        System.out.println(shortestPathInfo.getTime()+ " Tiempo con el get");
+//          return shortestPathAStar;
+//    }
+//
+//
+//    public List<GraphPath<Long, CustomEdge>> findTwoShortestPaths(Long sourceVertex, Long targetVertex) {
+//
+//    AStarShortestPath<Long, CustomEdge> aStarShortestPath = new AStarShortestPath<>(graph, distanceBasedHeuristic);
+//    GraphPath<Long, CustomEdge> firstShortestPathAStar = aStarShortestPath.getPath(sourceVertex, targetVertex);
+//    setShortestPath(firstShortestPathAStar);
+//    shortestPathInfo.setDistance(getDistanceOfpathG(firstShortestPathAStar));
+//    shortestPathInfo.setTime(getTimeOfPath(firstShortestPathAStar));
+//        System.out.println("Distancia del primer camino: " + shortestPathInfo.getDistance());
+//        System.out.println("Tiempo del primer camino: " + shortestPathInfo.getTime());
+//
+//    Set<Long> shortestPathNodes = new HashSet<>(firstShortestPathAStar.getVertexList());
+//
+//    AStarAdmissibleHeuristic<Long> secondPathHeuristic = new AStarAdmissibleHeuristic<>() {
+//        @Override
+//        public double getCostEstimate(Long sourceVertex, Long targetVertex) {
+//            if (shortestPathNodes.contains(sourceVertex) || shortestPathNodes.contains(targetVertex)) {
+//                return Double.MAX_VALUE;
+//            }
+//            Node sourceNode = graphController.getNodeById(sourceVertex);
+//            Node targetNode = graphController.getNodeById(targetVertex);
+//            if (sourceNode != null && targetNode != null) {
+//                return haversine(sourceNode.getY(), sourceNode.getX(), targetNode.getY(), targetNode.getX());
+//            }
+//            return Double.MAX_VALUE;
+//        }
+//    };
+//
+//    AStarShortestPath<Long, CustomEdge> aStarSecondPath = new AStarShortestPath<>(graph, secondPathHeuristic);
+//    GraphPath<Long, CustomEdge> secondShortestPathAStar = aStarSecondPath.getPath(sourceVertex, targetVertex);
+//    setListOfShortestPaths(Arrays.asList(shortestPathInfo, new ShortestPathInfo(getDistanceOfpathG(secondShortestPathAStar), getTimeOfPath(secondShortestPathAStar))));
+//
+//    return Arrays.asList(firstShortestPathAStar, secondShortestPathAStar);
+//}
+
+    public List<GraphPath<Long, CustomEdge>> findTwoShortestPaths(Long sourceVertex, Long targetVertex) {
+    AStarShortestPath<Long, CustomEdge> aStarShortestPath = new AStarShortestPath<>(graph, distanceBasedHeuristic);
 
 
+    GraphPath<Long, CustomEdge> firstPath = aStarShortestPath.getPath(sourceVertex, targetVertex);
+    ShortestPathInfo firstPathInfo = new ShortestPathInfo(getDistanceOfpathG(firstPath), getTimeOfPath(firstPath));
+    //ShortestPathsAndInfo firstPathInfoComplete = new ShortestPathsAndInfo(firstPath, firstPathInfo);
+//    System.out.println("first path: " + firstPath.getVertexList());
+//    System.out.println("first path: " + firstPathInfo.getDistance() + "   " + firstPathInfo.getTime());
 
-    public double getDistanceOfpathG(GraphPath<Long, CustomEdge> path){
+
+    Set<Long> firstPathNodes = new HashSet<>(firstPath.getVertexList());
+    AStarAdmissibleHeuristic<Long> secondPathHeuristic = (source, target) -> firstPathNodes.contains(source) || firstPathNodes.contains(target) ? Double.MAX_VALUE : distanceBasedHeuristic.getCostEstimate(source, target);
+
+
+    GraphPath<Long, CustomEdge> secondPath = new AStarShortestPath<>(graph, secondPathHeuristic).getPath(sourceVertex, targetVertex);
+    ShortestPathInfo secondPathInfo = new ShortestPathInfo(getDistanceOfpathG(secondPath), getTimeOfPath(secondPath));
+    //ShortestPathsAndInfo secondPathInfoComplete = new ShortestPathsAndInfo(secondPath, secondPathInfo);
+    //System.out.println("second path: " + secondPath.getVertexList());
+    //System.out.println("second path: " + secondPathInfo.getDistance() + "   " + secondPathInfo.getTime());
+    List<ShortestPathInfo> shortestPathInfos = Arrays.asList(firstPathInfo, secondPathInfo);
+    infoToJson.writeInfoToJson(shortestPathInfos, "src/main/resources/static/shortestPathInfo.json");
+
+    return Arrays.asList(firstPath, secondPath);
+}
+
+
+    public double getDistanceOfpathG(GraphPath<Long, CustomEdge> path) {
         double totalDistance = 0.0;
         List<CustomEdge> edges = path.getEdgeList();
         for (CustomEdge edge : edges) {
             totalDistance += edge.getDistance();
         }
         totalDistance = Math.round(totalDistance * 100.0) / 100.0;
-        System.out.println("Distancia con A* (el más corto): " + totalDistance + " m");
         return totalDistance;
     }
 
@@ -100,9 +155,8 @@ public static AStarAlgorithm getInstance(GraphController graphController) {
             totalTime += edge.getTime();
         }
         totalTime = Math.round(totalTime * 100.0) / 100.0;
-        System.out.println("Tiempo del más corto (a*): " + totalTime + " minutos");
 
-    return totalTime;
+        return totalTime;
     }
 
     private double haversine(double lat1, double lon1, double lat2, double lon2) {
@@ -117,30 +171,12 @@ public static AStarAlgorithm getInstance(GraphController graphController) {
     }
 
 
-    public GraphPath<Long, CustomEdge> getPath(){
-        if (shortestPath == null){
+    public GraphPath<Long, CustomEdge> getPath() {
+        if (shortestPath == null) {
             System.out.println("GraphPath es null");
         }
         return shortestPath;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //    public double getDistanceOfPath(GraphPath<Long, CustomEdge> path) {

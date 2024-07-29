@@ -7,11 +7,7 @@ import co.edu.uptc.Gestor_de_rutas.model.CustomEdge;
 import co.edu.uptc.Gestor_de_rutas.persistence.PathToGeoJson;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DefaultWeightedEdge;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,18 +37,34 @@ public class PathService {
     }
 
 
-//
+//SOlo un camino
 
-    public void shortestPathAStar() {
+//    public void shortestPathAStar() {
+//        this.graphController = new GraphController();
+//        this.aStarAlgorithm =  AStarAlgorithm.getInstance(graphController);
+//        GraphPath<Long, CustomEdge> shortestPaths = aStarAlgorithm.findShortestPath(startNodeId, Long.valueOf(endNodeID));
+//        if (shortestPaths != null) {
+//            List<Long> shortestPathsNodes = new ArrayList<>(shortestPaths.getVertexList());
+//            System.out.println("ShortestPathAStar hecho");
+//            pathToGeoJson.convertPathToGeoJson(shortestPathsNodes, graphController, "src/main/resources/static/shortestPathAStar.geojson");
+//        }
+//    }
+
+    public void shortestPathsAStar() {
         this.graphController = new GraphController();
-        this.aStarAlgorithm =  AStarAlgorithm.getInstance(graphController);
-        GraphPath<Long, CustomEdge> shortestPaths = aStarAlgorithm.findShortestPath(startNodeId, Long.valueOf(endNodeID));
+        this.aStarAlgorithm = AStarAlgorithm.getInstance(graphController);
+        List<GraphPath<Long, CustomEdge>> shortestPaths = aStarAlgorithm.findTwoShortestPaths(startNodeId, Long.valueOf(endNodeID));
         if (shortestPaths != null) {
-            List<Long> shortestPathsNodes = new ArrayList<>(shortestPaths.getVertexList());
-            System.out.println("ShortestPathAStar hecho");
-            pathToGeoJson.convertPathToGeoJson(shortestPathsNodes, graphController, "src/main/resources/static/shortestPathAStar.geojson");
+            List<Long> shortestPathsNodes1 = new ArrayList<>(shortestPaths.get(0).getVertexList());
+            List<Long> shortestPathsNodes2 = new ArrayList<>(shortestPaths.get(1).getVertexList());
+            pathToGeoJson.convertPathToGeoJson(shortestPathsNodes1, graphController, "src/main/resources/static/shortestPathAStar1.geojson");
+            pathToGeoJson.convertPathToGeoJson(shortestPathsNodes2, graphController, "src/main/resources/static/shortestPathAStar2.geojson");
         }
     }
+
+
+
+
 
 
     /*

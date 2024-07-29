@@ -17,30 +17,21 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="Header-window">
                 <h2>Ordenes de envío</h2>
                 <button id="create-shipment-btn" class="btn btn-primary">Crear Orden de Envío</button>
             </div>
+            <div class="text-center mb-3">
+                <button id="bodega-btn" class="btn btn-secondary">Bodega</button>
+                <button id="entregados-btn" class="btn btn-secondary">Entregados</button>
+            </div>
             <table class="table table-striped" id="shipment-table-striped">
-                <thead>
-                <tr>
-                    <th>Seleccionar</th>
-                    <th>Id</th>
-                    <th>Dirección</th>
-                    <th>Detalles</th>
-                </tr>
+                <thead id="table-headers">
                 </thead>
                 <tbody id="shipment-table">
                 </tbody>
             </table>
-        </div>
-        <div class="col-md-4 offset-md-1">
-            <h2>Paquetes en el Camion</h2>
-            <div id="send-box" class="border p-2">
-                <!-- Selected shipments will be displayed here -->
-            </div>
-            <button id="start-route-btn" class="btn btn-primary">Iniciar Ruta</button>
         </div>
     </div>
 </div>
