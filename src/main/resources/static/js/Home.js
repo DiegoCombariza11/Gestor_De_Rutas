@@ -64,6 +64,14 @@ async function loadOrders() {
     let bodyTable = "";
     for (let order of orders) {
         if (order.state !== 'DELIVERED') {
+            orderStateSpanish = null;
+            if (order.state === 'PENDING') {
+                orderStateSpanish = 'Pendiente';
+            }else if (order.state === 'SHIPPED') {
+                orderStateSpanish= 'En camino'
+            }else if (order.state === 'CANCELLED') {
+                orderStateSpanish = 'Cancelado';
+            }
             bodyTable += `
                 <tr>
                     <td>
@@ -73,7 +81,7 @@ async function loadOrders() {
                     <td>${order.id}</td>
                     <td>${order.destination}</td>
                     <td>${order.description}</td>
-                    <td>${order.state}</td>
+                    <td>${orderStateSpanish}</td>
                 </tr>`;
         }
     }
@@ -105,7 +113,7 @@ async function loadOrdersDelivered() {
                     <td>${order.id}</td>
                     <td>${order.destination}</td>
                     <td>${order.description}</td>
-                    <td>${order.state}</td>
+                    <td>Entregado</td>
                 </tr>`;
         }
     }
