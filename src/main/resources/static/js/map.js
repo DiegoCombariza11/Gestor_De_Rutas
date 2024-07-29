@@ -179,9 +179,10 @@ function createStateElement(order) {
     return stateElement;
 }
 
-function updateOrderState() {
-    let newstate = this.value;
-    fetch('/orderDelivery/updateStates', {
+function updateOrderState(stateToModify) {
+    let newstate = stateToModify;
+    console.log(newstate);
+    fetch('/orderDelivery/updateState', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -209,9 +210,10 @@ function finishRoute() {
     console.log('Finish route button clicked');
     let orderState = document.querySelector('#order-info select').value;
     if (orderState == 'En Camino') {
-        let confirmResult = window.confirm('La orden no ha sido entregada, ¿desea marcar como cancelado y finalizar la ruta?');
+        let confirmResult = window.confirm('La orden no ha sido entregada, ¿desea marcar como devuelto y finalizar la ruta?');
         if (confirmResult) {
-            updateOrderState('Cacelado')
+            updateOrderState('Devuelto')
+
         } else {
             return;
         }

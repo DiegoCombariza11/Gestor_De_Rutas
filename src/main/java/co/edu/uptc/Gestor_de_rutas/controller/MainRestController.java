@@ -105,7 +105,6 @@ actualzar el estado y sha
             if (order == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe la orden con ese id");
             }
-            orderDeliveryService.updateOrderState(orderId, "DELIVERED");
             return ResponseEntity.ok("Ruta finalizada");
         } catch (NumberFormatException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe la orden con ese id");

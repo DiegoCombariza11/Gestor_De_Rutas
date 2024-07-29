@@ -35,7 +35,7 @@ public class DijkstraAlgorithm {
             distance += distanceBetweenNodes(path.get(i), path.get(i + 1), controller);
         }
         distance= Math.round(distance * 100.0) / 100.0;
-        System.out.println("Distancia dijkstra: "+ distance);
+        //System.out.println("Distancia dijkstra: "+ distance);
         return distance;
     }
 
@@ -56,14 +56,14 @@ public class DijkstraAlgorithm {
             Long endNodeId = path.get(i + 1);
             double distance = distanceBetweenNodes(startNodeId, endNodeId, controller);
             double speed = speedBetweenNodes(startNodeId, endNodeId, controller);
-            System.out.println("Distancia entre nodos: " + distance + " Velocidad entre nodos: " + speed);
+            //System.out.println("Distancia entre nodos: " + distance + " Velocidad entre nodos: " + speed);
             if (distance > 0 && speed > 0) {
                 totalTime += (distance*60) / (speed*1000);
-                System.out.println("Tiempo entre nodos: " + totalTime);
+                //System.out.println("Tiempo entre nodos: " + totalTime);
             }
         }
         totalTime= Math.round(totalTime * 100.0) / 100.0;
-        System.out.println("Tiempo Dijkstra: " + totalTime);
+        //System.out.println("Tiempo Dijkstra: " + totalTime);
         return totalTime;
     }
     public double speedBetweenNodes(Long startNodeId, Long endNodeId, GraphController controller) {

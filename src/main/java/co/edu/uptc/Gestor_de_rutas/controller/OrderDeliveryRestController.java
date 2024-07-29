@@ -80,7 +80,6 @@ public class OrderDeliveryRestController {
                     orders.add(order.get());
                 }
             }
-
             if (orders.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             } else {

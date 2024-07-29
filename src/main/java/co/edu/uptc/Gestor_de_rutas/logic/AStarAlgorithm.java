@@ -118,8 +118,8 @@ public class AStarAlgorithm {
     GraphPath<Long, CustomEdge> firstPath = aStarShortestPath.getPath(sourceVertex, targetVertex);
     ShortestPathInfo firstPathInfo = new ShortestPathInfo(getDistanceOfpathG(firstPath), getTimeOfPath(firstPath));
     //ShortestPathsAndInfo firstPathInfoComplete = new ShortestPathsAndInfo(firstPath, firstPathInfo);
-    System.out.println("first path: " + firstPath.getVertexList());
-    System.out.println("first path: " + firstPathInfo.getDistance() + "   " + firstPathInfo.getTime());
+//    System.out.println("first path: " + firstPath.getVertexList());
+//    System.out.println("first path: " + firstPathInfo.getDistance() + "   " + firstPathInfo.getTime());
 
 
     Set<Long> firstPathNodes = new HashSet<>(firstPath.getVertexList());
@@ -129,8 +129,8 @@ public class AStarAlgorithm {
     GraphPath<Long, CustomEdge> secondPath = new AStarShortestPath<>(graph, secondPathHeuristic).getPath(sourceVertex, targetVertex);
     ShortestPathInfo secondPathInfo = new ShortestPathInfo(getDistanceOfpathG(secondPath), getTimeOfPath(secondPath));
     //ShortestPathsAndInfo secondPathInfoComplete = new ShortestPathsAndInfo(secondPath, secondPathInfo);
-    System.out.println("second path: " + secondPath.getVertexList());
-    System.out.println("second path: " + secondPathInfo.getDistance() + "   " + secondPathInfo.getTime());
+    //System.out.println("second path: " + secondPath.getVertexList());
+    //System.out.println("second path: " + secondPathInfo.getDistance() + "   " + secondPathInfo.getTime());
     List<ShortestPathInfo> shortestPathInfos = Arrays.asList(firstPathInfo, secondPathInfo);
     infoToJson.writeInfoToJson(shortestPathInfos, "src/main/resources/static/shortestPathInfo.json");
 
