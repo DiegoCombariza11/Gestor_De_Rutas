@@ -31,8 +31,10 @@ public class OrderDeliveryService {
     public void updateOrderState(String id, String state) {
         Optional<OrderDelivery> order = orderDeliveryRepository.findById(id);
         if (order.isPresent()) {
+            System.out.println("Estado a actualizar en el servicio: " + state);
             order.get().setState(State.valueOf(state));
             orderDeliveryRepository.save(order.get());
+            System.out.println("Estado actualizado en el servicio: " + order.get().getState());
         }
     }
 }

@@ -47,8 +47,10 @@ public class OrderDeliveryRestController {
     @PostMapping("/updateState")
     public void updateOrderState(@CookieValue("orderId") String id, @RequestBody Map<String, String> body) {
         String state = body.get("state");
+        //System.out.println("Estado a actualizar: " + state);
         parse(state);
         orderDeliveryService.updateOrderState(id, String.valueOf(parse(state)));
+        //System.out.println("Estado actualizado a: " + parse(state));
     }
 
     @GetMapping("/show/{id}")
@@ -169,7 +171,7 @@ public class OrderDeliveryRestController {
     private State parse(String state) {
         if (state.equals("Entregado")) {
             return State.DELIVERED;
-        } else if (state.equals("En camino")) {
+        } else if (state.equals("En Camino")) {
             return State.SHIPPED;
         } else if (state.equals("Devuelto")) {
             return State.CANCELED;

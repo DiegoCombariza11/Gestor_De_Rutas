@@ -179,15 +179,16 @@ function createStateElement(order) {
     return stateElement;
 }
 
-function updateOrderState(stateToModify) {
-    let newstate = stateToModify;
-    console.log(newstate);
+function updateOrderState(event) {
+    let newstate = event.target.value;
+    console.log(newstate + "To modify");
     fetch('/orderDelivery/updateState', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({state: newstate})
+
     })
         .then(handleStateUpdateResponse)
         .catch(console.log.bind(null, 'Error:'));
@@ -206,27 +207,70 @@ function addFinishRouteListener() {
     document.getElementById('finish-route').addEventListener('click', finishRoute);
 }
 
+function updateOrderState(event) {
+    let newstate = event.target.value;
+    if (!newstate) {
+        console.error("State cannot be null or empty");
+        return;
+    }
+    console.log(newstate + " To modify");
+    fetch('/orderDelivery/updateState', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ state: newstate })
+    })
+        .then(handleStateUpdateResponse)
+        .catch(console.log.bind(null, 'Error:'));
+}
+
 function finishRoute() {
     console.log('Finish route button clicked');
     let orderState = document.querySelector('#order-info select').value;
-    if (orderState == 'En Camino') {
+    if (orderState === 'En Camino') {
         let confirmResult = window.confirm('La orden no ha sido entregada, ¿desea marcar como devuelto y finalizar la ruta?');
         if (confirmResult) {
-            updateOrderState('Devuelto')
-
+            console.log("debería poner devuelto");
+            fetch('/orderDelivery/updateState', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ state: 'Devuelto' })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al actualizar el estado: ' + response.statusText);
+                    }
+                    return response.text();
+                })
+                .then(() => {
+                    fetch('/api/endRoute', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .then(handleFinishRouteResponse)
+                        .catch(console.error.bind(null, 'No se pudo finalizar la ruta:'));
+                })
+                .catch(console.error.bind(null, 'Error al actualizar el estado:'));
         } else {
             return;
         }
+    } else {
+        fetch('/api/endRoute', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(handleFinishRouteResponse)
+            .catch(console.error.bind(null, 'No se pudo finalizar la ruta:'));
     }
-    fetch('/api/endRoute', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(handleFinishRouteResponse)
-        .catch(console.error.bind(null, 'No se pudo finalizar la ruta:'));
 }
 
 function handleFinishRouteResponse(response) {

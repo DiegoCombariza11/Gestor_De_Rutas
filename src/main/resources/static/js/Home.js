@@ -69,7 +69,7 @@ async function loadOrders() {
                 orderStateSpanish = 'Pendiente';
             }else if (order.state === 'SHIPPED') {
                 orderStateSpanish= 'En camino'
-            }else if (order.state === 'CANCELLED') {
+            }else if (order.state === 'CANCELED') {
                 orderStateSpanish = 'Cancelado';
             }
             bodyTable += `
