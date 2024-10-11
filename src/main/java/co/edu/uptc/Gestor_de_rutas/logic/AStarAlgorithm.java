@@ -33,6 +33,7 @@ public class AStarAlgorithm {
     private double time;
 
 
+
     public AStarAlgorithm(GraphController graphController) {
         this.graphController = graphController;
         this.graph = graphController.getShortesGraph();
